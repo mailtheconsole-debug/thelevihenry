@@ -25,21 +25,30 @@ The site is plain static files, so hosting is quick. `netlify.toml` is already s
 1. Open your site in Netlify → **Domain management → Add a domain**.
 2. Enter your domain (e.g. `levihenrygroup.com`) and confirm you own it.
 
-## Step 3 — Point your domain's DNS at Netlify
+## Step 3 — Point thelevihenry.com at Netlify (registrar: WhoGoHost / Go54)
 
-Do this at your registrar (GoDaddy / Namecheap / etc.). Pick **one** approach:
+Log in to **go54.com / whogohost.com → your account → Domains → Manage thelevihenry.com**.
+Pick **one** approach.
 
-**Approach 1 — Netlify DNS (simplest, recommended):**
-- In Netlify's domain panel choose **"Use Netlify DNS"**. It shows 4 nameservers like
-  `dns1.p0X.nsone.net`.
-- At your registrar, replace the existing nameservers with those 4.
-- Netlify then handles the records and provisions HTTPS automatically.
+**Approach 1 — Netlify DNS (recommended, best for the apex/root domain):**
+1. In Netlify → Domain management → add `thelevihenry.com`, then choose **"Use Netlify DNS"**.
+2. Netlify shows **4 nameservers** like `dns1.p0X.nsone.net`, `dns2.p0X.nsone.net`, etc.
+3. In Go54, open **Nameservers** for thelevihenry.com, switch to **Custom nameservers**,
+   delete the existing ones, and paste Netlify's 4. Save.
+4. Netlify then manages all records and auto-issues HTTPS. (Nameserver changes can take a
+   few hours to ~24h.)
 
-**Approach 2 — keep your registrar's DNS (add records manually):**
-- **A record** — Host/Name `@` → Value `75.2.60.5`
-- **CNAME record** — Host/Name `www` → Value `YOUR-SITE.netlify.app`
-- (In Netlify, set the primary domain to whichever you prefer — apex or `www` — and it
-  redirects the other automatically.)
+**Approach 2 — keep Go54's DNS (use their Zone/DNS editor):**
+In Go54 → **Manage DNS / Advanced DNS (Zone Editor)** for thelevihenry.com, add:
+- **A record** — Name/Host `@` (or blank / `thelevihenry.com`) → Value `75.2.60.5`
+- **CNAME** — Name/Host `www` → Value `YOUR-SITE.netlify.app` (your Netlify subdomain)
+- Delete any existing A/CNAME for `@` and `www` that point elsewhere (e.g. parking).
+- In Netlify, add both `thelevihenry.com` and `www.thelevihenry.com`, set your preferred
+  primary, and it redirects the other automatically.
+
+> Note: Approach 1 is preferred because the apex (`thelevihenry.com`) on a single A record
+> is less resilient, and WhoGoHost/Go54 may not support ALIAS/ANAME at the root. Letting
+> Netlify run DNS avoids that entirely.
 
 ## Step 4 — HTTPS
 
