@@ -7,3 +7,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Full-resolution photo archive (web-optimized copies live in assets/photos)
+assets/source/

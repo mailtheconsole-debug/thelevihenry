@@ -3,39 +3,301 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>thelevihenry</title>
-    <meta name="description" content="thelevihenry — a new static site." />
+    <title>Levi Henry Group — Building the people and systems that produce revenue</title>
+    <meta
+      name="description"
+      content="Levi Henry Group is a consulting and education company helping individuals build high-income skills and helping small businesses implement the systems that generate and scale revenue."
+    />
+    <meta property="og:title" content="Levi Henry Group" />
+    <meta property="og:description" content="Building the people and systems that produce revenue." />
+    <meta property="og:image" content="assets/brand/logo-primary.png" />
+    <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <!-- HEADER -->
     <header class="site-header">
-      <a class="brand" href="/">thelevihenry</a>
-      <nav>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-      </nav>
+      <div class="wrap">
+        <a class="brand" href="index.html" aria-label="Levi Henry Group — home">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <g fill="currentColor">
+              <polygon points="8,14 66,14 56,34 8,34" />
+              <polygon points="8,40 74,40 64,60 8,60" />
+              <polygon points="8,66 60,66 50,86 8,86" />
+            </g>
+          </svg>
+          <span class="wordmark"><b>Levi Henry</b><span>Group</span></span>
+        </a>
+        <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">Menu</button>
+        <nav class="nav" aria-label="Primary">
+          <a href="about.html">About</a>
+          <a href="individuals.html">For Individuals</a>
+          <a href="businesses.html">For Businesses</a>
+          <a href="portfolio.html">Portfolio</a>
+          <a class="btn btn--solid" href="contact.html">Book a call</a>
+        </nav>
+      </div>
     </header>
 
-    <main>
+    <main id="main">
+      <!-- HERO -->
       <section class="hero">
-        <h1>thelevihenry</h1>
-        <p>A fresh start. Replace this with whatever you're building.</p>
-        <a class="cta" href="#about">Learn more</a>
+        <div class="wrap hero-grid">
+          <div class="reveal">
+            <h1>Building the people and systems that produce revenue.</h1>
+            <p class="lead">
+              From twelve years in music to sales pipelines for billion-dollar companies —
+              I help individuals build high-income skills and help businesses build the
+              systems that turn effort into revenue.
+            </p>
+            <div class="btn-row" style="margin-top: 1.75rem;">
+              <a class="btn btn--solid" href="contact.html">Book a call <span class="arrow">→</span></a>
+              <a class="btn btn--ghost" href="about.html">Read the story</a>
+            </div>
+          </div>
+          <figure class="hero-figure reveal" data-delay="150">
+            <img
+              src="assets/photos/portrait-hero.jpg"
+              alt="Levi Henry, founder of Levi Henry Group, in a pinstripe suit"
+              width="1600" height="2000" fetchpriority="high"
+            />
+            <figcaption class="hero-badge">Levi Henry <b>·</b> Founder</figcaption>
+          </figure>
+        </div>
       </section>
 
-      <section id="about" class="panel">
-        <h2>About</h2>
-        <p>This is a blank static site scaffold — plain HTML, CSS, and JavaScript. No build step, no framework. Open <code>index.html</code> in a browser and start editing.</p>
+      <!-- STORY / THROUGHLINE -->
+      <section class="divider">
+        <div class="wrap feature">
+          <div class="feature-media reveal">
+            <img src="assets/photos/portrait-seated.jpg" alt="Levi Henry seated, in a pinstripe suit" width="1440" height="1800" loading="lazy" />
+          </div>
+          <div class="reveal" data-delay="120">
+            <h2>Two careers, one skill.</h2>
+            <div class="stack">
+              <p>
+                For 12 years, I worked as a mixing engineer, producer, songwriter, and
+                artist — serving clients across Nigeria and internationally, and working
+                alongside more than 1,000 artists along the way. Beyond the studio, I
+                trained producers on their craft and taught others how to actually build a
+                career and business in music.
+              </p>
+              <p>
+                From there, I pivoted directly into sales — working with international
+                million and billion-dollar companies, where I learned how successful
+                businesses actually run: the tech solutions they rely on, how to identify
+                the right tools for the job, how to build and train sales teams, how to
+                generate leads through both inbound and outbound, and how to build and
+                manage a pipeline all the way to revenue.
+              </p>
+              <p style="color: var(--navy); font-family: var(--serif); font-size: 1.2rem;">
+                Levi Henry Group exists to build the people and systems that produce revenue.
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
 
-      <section id="contact" class="panel">
-        <h2>Contact</h2>
-        <p>Add your contact details here.</p>
+      <!-- AUDIENCE FORK -->
+      <section class="divider">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <h2>Whether you're building yourself or building a business.</h2>
+          </div>
+          <div class="fork">
+            <a class="fork-card fork-card--brass reveal" href="individuals.html">
+              <span class="num">01 — For Individuals</span>
+              <h3>Build high-income skills</h3>
+              <p>
+                Sales development and the real, transferable skills that make you valuable
+                in any market — taught the way I once taught producers to build a career,
+                not a hobby.
+              </p>
+              <span class="textlink" style="margin-top: 1.25rem;">Explore individual programs <span class="arrow">→</span></span>
+            </a>
+            <a class="fork-card fork-card--navy reveal" data-delay="120" href="businesses.html">
+              <span class="num">02 — For Businesses</span>
+              <h3>Implement systems for growth</h3>
+              <p>
+                Marketing, paid acquisition, funnels, and the revenue infrastructure that
+                turns traffic into paying customers — built and advised on end to end.
+              </p>
+              <span class="textlink" style="margin-top: 1.25rem;">Explore business services <span class="arrow">→</span></span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- PILLARS -->
+      <section class="divider">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <p class="kicker">What we do</p>
+            <h2>Three pillars, one outcome.</h2>
+          </div>
+          <div class="pillars">
+            <div class="pillar reveal">
+              <span class="idx">01</span>
+              <div>
+                <h3>Sales Development &amp; High-Income Skill Building</h3>
+                <p>Building the individual skills that generate income — prospecting, discovery, closing, and the mindset to sustain it. The craft of selling, taught as a craft.</p>
+              </div>
+              <span class="aside">Individuals</span>
+            </div>
+            <div class="pillar reveal" data-delay="100">
+              <span class="idx">02</span>
+              <div>
+                <h3>Marketing &amp; Paid Acquisition</h3>
+                <p>Facebook, Instagram, and TikTok ads that actually acquire customers — creative, targeting, and spend managed toward revenue, not vanity metrics.</p>
+              </div>
+              <span class="aside">Businesses</span>
+            </div>
+            <div class="pillar reveal" data-delay="200">
+              <span class="idx">03</span>
+              <div>
+                <h3>Funnels, Technology &amp; Revenue Infrastructure</h3>
+                <p>We build and advise on the technology that powers revenue: websites, funnels, CRMs, and the systems that turn traffic into paying customers.</p>
+              </div>
+              <span class="aside">Businesses</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TESTIMONIALS -->
+      <section class="divider">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <p class="kicker">In their words</p>
+            <h2>The people I've worked with.</h2>
+          </div>
+          <div class="testi-grid">
+            <div class="testi reveal">
+              <video preload="none" playsinline poster="assets/photos/poster-geoffrey.jpg" src="assets/video/testimonial-geoffrey.mp4"></video>
+              <button class="poster" aria-label="Play Geoffrey's testimonial">
+                <span class="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg></span>
+                <span class="name">Geoffrey</span>
+                <span class="role">Client testimonial</span>
+              </button>
+            </div>
+            <div class="testi reveal" data-delay="120">
+              <video preload="none" playsinline poster="assets/photos/poster-manny.jpg" src="assets/video/testimonial-manny.mp4"></video>
+              <button class="poster" aria-label="Play Manny's testimonial">
+                <span class="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg></span>
+                <span class="name">Manny</span>
+                <span class="role">Client testimonial</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PORTFOLIO PREVIEW -->
+      <section class="divider">
+        <div class="wrap">
+          <div class="reveal" style="display: flex; justify-content: space-between; align-items: end; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.25rem;">
+            <div style="max-width: 40ch;">
+              <p class="kicker">Selected work</p>
+              <h2>Across music, brand, and revenue.</h2>
+            </div>
+            <a class="textlink" href="portfolio.html">View full portfolio <span class="arrow">→</span></a>
+          </div>
+          <div class="grid">
+            <a class="work reveal" href="https://restoredbyrest.com" target="_blank" rel="noopener">
+              <span class="cover label" style="background: var(--navy);">restoredbyrest</span>
+              <span class="cat">Web &amp; Brand</span>
+              <h3>restoredbyrest.com</h3>
+            </a>
+            <a class="work reveal" data-delay="80" href="portfolio.html">
+              <span class="cover label" style="background: var(--navy-600);">hitsoundx</span>
+              <span class="cat">Music</span>
+              <h3>hitsoundx</h3>
+            </a>
+            <a class="work reveal" data-delay="160" href="portfolio.html">
+              <span class="cover label" style="background: var(--navy-deep);">The Fashion Architect</span>
+              <span class="cat">Brand</span>
+              <h3>The Fashion Architect</h3>
+            </a>
+            <a class="work reveal" data-delay="240" href="portfolio.html">
+              <span class="cover label" style="background: var(--navy);">Sales case studies</span>
+              <span class="cat">Revenue</span>
+              <h3>Sales case studies</h3>
+            </a>
+            <a class="work work--more reveal" data-delay="320" href="portfolio.html">
+              <span class="cover label" style="background: var(--ivory-deep); color: var(--navy);">Many more&hellip;</span>
+              <span class="cat">Portfolio</span>
+              <h3>Explore the full portfolio</h3>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- CLOSING CTA -->
+      <section class="divider">
+        <div class="wrap">
+          <div class="cta-band reveal">
+            <p class="kicker kicker--light kicker--center">Let's build</p>
+            <h2>Ready to turn what you know into revenue?</h2>
+            <p>
+              Whether you're an individual building a high-income skill or a business
+              building the systems behind growth — let's talk about where you are and
+              what's next.
+            </p>
+            <a class="btn btn--brass" href="contact.html">Book a call <span class="arrow">→</span></a>
+          </div>
+        </div>
       </section>
     </main>
 
+    <!-- FOOTER -->
     <footer class="site-footer">
-      <p>&copy; <span id="year"></span> thelevihenry</p>
+      <div class="wrap">
+        <div class="about-col">
+          <a class="brand brand--light" href="index.html" aria-label="Levi Henry Group — home">
+            <svg viewBox="0 0 100 100" aria-hidden="true">
+              <g fill="currentColor">
+                <polygon points="8,14 66,14 56,34 8,34" />
+                <polygon points="8,40 74,40 64,60 8,60" />
+                <polygon points="8,66 60,66 50,86 8,86" />
+              </g>
+            </svg>
+            <span class="wordmark"><b>Levi Henry</b><span>Group</span></span>
+          </a>
+          <p class="tag">Building the people and systems that produce revenue. Consulting &amp; education for individuals and small business owners.</p>
+        </div>
+        <div>
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="individuals.html">For Individuals</a></li>
+            <li><a href="businesses.html">For Businesses</a></li>
+            <li><a href="portfolio.html">Portfolio</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="contact.html">Book a call</a></li>
+            <li><a href="portfolio.html">Music as “Halo Mr.”</a></li>
+            <li><a href="contact.html">Instagram &amp; socials</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-base">
+        <div class="wrap">
+          <span>&copy; <span id="year"></span> Levi Henry Group. All rights reserved.</span>
+          <span>Nigeria &amp; international.</span>
+        </div>
+      </div>
     </footer>
 
     <script src="main.js"></script>
