@@ -254,23 +254,28 @@ section { padding-block: var(--section-y); }
   text-transform: uppercase;
 }
 @media (max-width: 900px) {
-  .nav-toggle { display: inline-flex; }
+  .nav-toggle { display: inline-flex; position: relative; z-index: 60; }
   .nav {
     position: fixed;
-    inset: 0 0 0 auto;
-    width: min(80vw, 340px);
+    top: 0;
+    right: 0;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 55;
+    overflow-y: auto;
+    width: min(82vw, 340px);
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    gap: 1.7rem;
-    padding: 2rem var(--gutter);
+    gap: 1.6rem;
+    padding: 5.5rem var(--gutter) 2.5rem;
     background: var(--paper);
     border-left: 1px solid var(--line);
     transform: translateX(100%);
     transition: transform 0.35s var(--ease);
     box-shadow: var(--shadow);
   }
-  .nav a { font-size: 1rem; }
+  .nav a { font-size: 1.15rem; }
   body.nav-open .nav { transform: translateX(0); }
   body.nav-open { overflow: hidden; }
 }
@@ -564,3 +569,19 @@ section { padding-block: var(--section-y); }
   max-width: 24ch;
 }
 img { max-width: 100%; }
+
+/* ---------- legal pages (privacy / terms) ---------- */
+.legal-body { max-width: 760px; }
+.legal-body h2 { font-size: clamp(1.3rem, 2.4vw, 1.7rem); margin-top: 2.75rem; }
+.legal-body h2:first-of-type { margin-top: 0; }
+.legal-body h3 { font-size: 1.1rem; font-weight: 700; font-family: var(--sans); color: var(--navy); margin-top: 1.75rem; }
+.legal-body p, .legal-body li { font-size: 1rem; line-height: 1.75; color: var(--ink-soft); }
+.legal-body p { max-width: 68ch; }
+.legal-body strong { color: var(--ink); }
+.legal-body ul { padding-left: 1.2rem; margin: 0 0 1.15rem; }
+.legal-body li { margin-bottom: 0.5rem; }
+.legal-body a { color: var(--brass-deep); }
+.legal-meta { font-size: 0.9rem; color: var(--ink-faint); letter-spacing: 0.02em; }
+.legal-note { background: var(--paper); border: 1px solid var(--line); border-left: 3px solid var(--brass); border-radius: 4px; padding: 1.1rem 1.3rem; margin: 0 0 2.5rem; font-size: 0.92rem; color: var(--ink-soft); }
+.footer-base .legal-links a { margin-left: 0; }
+.footer-base .legal-links a + a { margin-left: 0.9rem; }

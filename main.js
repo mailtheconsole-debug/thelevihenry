@@ -12,11 +12,13 @@
     toggle.addEventListener("click", function () {
       var open = document.body.classList.toggle("nav-open");
       toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      toggle.textContent = open ? "Close" : "Menu";
     });
     document.querySelectorAll(".nav a").forEach(function (a) {
       a.addEventListener("click", function () {
         document.body.classList.remove("nav-open");
         toggle.setAttribute("aria-expanded", "false");
+        toggle.textContent = "Menu";
       });
     });
   }
