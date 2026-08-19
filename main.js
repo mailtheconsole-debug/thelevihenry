@@ -14,7 +14,7 @@
       toggle.setAttribute("aria-expanded", open ? "true" : "false");
       toggle.textContent = open ? "Close" : "Menu";
     });
-    document.querySelectorAll(".nav a").forEach(function (a) {
+    document.querySelectorAll(".nav a, .mobile-tabbar .tab").forEach(function (a) {
       a.addEventListener("click", function () {
         document.body.classList.remove("nav-open");
         toggle.setAttribute("aria-expanded", "false");
