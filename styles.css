@@ -256,7 +256,6 @@ section { padding-block: var(--section-y); }
 @media (max-width: 900px) {
   .nav-toggle { display: none; }
   .nav { display: none; }
-  .mobile-tabbar { display: flex; }
   body { padding-bottom: calc(60px + env(safe-area-inset-bottom)); }
 }
 
@@ -304,6 +303,7 @@ section { padding-block: var(--section-y); }
 .mobile-tabbar .tab span { line-height: 1; white-space: nowrap; }
 .mobile-tabbar .tab[aria-current="page"] { color: var(--brass-soft); }
 .mobile-tabbar .tab:active { color: #fff; }
+@media (max-width: 900px) { .mobile-tabbar { display: flex; } }
 
 /* ---------- hero ---------- */
 .hero { padding-top: clamp(2.5rem, 5vw, 4.5rem); padding-bottom: var(--section-y); }
