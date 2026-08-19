@@ -256,22 +256,22 @@ section { padding-block: var(--section-y); }
 @media (max-width: 900px) {
   .nav-toggle { display: none; }
   .nav { display: none; }
-  body { padding-bottom: calc(60px + env(safe-area-inset-bottom)); }
+  .site-header { position: fixed; top: 0; left: 0; right: 0; }
+  body { padding-top: 112px; } /* fixed header (61) + tab bar (51) */
 }
 
 /* ---------- sticky mobile bottom bar ---------- */
 .mobile-tabbar {
   display: none;
   position: fixed;
-  bottom: 0;
+  top: 61px;
   left: 0;
   right: 0;
   z-index: 100;
   background: color-mix(in srgb, var(--navy-deep) 94%, transparent);
   backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: env(safe-area-inset-bottom);
-  box-shadow: 0 -10px 30px -18px rgba(0, 0, 0, 0.55);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 30px -18px rgba(0, 0, 0, 0.45);
 }
 .mobile-tabbar .tab {
   flex: 1 1 0;
