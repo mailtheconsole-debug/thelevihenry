@@ -390,6 +390,12 @@ section { padding-block: var(--section-y); }
 .fork-card--brass h3, .fork-card--brass .num { color: #fff; }
 .fork-card--brass p { color: rgba(255,255,255,0.9); }
 .fork-card--brass .textlink { color: #fff; }
+.fork-card--steel { background: #1e3a8a; color: #fff; }
+.fork-card--steel h3, .fork-card--steel .num { color: #fff; }
+.fork-card--steel p { color: rgba(255,255,255,0.85); }
+.fork-card--steel .textlink { color: #fff; }
+.fork--three { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 860px) { .fork--three { grid-template-columns: 1fr; } }
 @media (max-width: 680px) { .fork { grid-template-columns: 1fr; } }
 
 /* ---------- pillars (editorial numbered rows) ---------- */
