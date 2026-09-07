@@ -111,14 +111,7 @@ strong { font-weight: 700; color: var(--ink); }
   align-items: center;
   gap: 0.65rem;
 }
-.kicker::before {
-  content: "";
-  width: 1.9rem;
-  height: 2px;
-  background: var(--brass);
-}
 .kicker--light { color: var(--brass-soft); }
-.kicker--light::before { background: var(--brass-soft); }
 .kicker--center { justify-content: center; }
 
 .lead {
