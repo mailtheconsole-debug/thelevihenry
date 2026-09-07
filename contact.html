@@ -52,7 +52,8 @@
       <section class="divider">
         <div class="wrap">
           <div class="contact-grid">
-            <form class="reveal" data-contact novalidate>
+            <form class="reveal" method="POST" action="/.netlify/functions/contact">
+              <p hidden><label>Leave this empty: <input name="bot-field" /></label></p>
               <div class="field">
                 <label for="name">Name</label>
                 <input id="name" name="name" type="text" autocomplete="name" required />

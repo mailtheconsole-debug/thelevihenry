@@ -93,17 +93,18 @@
     });
   });
 
-  /* ---- contact form (no backend wired yet) ---- */
-  var form = document.querySelector("form[data-contact]");
-  if (form) {
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var status = form.querySelector(".form-status");
-      if (status) {
-        status.textContent =
-          "Thanks — this form isn't wired to a backend yet. Reach out directly at the email above and I'll get right back to you.";
-        status.style.color = "var(--terracotta-deep)";
-      }
-    });
+  /* ---- contact form status (shown after the function redirects back) ---- */
+  var status = document.querySelector(".form-status");
+  if (status) {
+    var q = window.location.search;
+    if (q.indexOf("sent=1") !== -1) {
+      status.textContent =
+        "Thanks — your message is on its way. I'll get back to you personally.";
+      status.style.color = "var(--navy)";
+    } else if (q.indexOf("err=1") !== -1) {
+      status.textContent =
+        "Something went wrong sending that. Please email me directly at levi@thelevihenry.com and I'll get right back to you.";
+      status.style.color = "var(--ink)";
+    }
   }
 })();
