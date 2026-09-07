@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GTM Field Manual — Levi Henry Group</title>
+    <meta
+      name="description"
+      content="A working reference for founders taking a platform to market: the GTM toolkit, the first-customers playbook, startup and founder types, and an industry field guide. Compiled by Levi Henry Group."
+    />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      /* GTM manual — page-specific components, drawn from the site palette */
+      .manual-hero { padding-top: clamp(2.5rem, 5vw, 4rem); padding-bottom: clamp(1.5rem, 3vw, 2.5rem); }
+      .manual-hero .dek { font-size: clamp(1.15rem, 1.9vw, 1.35rem); color: var(--ink-soft); max-width: 60ch; margin-top: 1rem; }
+      .manual-meta { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--line); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; }
+      .manual h3 { margin-top: 2.5rem; }
+      .manual .lede { color: var(--ink-soft); max-width: 60ch; }
+      .mcard { background: var(--paper); border: 1px solid var(--line); border-left: 3px solid var(--brass); border-radius: 4px; padding: 1.25rem 1.5rem; margin: 1.5rem 0; }
+      .mcard .tag { font-family: var(--sans); font-weight: 700; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--brass-deep); margin-bottom: 0.6rem; }
+      .mcard h4 { font-family: var(--sans); font-size: 1rem; font-weight: 700; color: var(--navy); margin: 0 0 0.6rem; }
+      .mcard ol, .mcard ul { margin: 0; padding-left: 1.2rem; color: var(--ink-soft); }
+      .mcard li { margin-bottom: 0.35rem; font-size: 0.98rem; }
+      .mtable-wrap { overflow-x: auto; margin: 1.5rem 0 2rem; }
+      table.mtable { border-collapse: collapse; width: 100%; min-width: 540px; font-size: 0.95rem; }
+      table.mtable th, table.mtable td { text-align: left; padding: 0.7rem 0.9rem; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--ink-soft); }
+      table.mtable th { font-family: var(--sans); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); font-weight: 700; }
+      table.mtable td strong { color: var(--navy); }
+      .case-note { border-left: 2px solid var(--line); padding: 0.25rem 0 0.25rem 1.1rem; margin: 1rem 0; }
+      .case-note .who { font-family: var(--sans); font-weight: 700; font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--brass-deep); margin-bottom: 0.25rem; }
+      .case-note p { color: var(--ink-soft); font-size: 0.98rem; margin: 0; }
+      .manual-part { border-top: 1px solid var(--line); }
+      .manual-part .kicker { margin-top: 0; }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="index.html" aria-label="Levi Henry Group — home">
+          <svg viewBox="0 0 100 100" aria-hidden="true"><g fill="currentColor"><polygon points="8,14 66,14 56,34 8,34" /><polygon points="8,40 74,40 64,60 8,60" /><polygon points="8,66 60,66 50,86 8,86" /></g></svg>
+          <span class="wordmark"><b>Levi Henry</b><span>Group</span></span>
+        </a>
+        <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">Menu</button>
+        <nav class="nav" aria-label="Primary">
+          <a href="about.html">About</a>
+          <a href="individuals.html">For Individuals</a>
+          <a href="businesses.html">For Businesses</a>
+          <a href="founders.html">For Founders</a>
+          <a class="btn btn--solid" href="contact.html">Book a call</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="manual">
+      <section class="manual-hero">
+        <div class="wrap">
+          <p class="kicker">Field guide · For founders</p>
+          <h1 style="max-width: 20ch;">The GTM Field Manual</h1>
+          <p class="dek">
+            A working reference for taking a platform to market — the frameworks, the
+            first-customer playbooks, and how the game changes by startup type and industry.
+            It's the same thinking behind the GTM consulting work at Levi Henry Group.
+          </p>
+          <div class="manual-meta">
+            <span>Go-to-market</span>
+            <span>First customers</span>
+            <span>Cross-industry</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Part 1 -->
+      <section class="divider manual-part">
+        <div class="wrap prose">
+          <p class="kicker">01 · The toolkit</p>
+          <h2>Five decisions before you can sell on purpose</h2>
+          <p class="lede">
+            Before a founder can sell deliberately instead of by accident, five things have
+            to be settled: who to sell to, how to talk about it, what to charge, where to
+            find buyers, and which motion fits the product.
+          </p>
+
+          <h3>Ideal customer profile (ICP)</h3>
+          <p>Precision beats breadth. An ICP isn't a broad segment ("mid-market SaaS") — it's a narrow description of whoever gets the most value, fastest, at the lowest cost to win and serve. Build it <em>while</em> you build the product, so it drives what you make, not just who you email.</p>
+          <div class="mcard">
+            <div class="tag">Framework · RaceCapital's 9 parameters</div>
+            <h4>Nine questions that define an ICP</h4>
+            <ol>
+              <li>Industry — target verticals, and explicit exclusions</li>
+              <li>Geography — where you focus</li>
+              <li>Company size — individual, startup, SMB, or enterprise</li>
+              <li>Budget — what the market already expects to pay</li>
+              <li>Decision makers — the buyer versus the actual user</li>
+              <li>Buying process — direct purchase or committee procurement</li>
+              <li>Pain points — the specific problem you solve</li>
+              <li>Business goals — the outcome they're chasing</li>
+              <li>Technology — required integrations and existing stack</li>
+            </ol>
+          </div>
+          <p>A real ICP comes from three signals (First Round Review): interviewing the people who feel the pain most, analysing which deals actually close fastest and biggest, and — most useful early — situational triggers that predict urgency ("companies with 20+ open remote roles" beats "large company"). "Spray and pray" with no ICP is the single most common early failure.</p>
+
+          <h3>Positioning</h3>
+          <p>April Dunford's core idea in <em>Obviously Awesome</em>: positioning isn't a tagline, it's the context you deliberately choose so a customer instantly understands why the product is great for them. Get it wrong and marketing, sales, and pricing all get harder downstream. The move that matters most: name the true competitive alternative — often a spreadsheet or "doing nothing," not a named competitor — then choose your frame of reference on purpose.</p>
+
+          <h3>Pricing and packaging</h3>
+          <p>The highest-leverage decision is the <strong>value metric</strong> — what you actually charge for (per seat, per usage unit, per transaction, per outcome). Get the metric right and you can survive getting almost everything else wrong. Sequence it: define the value metric and quantify segments first, then pick an order of magnitude ($10 vs $100 vs $1K), then refine tiers, then optimise. Keep discounts under ~20%, frame annual upsells in dollars not percentages, and treat pricing as a quarterly experiment, never "done."</p>
+
+          <h3>Channel selection</h3>
+          <div class="mcard">
+            <div class="tag">Framework · Weinberg's Bullseye (Traction)</div>
+            <h4>Find the channel that works, instead of guessing</h4>
+            <ol>
+              <li><strong>What's possible:</strong> brainstorm all 19 traction channels, to counter your bias toward the two or three you already know.</li>
+              <li><strong>What's probable:</strong> run cheap, fast tests on the two or three most promising — under ~$1,000 and one month each.</li>
+              <li><strong>What's working:</strong> once one clearly outperforms, go all-in and optimise it, instead of spreading across several "kind of working" ones.</li>
+            </ol>
+          </div>
+          <p>Most startups don't die from a bad product. They die from never systematically finding a working distribution channel — traction deserves the same rigour as the product itself.</p>
+
+          <h3>Crossing the chasm</h3>
+          <p>Geoffrey Moore's adoption curve runs innovators → early adopters → early majority → late majority → laggards. The <strong>chasm</strong> sits between early adopters (who buy on vision) and the early majority (who buy on proof), which is why products with real early enthusiasm often stall. Two ways across: the <strong>beachhead</strong> — dominate one narrow, winnable niche completely before expanding — and the <strong>whole product</strong> — pragmatists need the integrations, security, training, and support wrapped around the core, not just the core.</p>
+
+          <h3>Choosing the motion</h3>
+          <div class="mtable-wrap">
+            <table class="mtable">
+              <tr><th>Motion</th><th>Fits when</th></tr>
+              <tr><td><strong>Product-led (PLG)</strong></td><td>Truly self-serve, buyer = user, deal size under ~$10K</td></tr>
+              <tr><td><strong>Sales-led (SLG)</strong></td><td>Complex product, high ACV, multi-stakeholder buying</td></tr>
+              <tr><td><strong>Marketing-led</strong></td><td>Usually a top-of-funnel layer feeding SLG or PLG</td></tr>
+              <tr><td><strong>Community-led</strong></td><td>An existing vocal, technical audience to amplify</td></tr>
+            </table>
+          </div>
+          <p>The pure categories are increasingly theoretical — the common real pattern is a <strong>hybrid</strong>: a simple self-serve product acquires users cheaply, then a sales layer monetises and expands upmarket. Watch four failure modes on that path: the free adopters aren't the budget holders, the free tier gives away too much to leave anything to sell, an aggressive sales layer erodes trust with the self-serve base, and running both motions at once overwhelms a small team.</p>
+        </div>
+      </section>
+
+      <!-- Part 2 -->
+      <section class="divider manual-part">
+        <div class="wrap prose">
+          <p class="kicker">02 · The tactics</p>
+          <h2>The first-customers playbook</h2>
+          <p class="lede">Zero to a real customer base, in three phases — and what actually changes at each one.</p>
+
+          <h3>First 10 — founder-led, manual, unscalable</h3>
+          <p>Paul Graham's <em>Do Things That Don't Scale</em> is the canonical statement of this phase: startups don't take off on their own; founders have to push them over the initial hump by hand.</p>
+          <div class="case-note"><div class="who">Stripe</div><p>The founders integrated Stripe live on the spot on early users' laptops — the "Collison installation" — watching confusion happen in real time and fixing it, and cut payment integration to seven lines of code.</p></div>
+          <div class="case-note"><div class="who">Airbnb</div><p>Cross-posted listings to Craigslist where no integration existed, emailed existing vacation-rental posters directly, and personally re-shot host photos when NYC listings underperformed — bookings rose 2–3x, and it became an official photography program.</p></div>
+          <div class="case-note"><div class="who">Superhuman</div><p>Built a product-market-fit engine around one survey question — "how would you feel if you could no longer use this?" — and the 40% rule (40%+ "very disappointed" = durable PMF). They moved from 22% to 58% by studying the fans and removing blockers for fence-sitters.</p></div>
+
+          <h3>First 100 — systematising founder-led sales</h3>
+          <p>Ad-hoc hustle becomes a lightweight but real process — build good sales habits <em>before</em> a sales team exists. Put in place a validated ICP, a basic funnel with real stages, a repeatable discovery-call structure (open with purpose, benefit, check; excavate the impact of the pain; use the prospect's own words back), and disciplined pilots offered only when a specific objection needs one.</p>
+
+          <h3>First 1,000+ — past founder-led sales</h3>
+          <p>Close the first 10–20 customers personally before handing off, so the process is genuinely understood. The inflection is typically ~$1M ARR, or when lead volume exceeds one founder. Hire <strong>two reps at once</strong>, not one, so you can tell what's repeatable from what's one rep's quirk — and stay on as player-coach rather than exiting sales entirely.</p>
+
+          <div class="mtable-wrap">
+            <table class="mtable">
+              <tr><th>Common mistake</th><th>The fix</th></tr>
+              <tr><td>"Build it and they will come"</td><td>Run the channel brainstorm in parallel with building</td></tr>
+              <tr><td>No ICP / "spray and pray"</td><td>Interview best-fit users, mine closed-won, find situational triggers</td></tr>
+              <tr><td>Underpricing</td><td>Nail the value metric; price to signal legitimacy, not friction</td></tr>
+              <tr><td>Positioning by feature, not value</td><td>Name the true alternative; choose a frame of reference on purpose</td></tr>
+              <tr><td>Founder exits sales too early</td><td>Close the first 10–20 personally; hire two reps; stay player-coach</td></tr>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Part 3 -->
+      <section class="divider manual-part">
+        <div class="wrap prose">
+          <p class="kicker">03 · The diagnosis</p>
+          <h2>Reading the founder and the startup</h2>
+          <p class="lede">The startup's shape decides which motion fits; the founder's background predicts the blind spot.</p>
+
+          <h3>Startup shapes</h3>
+          <div class="mtable-wrap">
+            <table class="mtable">
+              <tr><th>Shape</th><th>Buyer</th><th>Typical early motion</th></tr>
+              <tr><td><strong>Horizontal SaaS</strong></td><td>A functional buyer at almost any company</td><td>Self-serve/PLG or scaled inside sales</td></tr>
+              <tr><td><strong>Vertical SaaS</strong></td><td>An owner/operator in one industry's workflow</td><td>Founder-led, high-touch, industry credibility</td></tr>
+              <tr><td><strong>B2B</strong></td><td>A buying committee</td><td>Demo-and-close, content, outbound/ABM</td></tr>
+              <tr><td><strong>Marketplace</strong></td><td>Two sides with different motivations</td><td>Seed the harder side (usually supply) first</td></tr>
+              <tr><td><strong>Dev tools / API</strong></td><td>The developer, via a free tier</td><td>Docs, SDKs, community — bottoms-up</td></tr>
+              <tr><td><strong>Hardware / deep tech</strong></td><td>Industrial/institutional buyers</td><td>Founder-led discovery for years; partnerships</td></tr>
+            </table>
+          </div>
+
+          <h3>Founder types</h3>
+          <p><strong>Technical vs commercial.</strong> Technical founders tend to over-build the product and under-invest in distribution — the fix is to treat selling as problem-solving, the same discipline as debugging. Commercial founders carry the inverse risk: comfortable selling, but prone to over-promising or building something closer to consulting than a product.</p>
+          <p><strong>First-time vs serial.</strong> First-timers often need explicit permission that founder-led sales is <em>their</em> job. Serial founders usually know that, but may lean on a prior playbook that doesn't match this company's buyer.</p>
+          <p><strong>The reluctant seller.</strong> A founder who built something they're proud of and finds selling it beneath the "real work" — the tell-tale result is under-pricing, softened pitches, avoiding the direct ask, and delegating sales before there's a repeatable motion to hand off. There's no clean exit from sales for a founder, only a shift from doing all of it to stewarding it.</p>
+        </div>
+      </section>
+
+      <!-- Part 4 -->
+      <section class="divider manual-part">
+        <div class="wrap prose">
+          <p class="kicker">04 · The field guide</p>
+          <h2>It changes by industry</h2>
+          <p class="lede">Four structural patterns are more transferable than memorising a separate playbook per vertical.</p>
+          <ul>
+            <li><strong>The compliance-intensity spectrum:</strong> existential in fintech and healthtech → a trust signal the buyer audits you on in cybersecurity and legal tech → a product-shaping factor in HR tech, edtech, logistics → a late-stage checklist item in dev tools, martech, e-commerce, proptech.</li>
+            <li><strong>The PLG-vs-committee spectrum:</strong> dev tools sit at the pure-PLG end; healthtech, legal tech, and edtech at the pure-committee end, where a stalled "no decision" is the real risk.</li>
+            <li><strong>Distribution-as-moat is vertical-specific:</strong> channel/MLS relationships in proptech, app-store marketplaces in e-commerce, carrier-network breadth in logistics, open-source community in dev tools. Knowing which lever exists in a founder's vertical is half the advice.</li>
+            <li><strong>Fiscal and seasonal calendars are underrated:</strong> the school fiscal year in edtech, holiday code freezes in e-commerce, the spring/summer season in proptech, Q3/Q4 budgets in HR tech all impose hard timing constraints.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Closing / CTA -->
+      <section class="divider manual-part">
+        <div class="wrap">
+          <div class="cta-band">
+            <p class="kicker kicker--light kicker--center">Apply it to your startup</p>
+            <h2>This is the reference. The work is applying it to you.</h2>
+            <p>The manual is the map. GTM consulting is walking it with your specific product, stage, and vertical — from diagnosis to your first paying customers.</p>
+            <div class="btn-row" style="justify-content: center;">
+              <a class="btn btn--brass" href="https://selar.com/y1308v4j00" target="_blank" rel="noopener">Book a GTM Strategy Consultation <span class="arrow">→</span></a>
+              <a class="btn btn--on-navy" href="https://selar.com/844427i064" target="_blank" rel="noopener">Free discovery call</a>
+            </div>
+          </div>
+          <p class="note" style="text-align: center; margin-top: 1.5rem;">
+            Prefer the overview first? See <a href="founders.html">GTM consulting for founders →</a>
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <div class="about-col">
+          <a class="brand brand--light" href="index.html" aria-label="Levi Henry Group — home">
+            <svg viewBox="0 0 100 100" aria-hidden="true"><g fill="currentColor"><polygon points="8,14 66,14 56,34 8,34" /><polygon points="8,40 74,40 64,60 8,60" /><polygon points="8,66 60,66 50,86 8,86" /></g></svg>
+            <span class="wordmark"><b>Levi Henry</b><span>Group</span></span>
+          </a>
+          <p class="tag">Building the people and systems that produce revenue. Consulting, education &amp; technology services for individuals and small business owners.</p>
+        </div>
+        <div>
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="individuals.html">For Individuals</a></li>
+            <li><a href="businesses.html">For Businesses</a></li>
+            <li><a href="founders.html">For Founders</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="contact.html">Book a call</a></li>
+            <li><a href="contact.html">Instagram &amp; socials</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-base">
+        <div class="wrap">
+          <span>&copy; <span id="year"></span> Levi Henry Group. All rights reserved.</span>
+          <span class="legal-links"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a></span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="main.js"></script>
+  </body>
+</html>
