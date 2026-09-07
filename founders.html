@@ -199,8 +199,7 @@
             </p>
           </div>
           <div class="reveal" data-delay="120">
-            <form name="gtm-manual" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/gtm-field-manual.html">
-              <input type="hidden" name="form-name" value="gtm-manual" />
+            <form name="gtm-manual" method="POST" action="/.netlify/functions/lead-magnet">
               <p hidden><label>Leave this empty: <input name="bot-field" /></label></p>
               <div class="field">
                 <label for="lm-name">Name</label>
@@ -211,7 +210,7 @@
                 <input id="lm-email" name="email" type="email" autocomplete="email" required />
               </div>
               <button class="btn btn--solid" type="submit">Send me the manual <span class="arrow">→</span></button>
-              <p class="note" style="margin-top: 1rem;">No spam. The manual opens as soon as you submit.</p>
+              <p class="note" style="margin-top: 1rem;">No spam. The manual opens right away and lands in your inbox.</p>
             </form>
           </div>
         </div>
