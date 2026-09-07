@@ -3,6 +3,10 @@
   publish = "."
   command = ""
 
+# Serverless functions (auto-emails the GTM manual on form submission via Resend)
+[functions]
+  directory = "netlify/functions"
+
 # Long-cache fingerprinted-ish static assets (images, video, brand)
 [[headers]]
   for = "/assets/*"
