@@ -16,6 +16,30 @@ function esc(s) {
     .replace(/>/g, "&gt;");
 }
 
+// Log a record to the Airtable CRM. Best effort: skips if not configured.
+async function addToAirtable(fields) {
+  const token = process.env.AIRTABLE_TOKEN;
+  const baseId = process.env.AIRTABLE_BASE_ID;
+  const table = process.env.AIRTABLE_TABLE || "CRM";
+  if (!token || !baseId) return;
+  try {
+    const res = await fetch(
+      `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(table)}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ fields, typecast: true }),
+      }
+    );
+    if (!res.ok) console.error("Airtable write failed:", res.status, await res.text());
+  } catch (e) {
+    console.error("Airtable error:", e);
+  }
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: "Method not allowed" };
@@ -62,6 +86,17 @@ exports.handler = async (event) => {
       console.error("contact email failed:", res.status, await res.text());
       return redirect("/contact?err=1");
     }
+
+    // Log to the CRM (best effort; never blocks the confirmation).
+    await addToAirtable({
+      Name: name,
+      Email: email,
+      Source: "Contact form",
+      Type: about,
+      Message: message,
+      Status: "New",
+    });
+
     return redirect("/contact?sent=1");
   } catch (err) {
     console.error("contact error:", err);

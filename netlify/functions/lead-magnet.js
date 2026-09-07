@@ -26,6 +26,31 @@ async function sendEmail(payload) {
   });
 }
 
+// Log a record to the Airtable CRM. Best effort: skips if not configured,
+// never blocks the email or the redirect.
+async function addToAirtable(fields) {
+  const token = process.env.AIRTABLE_TOKEN;
+  const baseId = process.env.AIRTABLE_BASE_ID;
+  const table = process.env.AIRTABLE_TABLE || "CRM";
+  if (!token || !baseId) return;
+  try {
+    const res = await fetch(
+      `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(table)}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ fields, typecast: true }),
+      }
+    );
+    if (!res.ok) console.error("Airtable write failed:", res.status, await res.text());
+  } catch (e) {
+    console.error("Airtable error:", e);
+  }
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: "Method not allowed" };
@@ -80,7 +105,15 @@ exports.handler = async (event) => {
       console.error("lead notification failed:", e);
     }
 
-    // 3) Send the visitor to the manual.
+    // 3) Log the lead to the CRM (best effort).
+    await addToAirtable({
+      Name: name,
+      Email: email,
+      Source: "GTM Manual",
+      Status: "New",
+    });
+
+    // 4) Send the visitor to the manual.
     return redirect("/gtm-field-manual");
   } catch (err) {
     console.error("lead-magnet error:", err);
