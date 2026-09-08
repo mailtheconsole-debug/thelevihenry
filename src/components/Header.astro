@@ -1,0 +1,82 @@
+---
+// Shared site header — written once, used on every page.
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const links = [
+  { href: "/about", label: "About" },
+  { href: "/individuals", label: "For Individuals" },
+  { href: "/businesses", label: "For Businesses" },
+  { href: "/founders", label: "For Founders" },
+  { href: "/contact", label: "Contact" },
+];
+const isCurrent = (href: string) => path === href;
+---
+
+<header class="sticky top-0 z-50 border-b border-line bg-ivory/90 backdrop-blur-md">
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
+    <a href="/" class="flex items-center gap-2.5 text-navy" aria-label="Levi Henry Group home">
+      <svg viewBox="0 0 100 100" class="h-7 w-7 flex-none" aria-hidden="true">
+        <g fill="currentColor">
+          <polygon points="8,14 66,14 56,34 8,34" />
+          <polygon points="8,40 74,40 64,60 8,60" />
+          <polygon points="8,66 60,66 50,86 8,86" />
+        </g>
+      </svg>
+      <span class="font-sans text-[1.02rem] font-extrabold uppercase leading-none tracking-wide">
+        Levi Henry
+        <span class="block text-[0.66rem] font-medium tracking-[0.22em] text-navy-600">Group</span>
+      </span>
+    </a>
+
+    <!-- Mobile toggle -->
+    <button
+      data-nav-toggle
+      aria-expanded="false"
+      class="rounded-sm border border-line-strong px-3 py-2 font-sans text-xs font-semibold uppercase tracking-wider text-navy md:hidden"
+      >Menu</button
+    >
+
+    <!-- Desktop nav -->
+    <nav class="hidden items-center gap-7 md:flex" aria-label="Primary">
+      {
+        links.map((l) => (
+          <a
+            href={l.href}
+            aria-current={isCurrent(l.href) ? "page" : undefined}
+            class:list={[
+              "font-sans text-[0.8rem] font-semibold uppercase tracking-wider transition-colors hover:text-navy",
+              isCurrent(l.href) ? "text-navy" : "text-ink-soft",
+            ]}
+          >
+            {l.label}
+          </a>
+        ))
+      }
+      <a
+        href="/contact"
+        class="rounded-sm bg-navy px-5 py-2.5 font-sans text-sm font-bold text-white shadow-lg shadow-navy/25 transition hover:bg-navy-deep"
+        >Book a call</a
+      >
+    </nav>
+  </div>
+
+  <!-- Mobile panel -->
+  <div data-nav-panel hidden class="border-t border-line bg-paper md:hidden">
+    <nav class="mx-auto flex max-w-6xl flex-col px-6 py-3" aria-label="Mobile">
+      {
+        links.map((l) => (
+          <a
+            href={l.href}
+            aria-current={isCurrent(l.href) ? "page" : undefined}
+            class:list={[
+              "border-b border-line py-3 font-sans text-sm font-semibold",
+              isCurrent(l.href) ? "text-navy" : "text-ink-soft",
+            ]}
+          >
+            {l.label}
+          </a>
+        ))
+      }
+      <a href="/contact" class="py-3 font-sans text-sm font-bold text-navy">Book a call &rarr;</a>
+    </nav>
+  </div>
+</header>

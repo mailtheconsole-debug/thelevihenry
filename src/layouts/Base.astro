@@ -1,0 +1,133 @@
+---
+import '../styles/global.css';
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+}
+const { title = 'Levi Henry Group', description = '', noindex = false } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-0 focus:top-0 focus:z-[200] focus:bg-navy focus:px-5 focus:py-3 focus:text-white"
+      >Skip to content</a
+    >
+    <slot />
+
+    <script is:inline>
+      // ---- footer year ----
+      document.querySelectorAll("[data-year]").forEach(function (el) {
+        el.textContent = new Date().getFullYear();
+      });
+
+      // ---- mobile menu ----
+      var toggle = document.querySelector("[data-nav-toggle]");
+      var panel = document.querySelector("[data-nav-panel]");
+      if (toggle && panel) {
+        toggle.addEventListener("click", function () {
+          var open = panel.hasAttribute("hidden");
+          if (open) {
+            panel.removeAttribute("hidden");
+          } else {
+            panel.setAttribute("hidden", "");
+          }
+          toggle.setAttribute("aria-expanded", open ? "true" : "false");
+          toggle.textContent = open ? "Close" : "Menu";
+        });
+      }
+
+      // ---- scroll reveal (Web Animations API, with subtle sibling stagger) ----
+      document.documentElement.classList.add("js");
+      var revealables = document.querySelectorAll("[data-reveal]");
+      var reduce =
+        window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      function staggerDelay(el) {
+        var parent = el.parentElement;
+        if (!parent) return 0;
+        var group = [];
+        for (var i = 0; i < parent.children.length; i++) {
+          var c = parent.children[i];
+          if (c.hasAttribute && c.hasAttribute("data-reveal")) group.push(c);
+        }
+        var idx = group.indexOf(el);
+        return idx > 0 ? Math.min(idx, 5) * 80 : 0;
+      }
+
+      function play(el) {
+        var delay = staggerDelay(el);
+        if (el.animate) {
+          el.animate(
+            [
+              { opacity: 0, transform: "translateY(22px)" },
+              { opacity: 1, transform: "translateY(0)" },
+            ],
+            {
+              duration: 450, // mirrors --dur-reveal in global.css
+              delay: delay,
+              easing: "cubic-bezier(0.23, 1, 0.32, 1)", // mirrors --ease-out
+              fill: "both",
+            }
+          );
+        } else {
+          el.style.opacity = "1";
+        }
+      }
+
+      if (!reduce && "IntersectionObserver" in window && revealables.length) {
+        var io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) {
+                play(e.target);
+                io.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.1, rootMargin: "0px 0px -8% 0px" }
+        );
+        revealables.forEach(function (el) {
+          io.observe(el);
+        });
+      } else {
+        revealables.forEach(function (el) {
+          el.style.opacity = "1";
+        });
+      }
+
+      // ---- contact form status (after the function redirects back) ----
+      var status = document.querySelector("[data-form-status]");
+      if (status) {
+        var q = window.location.search;
+        if (q.indexOf("sent=1") !== -1) {
+          status.textContent =
+            "Thanks — your message is on its way. I'll get back to you personally.";
+          status.style.color = "var(--color-navy)";
+        } else if (q.indexOf("err=1") !== -1) {
+          status.textContent =
+            "Something went wrong sending that. Please email me directly at levi@thelevihenry.com and I'll get right back to you.";
+          status.style.color = "var(--color-ink)";
+        }
+      }
+    </script>
+  </body>
+</html>

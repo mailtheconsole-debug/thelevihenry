@@ -1,0 +1,215 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Hero from '../components/Hero.tsx';
+
+const modules = [
+  { n: '01', t: 'Diagnose your startup and you', d: 'We read the company and the founder first: what shape the startup is, and where your blind spot sits. Everything after is calibrated from here.', a: 'Diagnosis' },
+  { n: '02', t: 'Sharpen ICP and positioning', d: 'Build a precise ideal customer profile, then turn it into positioning you can say to a prospect and have them instantly get it.', a: 'Positioning' },
+  { n: '03', t: 'Choose the motion', d: "Product-led, sales-led, or the hybrid most startups actually land in, and we name the failure mode you're most at risk of before it bites.", a: 'Motion' },
+  { n: '04', t: 'Price and package', d: 'Define what you charge for, the value metric, before the price itself. Get that right and the rest of pricing is forgiving.', a: 'Pricing' },
+  { n: '05', t: 'Find the channel', d: 'Brainstorm every channel, test the two or three most promising cheaply, then go all-in on the one that works instead of spreading thin.', a: 'Channels' },
+  { n: '06', t: 'Land the first customers', d: 'Make "do things that don\'t scale" concrete: the hands-on onboarding and discovery call you run yourself for the first 10 to 20 deals.', a: 'First customers' },
+  { n: '07', t: 'Scale past founder-led sales', d: 'Set the real trigger for your first sales hire, two reps not one, and rehearse the handoff before you actually need it.', a: 'Scaling' },
+  { n: '08', t: 'Overlay your vertical', d: "Pull your industry's own rules: how gated it is by compliance, whether it's a committee sale or bottoms-up, and its distribution lever.", a: 'Vertical' },
+];
+
+const frameworks = [
+  { t: 'Ideal customer profile', d: "RaceCapital's nine parameters and First Round's signal sources." },
+  { t: 'Positioning', d: "April Dunford's ten-step process from Obviously Awesome." },
+  { t: 'Channel selection', d: "Gabriel Weinberg's Bullseye and the 19 traction channels." },
+  { t: 'Market adoption', d: "Geoffrey Moore's Crossing the Chasm: beachhead and whole-product." },
+  { t: 'Pricing', d: "Value-metric-first pricing, per Patrick Campbell and Lenny's Newsletter." },
+  { t: 'First customers', d: 'Paul Graham\'s "do things that don\'t scale," modeled on Stripe, Airbnb, and Superhuman.' },
+];
+
+const covers = [
+  { t: 'ICP & positioning', d: "Define exactly who you're selling to and why they buy, so every message and demo lands with the right person." },
+  { t: 'Go-to-market strategy', d: 'Channel selection, pricing model, and the sequence for landing your first paying customers.' },
+  { t: 'Your first sales motion', d: 'The process, cadence, and scripts a non-sales founder (or your first hire) can actually run.' },
+];
+
+const input = 'w-full rounded border border-line-strong bg-paper px-3.5 py-2.5 text-ink transition focus:border-brass focus:outline-none focus:ring-2 focus:ring-brass/20';
+const label = 'mb-1.5 block font-sans text-xs font-semibold uppercase tracking-wider text-ink-soft';
+---
+
+<Base
+  title="For Founders | Levi Henry Group"
+  description="GTM consulting for early-stage startup founders — go from a built platform to your first paying customers."
+>
+  <Header />
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="mx-auto grid max-w-6xl items-center gap-10 px-6 py-14 lg:grid-cols-2 lg:gap-16 lg:py-24">
+      <Hero client:load />
+      <div class="group relative overflow-hidden rounded-lg bg-navy shadow-2xl shadow-navy/30">
+        <img
+          src="/assets/photos/portrait-point.jpg"
+          alt="Levi Henry, go-to-market consultant for startup founders"
+          width="1360"
+          height="1700"
+          class="aspect-[4/5] w-full object-cover transition-transform duration-[var(--dur-hover)] ease-[var(--ease-out)] group-hover:scale-[1.03]"
+        />
+        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-deep/50 via-transparent to-transparent"></div>
+      </div>
+    </section>
+
+    <!-- WHAT IT COVERS -->
+    <section class="border-t border-line">
+      <div class="mx-auto grid max-w-6xl gap-10 px-6 py-16 lg:grid-cols-[0.85fr_1.15fr] lg:py-20">
+        <div data-reveal>
+          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">What it covers</p>
+          <h2 class="mt-3 font-serif text-3xl font-medium leading-tight tracking-tight text-navy sm:text-4xl">From &ldquo;built&rdquo; to &ldquo;bought.&rdquo;</h2>
+          <p class="mt-4 max-w-md text-ink-soft">
+            The gap is almost never the product. It's go-to-market. How do you pitch the
+            people who should use it, and land your first paying users? That's what we build
+            together, in the order that gets you there.
+          </p>
+        </div>
+        <ul class="grid gap-px overflow-hidden rounded-lg border border-line bg-line" data-reveal>
+          {covers.map((c) => (
+            <li class="bg-paper-raised p-6">
+              <p class="font-sans font-bold text-navy">{c.t}</p>
+              <p class="mt-1.5 text-[0.97rem] text-ink-soft">{c.d}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 8-MODULE PROGRAM (dark band) -->
+    <section class="bg-navy">
+      <div class="mx-auto max-w-6xl px-6 py-16 lg:py-24">
+        <div class="max-w-2xl" data-reveal>
+          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-brass-soft">How it works</p>
+          <h2 class="mt-3 font-serif text-3xl font-medium leading-tight tracking-tight text-white sm:text-4xl">Eight modules, from diagnosis to your first customers.</h2>
+          <p class="mt-4 text-white/70">A structured engagement, not a chat. One working session or homework block per module, each building on the last.</p>
+        </div>
+        <div class="mt-12 grid gap-x-10 sm:grid-cols-2">
+          {modules.map((m) => (
+            <div class="flex gap-5 border-t border-white/10 py-6" data-reveal>
+              <span class="font-serif text-2xl font-medium leading-none text-brass-soft">{m.n}</span>
+              <div class="flex-1">
+                <div class="flex items-baseline justify-between gap-3">
+                  <h3 class="font-serif text-xl font-medium text-white">{m.t}</h3>
+                  <span class="hidden font-sans text-[0.68rem] font-semibold uppercase tracking-widest text-white/40 sm:block">{m.a}</span>
+                </div>
+                <p class="mt-1.5 text-[0.97rem] leading-relaxed text-white/70">{m.d}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- THE METHOD -->
+    <section class="border-t border-line bg-paper">
+      <div class="mx-auto max-w-6xl px-6 py-16 lg:py-20">
+        <div class="max-w-2xl" data-reveal>
+          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">The method</p>
+          <h2 class="mt-3 font-serif text-3xl font-medium leading-tight tracking-tight text-navy sm:text-4xl">Built on proven frameworks, not opinions.</h2>
+          <p class="mt-4 text-ink-soft">The work runs on named, battle-tested frameworks, the same ones behind the startups you already know, applied to your specific product and stage.</p>
+        </div>
+        <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {frameworks.map((f) => (
+            <div class="rounded-lg border border-line bg-ivory p-6 transition duration-300 hover:-translate-y-1 hover:border-navy-600/40 hover:shadow-xl hover:shadow-navy/10" data-reveal>
+              <p class="font-sans font-bold text-navy">{f.t}</p>
+              <p class="mt-2 text-[0.95rem] leading-relaxed text-ink-soft">{f.d}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- WHO IT'S FOR -->
+    <section class="border-t border-line">
+      <div class="mx-auto grid max-w-6xl gap-10 px-6 py-16 lg:grid-cols-2 lg:py-20">
+        <div data-reveal>
+          <div class="rounded-lg border border-line border-l-[3px] border-l-brass bg-paper p-7">
+            <h4 class="font-sans text-xs font-semibold uppercase tracking-wider text-brass-deep">Who it's for</h4>
+            <p class="mt-3 text-ink-soft">
+              Early-stage startup founders, technical or product-first, who've built a
+              platform but have no go-to-market motion yet: no ideal customer, no pricing or
+              positioning, no first sales process. If you can build it but haven't sold it,
+              this is for you.
+            </p>
+          </div>
+        </div>
+        <div data-reveal>
+          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">The difference</p>
+          <h2 class="mt-3 font-serif text-2xl font-medium leading-tight tracking-tight text-navy sm:text-3xl">Not the same as sales consulting.</h2>
+          <p class="mt-4 text-ink-soft">
+            My <a href="/businesses" class="text-brass-deep underline underline-offset-2">Sales &amp; Revenue work</a>
+            is for businesses that already have something selling and need a real process
+            behind it. GTM consulting starts a step earlier: it's for founders taking a
+            platform to market for the first time.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LEAD MAGNET -->
+    <section class="border-t border-line">
+      <div class="mx-auto grid max-w-6xl gap-10 px-6 py-16 lg:grid-cols-2 lg:py-20">
+        <div data-reveal>
+          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Free resource</p>
+          <h2 class="mt-3 font-serif text-3xl font-medium leading-tight tracking-tight text-navy sm:text-4xl">The GTM Field Manual</h2>
+          <p class="mt-4 text-ink-soft">
+            The reference I built for this work: the go-to-market toolkit, the first-customers
+            playbook, the startup and founder types, and how it all shifts by industry. Drop
+            your email and it opens straight away.
+          </p>
+        </div>
+        <div data-reveal>
+          <form method="POST" action="/.netlify/functions/lead-magnet">
+            <p hidden><label>Leave this empty: <input name="bot-field" /></label></p>
+            <div class="mb-4">
+              <label class={label} for="lm-name">Name</label>
+              <input class={input} id="lm-name" name="name" type="text" autocomplete="name" />
+            </div>
+            <div class="mb-4">
+              <label class={label} for="lm-email">Email</label>
+              <input class={input} id="lm-email" name="email" type="email" autocomplete="email" required />
+            </div>
+            <button type="submit" class="group inline-flex items-center gap-2 rounded-sm bg-navy px-7 py-3.5 font-sans text-sm font-semibold text-white transition hover:bg-navy-deep">
+              Send me the manual <span class="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
+            </button>
+            <p class="mt-4 text-sm italic text-ink-faint">The manual lands in your inbox and opens right away.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="border-t border-line">
+      <div class="mx-auto max-w-6xl px-6 py-16 lg:py-20">
+        <div class="relative overflow-hidden rounded-2xl bg-navy px-8 py-14 text-center sm:px-14" data-reveal>
+          <div class="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-navy-600/30 blur-3xl"></div>
+          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-white/60">Go to market</p>
+          <h2 class="mx-auto mt-3 max-w-xl font-serif text-3xl font-medium leading-tight tracking-tight text-white sm:text-4xl">Ready to go from built to bought?</h2>
+          <p class="mx-auto mt-4 max-w-lg text-white/75">
+            Book a focused 60-minute GTM Strategy Consultation and leave with a concrete plan.
+            Or start with a free 20-minute discovery call if you're not sure yet.
+          </p>
+          <div class="mt-8 flex flex-wrap justify-center gap-4">
+            <a href="https://selar.com/y1308v4j00" target="_blank" rel="noopener" class="group inline-flex items-center gap-2 rounded-sm bg-white px-7 py-3.5 font-sans text-sm font-semibold text-navy transition hover:bg-ivory-deep">
+              Book a GTM Strategy Consultation <span class="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
+            </a>
+            <a href="/book-discovery" class="inline-flex items-center rounded-sm border border-white/40 px-7 py-3.5 font-sans text-sm font-semibold text-white transition hover:bg-white hover:text-navy">
+              Free discovery call
+            </a>
+          </div>
+          <p class="mx-auto mt-6 max-w-lg text-sm text-white/60">
+            Bringing something sensitive? Send an NDA or mutual NDA to
+            <a href="mailto:levi@thelevihenry.com" class="text-white underline">levi@thelevihenry.com</a>
+            for me to sign before we meet, so we can have an open, honest conversation.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>

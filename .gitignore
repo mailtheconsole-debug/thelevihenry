@@ -1,12 +1,16 @@
-# OS / editor
+# dependencies / build
+node_modules/
+dist/
+.astro/
+.netlify/
+
+# full-resolution photo originals (not served; web copies live in public/assets)
+assets/source/
+
+# os / editor
 .DS_Store
 Thumbs.db
+*.log
 *.swp
 .vscode/
 .idea/
-
-# Logs
-*.log
-
-# Full-resolution photo archive (web-optimized copies live in assets/photos)
-assets/source/

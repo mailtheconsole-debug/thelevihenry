@@ -1,0 +1,51 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const input = 'w-full rounded border border-line-strong bg-paper px-3.5 py-2.5 text-ink transition focus:border-brass focus:outline-none focus:ring-2 focus:ring-brass/20';
+const label = 'mb-1.5 block font-sans text-xs font-semibold uppercase tracking-wider text-ink-soft';
+---
+
+<Base
+  title="Book a discovery call | Levi Henry Group"
+  description="Tell me what you're hoping to get from the call, then pick a time."
+  noindex={true}
+>
+  <Header />
+
+  <main id="main">
+    <section class="mx-auto max-w-xl px-6 py-16 lg:py-24">
+      <div data-reveal>
+        <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Free 20-min discovery call</p>
+        <h1 class="mt-4 font-serif text-4xl font-medium leading-[1.07] tracking-tight text-navy sm:text-5xl">Before we talk</h1>
+        <p class="mt-4 text-lg text-ink-soft">
+          A quick note on what you're hoping to get from the call, so I come prepared. Then
+          you'll pick a time. Takes under a minute.
+        </p>
+      </div>
+
+      <form method="POST" action="/.netlify/functions/discovery" class="mt-8" data-reveal>
+        <p hidden><label>Leave this empty: <input name="bot-field" /></label></p>
+        <div class="mb-4">
+          <label class={label} for="name">Name</label>
+          <input class={input} id="name" name="name" type="text" autocomplete="name" required />
+        </div>
+        <div class="mb-4">
+          <label class={label} for="email">Email</label>
+          <input class={input} id="email" name="email" type="email" autocomplete="email" required />
+        </div>
+        <div class="mb-4">
+          <label class={label} for="goal">What's your goal for the call?</label>
+          <textarea class={`${input} min-h-[120px] resize-y`} id="goal" name="goal" placeholder="e.g. I've built a product and need help landing my first customers." required></textarea>
+        </div>
+        <button type="submit" class="group inline-flex w-full items-center justify-center gap-2 rounded-sm bg-navy px-7 py-3.5 font-sans text-sm font-semibold text-white transition hover:bg-navy-deep">
+          Continue to booking <span class="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
+        </button>
+        <p class="mt-4 text-center text-sm italic text-ink-faint">You'll pick a time on the next screen.</p>
+      </form>
+    </section>
+  </main>
+
+  <Footer />
+</Base>

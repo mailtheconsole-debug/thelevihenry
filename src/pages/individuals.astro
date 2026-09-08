@@ -1,0 +1,135 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const build = [
+  { t: 'Prospecting & outreach', d: 'Find the right people and start real conversations, inbound and outbound, without sounding like a script.' },
+  { t: 'Discovery & qualification', d: 'Ask the questions that surface real needs and separate buyers from browsers.' },
+  { t: 'Presenting & closing', d: 'Move a conversation to a decision with confidence and integrity: the part most people avoid.' },
+  { t: 'Pipeline discipline', d: 'Track, follow up, and manage opportunities so nothing valuable slips.' },
+  { t: 'Positioning yourself', d: 'Price your work and communicate your value with the confidence buyers respond to.' },
+];
+const steps = [
+  { i: '01', h: 'Assess & aim', a: 'Foundation', d: 'We start with where you are and what income the skill needs to produce. No generic curriculum, just a plan pointed at your goal.' },
+  { i: '02', h: 'Practice with feedback', a: 'Reps', d: 'Live reps, review, and correction. You do the work and I coach the tape, call by call.' },
+  { i: '03', h: 'Apply it for real', a: 'Revenue', d: 'Take the skill into an actual role, offer, or freelance pipeline, and refine it against real outcomes.' },
+];
+const solid = 'inline-flex items-center gap-2 rounded-sm bg-navy px-6 py-3 font-sans text-sm font-semibold text-white transition hover:bg-navy-deep';
+const ghost = 'inline-flex items-center rounded-sm border border-navy px-6 py-3 font-sans text-sm font-semibold text-navy transition hover:bg-navy hover:text-white';
+---
+
+<Base
+  title="For Individuals | Levi Henry Group"
+  description="Build a high-income sales skill you can carry anywhere — real reps, honest coaching, and job-ready SDR training."
+>
+  <Header />
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="mx-auto max-w-6xl px-6 py-14 lg:py-20">
+      <div class="max-w-3xl">
+        <p data-reveal class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">For Individuals</p>
+        <h1 data-reveal class="mt-4 font-serif text-4xl font-medium leading-[1.07] tracking-tight text-navy sm:text-5xl">Build a high-income skill you can carry anywhere.</h1>
+        <p data-reveal class="mt-5 max-w-2xl text-lg text-ink-soft">Sales is the most transferable, highest-leverage skill you can own. I teach it as a real craft, with real reps and honest coaching, not a shelf of courses you never finish.</p>
+      </div>
+    </section>
+
+    <!-- WHO / WHAT -->
+    <section class="border-t border-line">
+      <div class="mx-auto grid max-w-6xl gap-10 px-6 py-16 lg:grid-cols-[0.85fr_1.15fr] lg:py-20">
+        <div data-reveal>
+          <div class="rounded-lg border border-line border-l-[3px] border-l-brass bg-paper p-7">
+            <h4 class="font-sans text-xs font-semibold uppercase tracking-wider text-brass-deep">Who it's for</h4>
+            <p class="mt-3 text-ink-soft">Career-changers, creatives, and early-stage professionals who want an income-producing skill they control, people who'd rather build capability than chase another certificate. If you learn by doing and want honest coaching, this is for you.</p>
+          </div>
+        </div>
+        <div>
+          <p data-reveal class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">What you'll build</p>
+          <div class="mt-4 grid gap-3">
+            {build.map((s) => (
+              <div class="rounded-lg border border-line bg-paper-raised p-5 transition duration-300 hover:-translate-y-1 hover:border-navy-600/40 hover:shadow-lg hover:shadow-navy/10" data-reveal>
+                <strong class="block font-bold text-navy">{s.t}</strong>
+                <span class="mt-1.5 block text-[0.93rem] leading-relaxed text-ink-soft">{s.d}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BOOK -->
+    <section class="border-t border-line">
+      <div class="mx-auto grid max-w-6xl items-center gap-8 px-6 py-16 lg:grid-cols-[0.8fr_1.2fr] lg:py-20">
+        <div class="mx-auto w-full max-w-[215px]" data-reveal>
+          <img src="/assets/photos/book-sdr-blueprint.jpg" alt="The Remote SDR Career Blueprint by Levi Henry" width="632" height="940" loading="lazy" class="w-full rounded shadow-2xl shadow-navy/30 transition duration-300 ease-[var(--ease-out)] hover:-translate-y-1.5 hover:shadow-navy/40" />
+        </div>
+        <div data-reveal>
+          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Start here</p>
+          <h2 class="mt-3 font-serif text-3xl font-medium leading-tight tracking-tight text-navy sm:text-4xl">The Remote SDR Career Blueprint</h2>
+          <p class="mt-4 text-ink-soft">My complete beginner's guide to breaking into remote tech sales: the exact path from no experience to a paid Sales Development role. It's the foundation the coaching builds on.</p>
+          <div class="mt-6 flex flex-wrap gap-4">
+            <a href="/contact" class={solid}>Get the blueprint <span>&rarr;</span></a>
+            <a href="/contact" class={ghost}>Ask about coaching</a>
+          </div>
+          <p class="mt-4 text-sm italic text-ink-faint">Availability &amp; pricing shared on request.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COURSE -->
+    <section class="border-t border-line bg-paper">
+      <div class="mx-auto grid max-w-6xl items-center gap-8 px-6 py-16 lg:grid-cols-[0.8fr_1.2fr] lg:py-20">
+        <div class="mx-auto w-full max-w-[215px]" data-reveal>
+          <div class="flex aspect-[2/3] w-full flex-col justify-between rounded bg-gradient-to-br from-navy to-navy-deep p-6 text-white shadow-2xl shadow-navy/30 transition duration-300 ease-[var(--ease-out)] hover:-translate-y-1.5 hover:shadow-navy/40">
+            <span class="font-sans text-[0.7rem] font-bold uppercase tracking-widest text-brass-soft">Preorder</span>
+            <span class="font-serif text-2xl leading-tight">The Remote SDR Skills Acquisition Course</span>
+          </div>
+        </div>
+        <div data-reveal>
+          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">New · now on preorder</p>
+          <h2 class="mt-3 font-serif text-3xl font-medium leading-tight tracking-tight text-navy sm:text-4xl">The Remote SDR Skills Acquisition Course</h2>
+          <p class="mt-4 text-ink-soft">A structured, job-ready course that builds the practical skills of a remote Sales Development Rep: prospecting and outreach, discovery, objection handling, and pipeline management, taking you from beginner to hireable. Where the blueprint maps the path, this course walks you through it.</p>
+          <div class="mt-6 flex flex-wrap gap-4">
+            <a href="/contact" class={solid}>Preorder now <span>&rarr;</span></a>
+            <a href="/contact" class={ghost}>Join the waitlist</a>
+          </div>
+          <p class="mt-4 text-sm italic text-ink-faint">Available on preorder. Launch date &amp; pricing shared on request.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS (dark band) -->
+    <section class="bg-navy">
+      <div class="mx-auto max-w-6xl px-6 py-16 lg:py-24">
+        <div class="max-w-2xl" data-reveal>
+          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-brass-soft">How it works</p>
+          <h2 class="mt-3 font-serif text-3xl font-medium leading-tight tracking-tight text-white sm:text-4xl">Skill-building, not shelf-ware.</h2>
+        </div>
+        <div class="mt-10">
+          {steps.map((s) => (
+            <div class="grid grid-cols-[auto_1fr] items-start gap-x-8 gap-y-1 border-t border-white/10 py-8 sm:grid-cols-[auto_1fr_auto]" data-reveal>
+              <span class="font-serif text-2xl font-medium leading-none text-brass-soft sm:text-3xl">{s.i}</span>
+              <div class="max-w-[54ch]"><h3 class="font-serif text-xl font-medium text-white">{s.h}</h3><p class="mt-2 text-white/70">{s.d}</p></div>
+              <span class="hidden font-sans text-[0.7rem] font-semibold uppercase tracking-widest text-white/40 sm:block">{s.a}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="border-t border-line">
+      <div class="mx-auto max-w-6xl px-6 py-16 lg:py-20">
+        <div class="rounded-2xl bg-navy px-8 py-14 text-center sm:px-14" data-reveal>
+          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-white/60">Start building</p>
+          <h2 class="mx-auto mt-3 max-w-lg font-serif text-3xl font-medium leading-tight tracking-tight text-white sm:text-4xl">The skill pays for itself. Let's begin.</h2>
+          <p class="mx-auto mt-4 max-w-xl text-white/75">Tell me your goal and your timeline. I'll tell you honestly whether I can help, and how.</p>
+          <a href="/contact" class="mt-8 inline-flex items-center gap-2 rounded-sm bg-white px-7 py-3.5 font-sans text-sm font-semibold text-navy transition hover:bg-ivory-deep">Book a call <span>&rarr;</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>

@@ -1,19 +1,18 @@
-# Netlify configuration — static site, no build step
+# Netlify configuration — Astro static build + serverless functions
 [build]
-  publish = "."
-  command = ""
+  command = "astro build"
+  publish = "dist"
 
-# Serverless functions (auto-emails the GTM manual on form submission via Resend)
 [functions]
   directory = "netlify/functions"
 
-# Long-cache fingerprinted-ish static assets (images, video, brand)
+# Long-cache static assets
 [[headers]]
   for = "/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000"
 
-# Sensible security headers
+# Security headers
 [[headers]]
   for = "/*"
   [headers.values]

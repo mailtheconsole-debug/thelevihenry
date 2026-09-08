@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+/* Map the Levi Henry Group editorial palette + type into Tailwind v4 tokens.
+   These become utilities automatically: bg-navy, text-ink-soft, font-serif, etc. */
+@theme {
+  --color-ivory: #f4f1ea;
+  --color-ivory-deep: #ebe5d8;
+  --color-paper: #fbf9f4;
+  --color-ink: #212c38;
+  --color-ink-soft: #515b66;
+  --color-ink-faint: #616a76;
+  --color-navy: #14273f;
+  --color-navy-deep: #0e1c2e;
+  --color-navy-600: #26476f;
+  --color-line: #ddd6c6;
+  --color-line-strong: #ccc2ab;
+  --color-brass: #2f5079;
+  --color-brass-deep: #16273f;
+  --color-brass-soft: #accbe6;
+  --color-paper-raised: #ffffff;
+
+  --font-sans: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "Fraunces", "Iowan Old Style", Georgia, "Times New Roman", serif;
+}
+
+/* Motion tokens — one source of truth for curve + durations.
+   Strong ease-out (Emil Kowalski): more punch than the built-in curves. */
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --dur-hover: 450ms; /* portrait hover-zoom */
+  --dur-reveal: 450ms; /* scroll-reveal entrance (mirrored in Base.astro WAAPI) */
+  --dur-press: 140ms; /* button/card press feedback */
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  background-color: var(--color-ivory);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scroll-reveal: hidden only while JS is active (so no-JS keeps content
+   visible). The animation itself is driven by the Web Animations API in
+   Base.astro, which animates reliably regardless of paint timing. */
+.js [data-reveal] {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] {
+    opacity: 1;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Press feedback (Emil): buttons, cards, and nav links respond to a press.
+   Unlayered so it governs timing; includes the properties elements hover-animate
+   so nothing snaps. Inline prose/list links are excluded from the scale. */
+@media (prefers-reduced-motion: no-preference) {
+  a[href],
+  button {
+    transition:
+      transform var(--dur-press) var(--ease-out),
+      background-color 150ms var(--ease-out),
+      color 150ms var(--ease-out),
+      border-color 150ms var(--ease-out),
+      opacity 150ms var(--ease-out),
+      box-shadow 200ms var(--ease-out);
+  }
+  a[href]:active,
+  button:active {
+    transform: scale(0.97);
+  }
+  /* keep inline text links from scaling */
+  p a[href]:active,
+  li a[href]:active {
+    transform: none;
+  }
+}

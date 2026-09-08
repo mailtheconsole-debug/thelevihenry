@@ -1,0 +1,74 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const input = 'w-full rounded border border-line-strong bg-white px-3.5 py-2.5 text-ink transition focus:border-brass focus:outline-none focus:ring-2 focus:ring-brass/20';
+const label = 'mb-1.5 block font-sans text-xs font-semibold uppercase tracking-wider text-ink-soft';
+---
+
+<Base
+  title="Contact | Levi Henry Group"
+  description="Tell me where you are and what you're trying to grow. I'll reply personally with the honest next step."
+>
+  <Header />
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="mx-auto max-w-6xl px-6 py-14 lg:py-16">
+      <div class="max-w-3xl">
+        <p data-reveal class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Contact</p>
+        <h1 data-reveal class="mt-4 font-serif text-4xl font-medium leading-[1.07] tracking-tight text-navy sm:text-5xl">Let's talk about what you're building.</h1>
+        <p data-reveal class="mt-5 max-w-2xl text-lg text-ink-soft">One message is all it takes to start. Tell me where you are and what you're trying to grow, and I'll reply personally with the honest next step.</p>
+      </div>
+    </section>
+
+    <section class="border-t border-line bg-paper">
+      <div class="mx-auto grid max-w-6xl gap-12 px-6 py-16 lg:grid-cols-2 lg:py-20">
+        <!-- FORM -->
+        <form method="POST" action="/.netlify/functions/contact" data-reveal>
+          <p hidden><label>Leave this empty: <input name="bot-field" /></label></p>
+          <div class="mb-4">
+            <label class={label} for="name">Name</label>
+            <input class={input} id="name" name="name" type="text" autocomplete="name" required />
+          </div>
+          <div class="mb-4">
+            <label class={label} for="email">Email</label>
+            <input class={input} id="email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <div class="mb-4">
+            <label class={label} for="about">Are you an individual or a business?</label>
+            <input class={input} id="about" name="about" type="text" placeholder="Individual · Business · Not sure yet" />
+          </div>
+          <div class="mb-4">
+            <label class={label} for="message">What are you trying to build?</label>
+            <textarea class={`${input} min-h-[140px] resize-y`} id="message" name="message" required></textarea>
+          </div>
+          <button type="submit" class="group inline-flex items-center gap-2 rounded-sm bg-navy px-7 py-3.5 font-sans text-sm font-semibold text-white transition hover:bg-navy-deep">
+            Send message <span class="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
+          </button>
+          <p data-form-status role="status" aria-live="polite" class="mt-4 text-sm italic text-ink-faint"></p>
+        </form>
+
+        <!-- DETAILS -->
+        <aside data-reveal>
+          <div class="group mb-7 overflow-hidden rounded-lg">
+            <img src="/assets/photos/headshot-square.jpg" alt="Levi Henry" width="1024" height="1024" loading="lazy" class="aspect-square w-full object-cover transition-transform duration-[var(--dur-hover)] ease-[var(--ease-out)] group-hover:scale-[1.03]" />
+          </div>
+          <div class="border-b border-line pb-5">
+            <span class="block font-sans text-xs uppercase tracking-widest text-ink-faint">Email</span>
+            <a href="mailto:hello@thelevihenry.com" class="mt-1 block font-serif text-xl text-navy">hello@thelevihenry.com</a>
+          </div>
+          <div class="pt-5">
+            <span class="block font-sans text-xs uppercase tracking-widest text-ink-faint">Book a call</span>
+            <a href="/book-discovery" class="mt-3 inline-flex items-center gap-2 rounded-sm bg-navy px-6 py-3 font-sans text-sm font-semibold text-white transition hover:bg-navy-deep">
+              Free 20-min discovery call <span>&rarr;</span>
+            </a>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>

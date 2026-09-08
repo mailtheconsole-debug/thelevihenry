@@ -1,0 +1,126 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const service1 = [
+  { t: 'Facebook & Instagram ads', d: 'Full-funnel campaigns built and managed toward cost-per-acquisition, not vanity reach.' },
+  { t: 'TikTok ads', d: 'Native creative and testing built for the platform, not repurposed banners.' },
+  { t: 'Google Ads', d: 'Search and Performance Max campaigns that capture high-intent demand and put budget where it converts.' },
+  { t: 'UGC as a Service', d: 'A steady pipeline of creator-style user-generated content built to feed and refresh your paid social.' },
+  { t: 'Creative & offers', d: 'Angles, hooks, and offers tested systematically so winners scale and losers get cut.' },
+  { t: 'Tracking & attribution', d: 'Know what a customer actually costs, and where they came from.' },
+];
+const service2 = [
+  { t: 'Identify & implement the right tech', d: 'Cut through the tool sprawl: we identify the right stack for your problem and get it working, not just purchased.' },
+  { t: 'Websites & funnels', d: 'Build the pages and funnels that convert traffic into leads and leads into customers.' },
+  { t: 'Payment integration', d: 'Wire up checkout and payments so the funnel actually collects money: the technical backbone behind client acquisition and sales.' },
+  { t: 'CRM & revenue systems', d: 'Set up the CRM and automation so every lead is captured, tracked, and followed up.' },
+  { t: 'Build & train the sales team', d: "Hire, onboard, and coach a sales team from the ground up, the way it's done inside larger companies." },
+  { t: 'Inbound & outbound lead generation', d: "Generate demand through both channels and feed a pipeline that's actually worked." },
+  { t: 'Manage pipeline to revenue', d: 'Build and manage the pipeline all the way to closed revenue, with the discipline to keep it healthy.' },
+];
+---
+
+<Base
+  title="For Businesses | Levi Henry Group"
+  description="Marketing, paid acquisition, funnels, and revenue infrastructure for small businesses across North America."
+>
+  <Header />
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="mx-auto grid max-w-6xl items-center gap-10 px-6 py-14 lg:grid-cols-2 lg:gap-16 lg:py-20">
+      <div>
+        <p data-reveal class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">For Businesses</p>
+        <h1 data-reveal class="mt-4 font-serif text-4xl font-medium leading-[1.07] tracking-tight text-navy sm:text-5xl">The systems that turn traffic into paying customers.</h1>
+        <p data-reveal class="mt-5 max-w-xl text-lg text-ink-soft">Most small businesses don't have a demand problem. They have a systems problem. We identify the right tools, build the infrastructure, and manage the pipeline so growth stops depending on luck.</p>
+      </div>
+      <figure class="group m-0 overflow-hidden rounded-lg bg-navy shadow-2xl shadow-navy/30" data-reveal>
+        <img src="/assets/photos/portrait-standing.jpg" alt="Levi Henry, revenue systems consultant" width="1360" height="1700" class="aspect-[4/5] w-full object-cover transition-transform duration-[var(--dur-hover)] ease-[var(--ease-out)] group-hover:scale-[1.03]" />
+      </figure>
+    </section>
+
+    <!-- SERVICE 1 -->
+    <section class="border-t border-line">
+      <div class="mx-auto max-w-6xl px-6 py-16 lg:py-20">
+        <div class="max-w-2xl" data-reveal>
+          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Service 01</p>
+          <h2 class="mt-3 font-serif text-3xl font-medium leading-tight tracking-tight text-navy sm:text-4xl">Marketing &amp; Paid Acquisition</h2>
+          <p class="mt-4 max-w-2xl text-ink-soft">Paid social that acquires customers instead of impressions. We build the creative, dial in targeting, and manage spend against revenue, across Facebook, Instagram, and TikTok.</p>
+        </div>
+        <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {service1.map((s) => (
+            <div class="rounded-lg border border-line bg-paper-raised p-6 transition duration-300 hover:-translate-y-1 hover:border-navy-600/40 hover:shadow-xl hover:shadow-navy/10" data-reveal>
+              <strong class="block font-bold text-navy">{s.t}</strong>
+              <span class="mt-2 block text-[0.95rem] leading-relaxed text-ink-soft">{s.d}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICE 2 -->
+    <section class="border-t border-line bg-paper">
+      <div class="mx-auto max-w-6xl px-6 py-16 lg:py-20">
+        <div class="max-w-2xl" data-reveal>
+          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Service 02</p>
+          <h2 class="mt-3 font-serif text-3xl font-medium leading-tight tracking-tight text-navy sm:text-4xl">Funnels, Technology &amp; Revenue Infrastructure</h2>
+          <p class="mt-4 max-w-2xl text-ink-soft">We build and advise on the technology that powers revenue: websites, funnels, CRMs, and the systems that turn traffic into paying customers, and we build and train the sales team that works them.</p>
+        </div>
+        <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {service2.map((s, i) => (
+            <div
+              class:list={[
+                'rounded-lg border border-line bg-ivory p-6 transition duration-300 hover:-translate-y-1 hover:border-navy-600/40 hover:shadow-xl hover:shadow-navy/10',
+                i === service2.length - 1 && 'sm:col-span-2 lg:col-span-3',
+              ]}
+              data-reveal
+            >
+              <strong class="block font-bold text-navy">{s.t}</strong>
+              <span class="mt-2 block text-[0.95rem] leading-relaxed text-ink-soft">{s.d}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CASE STUDIES (dark band) -->
+    <section class="bg-navy">
+      <div class="mx-auto max-w-6xl px-6 py-16 lg:py-24">
+        <div class="max-w-2xl" data-reveal>
+          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-brass-soft">Case studies</p>
+          <h2 class="mt-3 font-serif text-3xl font-medium leading-tight tracking-tight text-white sm:text-4xl">Proof, not promises.</h2>
+        </div>
+        <div class="mt-10 grid gap-5 md:grid-cols-2">
+          <div class="rounded-md border border-white/10 bg-white/5 p-8 transition duration-300 hover:-translate-y-1 hover:border-white/25" data-reveal>
+            <span class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-soft">Case study 01</span>
+            <h3 class="mt-2 font-serif text-2xl font-medium text-white">Paid acquisition rebuild</h3>
+            <p class="mt-3 text-white/70">A results-driven rebuild of a paid social program: creative, targeting, and tracking rebuilt around cost-per-acquisition. Full write-up in progress.</p>
+            <a href="/contact" class="mt-5 inline-flex items-center gap-2 border-b border-white/40 pb-0.5 font-sans text-sm font-semibold text-white">Get in touch <span>&rarr;</span></a>
+          </div>
+          <div class="rounded-md border border-white/10 bg-white/5 p-8 transition duration-300 hover:-translate-y-1 hover:border-white/25" data-reveal>
+            <span class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-soft">Case study 02</span>
+            <h3 class="mt-2 font-serif text-2xl font-medium text-white">Revenue infrastructure build</h3>
+            <p class="mt-3 text-white/70">CRM, funnels, and a trained sales team stood up from scratch, turning scattered leads into a managed pipeline. Full write-up in progress.</p>
+            <a href="/contact" class="mt-5 inline-flex items-center gap-2 border-b border-white/40 pb-0.5 font-sans text-sm font-semibold text-white">Get in touch <span>&rarr;</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="border-t border-line">
+      <div class="mx-auto max-w-6xl px-6 py-16 lg:py-20">
+        <div class="rounded-2xl bg-navy px-8 py-14 text-center sm:px-14" data-reveal>
+          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-white/60">Scale with systems</p>
+          <h2 class="mx-auto mt-3 max-w-lg font-serif text-3xl font-medium leading-tight tracking-tight text-white sm:text-4xl">Let's build the engine behind your revenue.</h2>
+          <p class="mx-auto mt-4 max-w-xl text-white/75">Tell me about your business and where growth is stalling. We'll map the systems that unblock it.</p>
+          <a href="/contact" class="mt-8 inline-flex items-center gap-2 rounded-sm bg-white px-7 py-3.5 font-sans text-sm font-semibold text-navy transition hover:bg-ivory-deep">Book a call <span>&rarr;</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
