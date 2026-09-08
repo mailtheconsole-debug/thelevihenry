@@ -1,64 +1,72 @@
-# Deploying to Netlify + connecting your domain
+# Deploying (Netlify)
 
-The site is plain static files, so hosting is quick. `netlify.toml` is already set up
-(publish directory `.`, no build step).
+The site is an **Astro** project that builds to static files (`dist/`) plus **Netlify
+Functions**. It's live at **https://thelevihenry.com** on Netlify (site name
+`thelevihenry`, ID `aaf2b27d-ade3-4b70-a6dd-28971d29a74f`). DNS is on **Cloudflare**,
+pointed at Netlify, with HTTPS active.
 
-## Step 1 — Get the site onto Netlify
+`netlify.toml` already declares everything Netlify needs:
 
-**Option A — drag & drop (fastest, no accounts to wire):**
-1. Go to https://app.netlify.com/drop
-2. Drag the **`thelevihenry`** folder onto the page.
-   - ⚠️ Skip the `assets/source/` folder — those are the full-resolution photo originals
-     (100 MB+) and don't need to ship. Either delete that folder before dragging, or use
-     Option B (Git), which ignores it automatically.
-3. Netlify gives you a temporary URL like `random-name.netlify.app`.
+```toml
+[build]
+  command = "astro build"
+  publish = "dist"
+[functions]
+  directory = "netlify/functions"
+```
 
-**Option B — connect a Git repo (best for ongoing updates):**
-1. Push this folder to a GitHub repo.
-2. In Netlify: **Add new site → Import an existing project → GitHub**, pick the repo.
-3. Build command: *(leave empty)*. Publish directory: `.`
-4. Deploy. Every future `git push` redeploys automatically, and `assets/source/`
-   is excluded via `.gitignore`.
+## Environment variables (required — set in Netlify)
 
-## Step 2 — Add your domain in Netlify
+Netlify → Site configuration → **Environment variables**. These power the form functions;
+without them the forms still submit but no email/CRM write happens.
 
-1. Open your site in Netlify → **Domain management → Add a domain**.
-2. Enter your domain (e.g. `levihenrygroup.com`) and confirm you own it.
+| Key | What it's for |
+| --- | --- |
+| `RESEND_API_KEY` | Resend API key — sends the manual, contact, and discovery emails |
+| `AIRTABLE_TOKEN` | Airtable personal access token (`data.records:write` on the CRM base) |
+| `AIRTABLE_BASE_ID` | Airtable base ID (`app…`) for the CRM base |
+| `AIRTABLE_TABLE` | Table name — `CRM` |
 
-## Step 3 — Point thelevihenry.com at Netlify (registrar: WhoGoHost / Go54)
+Resend sends from `levi@thelevihenry.com` (domain verified in Resend via Cloudflare DNS).
+Airtable base: "Levi Henry Group CRM", table `CRM` with fields
+`Name, Email, Source, Type, Message, Status`.
 
-Log in to **go54.com / whogohost.com → your account → Domains → Manage thelevihenry.com**.
-Pick **one** approach.
+## Deploy — Option A: CLI (current method)
 
-**Approach 1 — Netlify DNS (recommended, best for the apex/root domain):**
-1. In Netlify → Domain management → add `thelevihenry.com`, then choose **"Use Netlify DNS"**.
-2. Netlify shows **4 nameservers** like `dns1.p0X.nsone.net`, `dns2.p0X.nsone.net`, etc.
-3. In Go54, open **Nameservers** for thelevihenry.com, switch to **Custom nameservers**,
-   delete the existing ones, and paste Netlify's 4. Save.
-4. Netlify then manages all records and auto-issues HTTPS. (Nameserver changes can take a
-   few hours to ~24h.)
+Build locally, then deploy the build + functions to production:
 
-**Approach 2 — keep Go54's DNS (use their Zone/DNS editor):**
-In Go54 → **Manage DNS / Advanced DNS (Zone Editor)** for thelevihenry.com, add:
-- **A record** — Name/Host `@` (or blank / `thelevihenry.com`) → Value `75.2.60.5`
-- **CNAME** — Name/Host `www` → Value `YOUR-SITE.netlify.app` (your Netlify subdomain)
-- Delete any existing A/CNAME for `@` and `www` that point elsewhere (e.g. parking).
-- In Netlify, add both `thelevihenry.com` and `www.thelevihenry.com`, set your preferred
-  primary, and it redirects the other automatically.
+```bash
+npm install
+npm run build
+netlify deploy --prod --dir dist --functions netlify/functions --site aaf2b27d-ade3-4b70-a6dd-28971d29a74f
+```
 
-> Note: Approach 1 is preferred because the apex (`thelevihenry.com`) on a single A record
-> is less resilient, and WhoGoHost/Go54 may not support ALIAS/ANAME at the root. Letting
-> Netlify run DNS avoids that entirely.
+(`assets/source/` is git-ignored and not in `dist`, so the 89MB originals never ship.)
 
-## Step 4 — HTTPS
+## Deploy — Option B: Git auto-deploy (recommended)
 
-Once DNS resolves (minutes to a few hours), Netlify auto-issues a free Let's Encrypt
-certificate. Confirm under **Domain management → HTTPS** that it says "Certificate: Active".
+The repo is connected to Netlify, but **continuous deployment is currently off**, which is
+why Option A is used. To switch to auto-deploy:
 
----
+1. Netlify → Site configuration → **Build & deploy** → enable continuous deployment for
+   the `main` branch. `netlify.toml` already sets the build command (`astro build`),
+   publish dir (`dist`), and functions dir, so no other config is needed.
+2. After that, every `git push` to `main` triggers a Netlify build (`npm install` +
+   `astro build`) and deploys automatically — no manual CLI step.
 
-### Notes
-- DNS changes can take anywhere from a few minutes to ~24 hours to fully propagate.
-- The temporary `*.netlify.app` URL keeps working the whole time.
-- I can't do these steps for you — they require logging into your Netlify account and your
-  registrar — but tell me your domain and registrar and I'll tailor the exact record values.
+This is safe now that the repo *is* the Astro source (a build produces exactly what's live).
+
+## Forms
+
+Form handling is **custom Netlify Functions** (`netlify/functions/`), not Netlify Forms:
+`lead-magnet.js`, `contact.js`, `discovery.js`. Each emails Levi via Resend, logs to
+Airtable, and redirects. Submissions do **not** run under `astro dev` — test them on a
+deploy (or with `netlify dev`).
+
+## Domain / DNS (already set up)
+
+`thelevihenry.com` uses **Cloudflare** nameservers and resolves to this Netlify site;
+HTTPS (Let's Encrypt) is active. Nothing to do unless re-pointing. If you ever migrate:
+add `thelevihenry.com` + `www` in Netlify → Domain management, then in Cloudflare DNS
+point the apex to Netlify's load balancer (`75.2.60.5`) and `www` to the site's
+`*.netlify.app` (set both records to **DNS only / grey cloud**, not proxied).
