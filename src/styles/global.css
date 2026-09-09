@@ -19,6 +19,16 @@
   --color-brass-soft: #accbe6;
   --color-paper-raised: #ffffff;
 
+  /* New brand palette — sampled from the prism/beacon mark.
+     navy (#14273f) already matches the wordmark. Blues give depth;
+     the beacon amber is used ONLY as a restrained glow/spark, never a flat fill. */
+  --color-brand: #225cc0; /* cobalt / royal face */
+  --color-brand-bright: #2f6fd6; /* lit edge */
+  --color-brand-sky: #8fb8e0; /* light steel face */
+  --color-ink-black: #0f1219; /* deepest brand tone (footer, mark base) */
+  --color-beacon: #f5a623; /* apex glow */
+  --color-beacon-soft: #ffd27a;
+
   --font-sans: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-serif: "Fraunces", "Iowan Old Style", Georgia, "Times New Roman", serif;
 }
@@ -30,6 +40,67 @@
   --dur-hover: 450ms; /* portrait hover-zoom */
   --dur-reveal: 450ms; /* scroll-reveal entrance (mirrored in Base.astro WAAPI) */
   --dur-press: 140ms; /* button/card press feedback */
+}
+
+/* ---------------------------------------------------------------------------
+   Depth system — de-flatten. Echoes the prism/beacon mark: dimensional dark
+   bands (gradient, not flat slabs), a brand hero panel, tactile buttons, and
+   raised cards. Amber appears ONLY as a restrained glow, never a flat fill.
+   --------------------------------------------------------------------------- */
+
+/* Dark bands: a lit gradient with a cool blue wash at the top edge. */
+.band-dark {
+  background:
+    radial-gradient(120% 90% at 50% -20%, rgba(47, 111, 214, 0.18), transparent 55%),
+    linear-gradient(180deg, #183654 0%, var(--color-navy) 46%, var(--color-navy-deep) 100%);
+}
+
+/* Hero brand panel that the cutout stands in — cobalt depth + a soft beacon. */
+.panel-brand {
+  background:
+    radial-gradient(70% 42% at 50% 6%, rgba(245, 166, 35, 0.16), transparent 46%),
+    radial-gradient(120% 95% at 50% 118%, rgba(47, 111, 214, 0.42), transparent 60%),
+    linear-gradient(165deg, #24466f 0%, var(--color-navy) 55%, var(--color-navy-deep) 100%);
+}
+
+/* Reusable soft beacon glow (amber). Place inside a relative parent. */
+.beacon-glow {
+  position: absolute;
+  left: 50%;
+  top: -8%;
+  width: min(560px, 78%);
+  height: 260px;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    rgba(245, 166, 35, 0.22),
+    rgba(245, 166, 35, 0.05) 46%,
+    transparent 72%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Primary button: gradient face, hairline top highlight, layered shadow. */
+.btn-primary {
+  background: linear-gradient(180deg, #1e3a5c 0%, var(--color-navy) 55%, var(--color-navy-deep) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 10px 24px -8px rgba(20, 39, 63, 0.55);
+}
+.btn-primary:hover {
+  background: linear-gradient(180deg, #244a76 0%, #16324f 60%, var(--color-navy-deep) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 14px 30px -8px rgba(20, 39, 63, 0.6);
+}
+
+/* Raised card: subtle top-edge highlight + soft shadow at rest. */
+.card-raised {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.65),
+    0 1px 2px rgba(20, 39, 63, 0.04),
+    0 12px 28px -14px rgba(20, 39, 63, 0.22);
 }
 
 html {

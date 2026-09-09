@@ -46,7 +46,7 @@ const testimonials = [
           effort into revenue.
         </p>
         <div data-reveal class="mt-8 flex flex-wrap gap-4">
-          <a href="/contact" class="group inline-flex items-center gap-2 rounded-sm bg-navy px-7 py-3.5 font-sans text-sm font-semibold text-white transition hover:bg-navy-deep">
+          <a href="/contact" class="btn-primary group inline-flex items-center gap-2 rounded-sm px-7 py-3.5 font-sans text-sm font-semibold text-white">
             Book a call <span class="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
           </a>
           <a href="/about" class="inline-flex items-center rounded-sm border border-navy px-7 py-3.5 font-sans text-sm font-semibold text-navy transition hover:bg-navy hover:text-white">
@@ -54,9 +54,17 @@ const testimonials = [
           </a>
         </div>
       </div>
-      <figure class="group relative m-0 overflow-hidden rounded-lg bg-navy shadow-2xl shadow-navy/30" data-reveal>
-        <img src="/assets/photos/portrait-hero.jpg" alt="Levi Henry, founder of Levi Henry Group" width="1600" height="2000" class="aspect-[4/5] w-full object-cover transition-transform duration-[var(--dur-hover)] ease-[var(--ease-out)] group-hover:scale-[1.03]" />
-        <figcaption class="absolute bottom-0 left-0 rounded-tr-lg bg-navy px-5 py-3 font-sans text-sm text-white">Levi Henry <b class="text-brass-soft">·</b> Founder</figcaption>
+      <figure class="panel-brand group relative m-0 flex aspect-[4/5] items-end justify-center overflow-hidden rounded-2xl shadow-2xl shadow-navy/40 ring-1 ring-white/10" data-reveal>
+        <div class="beacon-glow"></div>
+        <img
+          src="/assets/photos/levi-hero-cutout.webp"
+          alt="Levi Henry, founder of Levi Henry Group"
+          width="1100"
+          height="1523"
+          class="relative z-[1] max-h-[92%] w-auto object-contain object-bottom drop-shadow-[0_24px_40px_rgba(0,0,0,0.45)] transition-transform duration-[var(--dur-hover)] ease-[var(--ease-out)] group-hover:scale-[1.03]"
+          fetchpriority="high"
+        />
+        <figcaption class="absolute bottom-4 left-4 z-[2] rounded-md bg-black/25 px-4 py-2 font-sans text-sm text-white backdrop-blur-sm">Levi Henry <b class="text-beacon-soft">·</b> Founder</figcaption>
       </figure>
     </section>
 
@@ -83,11 +91,12 @@ const testimonials = [
         <h2 class="max-w-2xl font-serif text-3xl font-medium leading-tight tracking-tight text-navy sm:text-4xl" data-reveal>Whether you're building yourself, a business, or a startup.</h2>
         <div class="mt-10 grid gap-5 md:grid-cols-3">
           {fork.map((c) => (
-            <a href={c.href} class:list={[c.bg, 'group flex min-h-[320px] flex-col rounded-md p-8 text-white transition duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-navy/30']} data-reveal>
-              <span class="font-sans text-xs font-semibold uppercase tracking-widest text-white/75">{c.n}</span>
-              <h3 class="mt-auto pt-8 font-serif text-2xl font-medium">{c.h}</h3>
-              <p class="mt-3 text-white/85">{c.d}</p>
-              <span class="mt-5 inline-flex items-center gap-2 border-b border-white/50 pb-0.5 font-sans text-sm font-semibold">
+            <a href={c.href} class:list={[c.bg, 'group relative flex min-h-[320px] flex-col overflow-hidden rounded-md p-8 text-white shadow-xl shadow-navy/15 ring-1 ring-white/10 transition duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-navy/40']} data-reveal>
+              <div class="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/12 via-transparent to-black/15"></div>
+              <span class="relative font-sans text-xs font-semibold uppercase tracking-widest text-white/75">{c.n}</span>
+              <h3 class="relative mt-auto pt-8 font-serif text-2xl font-medium">{c.h}</h3>
+              <p class="relative mt-3 text-white/85">{c.d}</p>
+              <span class="relative mt-5 inline-flex items-center gap-2 border-b border-white/50 pb-0.5 font-sans text-sm font-semibold">
                 {c.cta} <span class="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
               </span>
             </a>
@@ -97,7 +106,7 @@ const testimonials = [
     </section>
 
     <!-- PILLARS (dark band for rhythm) -->
-    <section class="bg-navy">
+    <section class="band-dark">
       <div class="mx-auto max-w-6xl px-6 py-16 lg:py-24">
         <div class="max-w-2xl" data-reveal>
           <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-brass-soft">What we do</p>
@@ -138,12 +147,12 @@ const testimonials = [
     <!-- CTA -->
     <section class="border-t border-line">
       <div class="mx-auto max-w-6xl px-6 py-16 lg:py-20">
-        <div class="relative overflow-hidden rounded-2xl bg-navy px-8 py-14 text-center sm:px-14" data-reveal>
-          <div class="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-navy-600/30 blur-3xl"></div>
-          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-white/60">Let's build</p>
-          <h2 class="mx-auto mt-3 max-w-lg font-serif text-3xl font-medium leading-tight tracking-tight text-white sm:text-4xl">Ready to turn what you know into revenue?</h2>
-          <p class="mx-auto mt-4 max-w-xl text-white/75">Whether you're an individual building a high-income skill or a business building the systems behind growth, let's talk about where you are and what's next.</p>
-          <a href="/contact" class="mt-8 inline-flex items-center gap-2 rounded-sm bg-white px-7 py-3.5 font-sans text-sm font-semibold text-navy transition hover:bg-ivory-deep">Book a call <span>&rarr;</span></a>
+        <div class="band-dark relative overflow-hidden rounded-2xl px-8 py-14 text-center ring-1 ring-white/10 sm:px-14" data-reveal>
+          <div class="beacon-glow"></div>
+          <p class="relative z-[1] font-sans text-xs font-bold uppercase tracking-[0.2em] text-white/60">Let's build</p>
+          <h2 class="relative z-[1] mx-auto mt-3 max-w-lg font-serif text-3xl font-medium leading-tight tracking-tight text-white sm:text-4xl">Ready to turn what you know into revenue?</h2>
+          <p class="relative z-[1] mx-auto mt-4 max-w-xl text-white/75">Whether you're an individual building a high-income skill or a business building the systems behind growth, let's talk about where you are and what's next.</p>
+          <a href="/contact" class="relative z-[1] mt-8 inline-flex items-center gap-2 rounded-sm bg-white px-7 py-3.5 font-sans text-sm font-semibold text-navy shadow-lg shadow-black/20 transition hover:bg-ivory-deep">Book a call <span>&rarr;</span></a>
         </div>
       </div>
     </section>
