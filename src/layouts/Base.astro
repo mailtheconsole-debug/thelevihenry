@@ -122,11 +122,11 @@ const { title = 'Levi Henry Group', description = '', noindex = false } = Astro.
         var q = window.location.search;
         if (q.indexOf("sent=1") !== -1) {
           status.textContent =
-            "Thanks — your message is on its way. I'll get back to you personally.";
+            "Thanks — your message is on its way. We'll get back to you personally.";
           status.style.color = "var(--color-navy)";
         } else if (q.indexOf("err=1") !== -1) {
           status.textContent =
-            "Something went wrong sending that. Please email me directly at levi@thelevihenry.com and I'll get right back to you.";
+            "Something went wrong sending that. Please email us directly at levi@thelevihenry.com and we'll get right back to you.";
           status.style.color = "var(--color-ink)";
         }
       }

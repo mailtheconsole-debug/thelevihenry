@@ -6,7 +6,7 @@ const links = [
   { href: "/individuals", label: "For Individuals" },
   { href: "/businesses", label: "For Businesses" },
   { href: "/founders", label: "For Founders" },
-  { href: "/contact", label: "Contact" },
+  { href: "/contact", label: "Contact Us" },
 ];
 const isCurrent = (href: string) => path === href;
 ---
@@ -50,8 +50,8 @@ const isCurrent = (href: string) => path === href;
       }
       <a
         href="/contact"
-        class="rounded-sm bg-navy px-5 py-2.5 font-sans text-sm font-bold text-white shadow-lg shadow-navy/25 transition hover:bg-navy-deep"
-        >Book a call</a
+        class="btn-primary rounded-sm px-5 py-2.5 font-sans text-sm font-bold text-white"
+        >Work With Us</a
       >
     </nav>
   </div>
@@ -73,7 +73,7 @@ const isCurrent = (href: string) => path === href;
           </a>
         ))
       }
-      <a href="/contact" class="py-3 font-sans text-sm font-bold text-navy">Book a call &rarr;</a>
+      <a href="/contact" class="py-3 font-sans text-sm font-bold text-navy">Work With Us &rarr;</a>
     </nav>
   </div>
 </header>

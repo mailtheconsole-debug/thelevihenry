@@ -7,7 +7,7 @@
 // Requires the Netlify env var RESEND_API_KEY.
 
 const MANUAL_URL = "https://thelevihenry.com/gtm-field-manual";
-const DISCOVERY_URL = "https://selar.com/844427i064";
+const DISCOVERY_URL = "https://thelevihenry.com/book-discovery";
 const FROM = "Levi Henry <levi@thelevihenry.com>";
 const LEAD_NOTIFY_TO = "levi@thelevihenry.com"; // where new-lead alerts go
 

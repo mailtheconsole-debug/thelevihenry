@@ -9,7 +9,7 @@ const label = 'mb-1.5 block font-sans text-xs font-semibold uppercase tracking-w
 
 <Base
   title="Book a discovery call | Levi Henry Group"
-  description="Tell me what you're hoping to get from the call, then pick a time."
+  description="Tell us what you're hoping to get from the call, then pick a time."
   noindex={true}
 >
   <Header />
@@ -17,11 +17,12 @@ const label = 'mb-1.5 block font-sans text-xs font-semibold uppercase tracking-w
   <main id="main">
     <section class="mx-auto max-w-xl px-6 py-16 lg:py-24">
       <div data-reveal>
-        <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Free 20-min discovery call</p>
+        <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Free 30-min discovery call</p>
         <h1 class="mt-4 font-serif text-4xl font-medium leading-[1.07] tracking-tight text-navy sm:text-5xl">Before we talk</h1>
         <p class="mt-4 text-lg text-ink-soft">
-          A quick note on what you're hoping to get from the call, so I come prepared. Then
-          you'll pick a time. Takes under a minute.
+          Tell us a little about yourself and what you're hoping to get from the call, so we
+          come prepared and make the 30 minutes count. Then you'll pick a time on the next
+          screen. Takes about a minute.
         </p>
       </div>
 
@@ -36,8 +37,12 @@ const label = 'mb-1.5 block font-sans text-xs font-semibold uppercase tracking-w
           <input class={input} id="email" name="email" type="email" autocomplete="email" required />
         </div>
         <div class="mb-4">
-          <label class={label} for="goal">What's your goal for the call?</label>
-          <textarea class={`${input} min-h-[120px] resize-y`} id="goal" name="goal" placeholder="e.g. I've built a product and need help landing my first customers." required></textarea>
+          <label class={label} for="about">Tell us about yourself</label>
+          <input class={input} id="about" name="about" type="text" placeholder="Your role, business, or what you're working on" required />
+        </div>
+        <div class="mb-4">
+          <label class={label} for="goal">Why do you want this call &amp; what do you need help with?</label>
+          <textarea class={`${input} min-h-[130px] resize-y`} id="goal" name="goal" placeholder="e.g. I've built a product and need help landing my first customers." required></textarea>
         </div>
         <button type="submit" class="group inline-flex w-full items-center justify-center gap-2 btn-primary rounded-sm px-7 py-3.5 font-sans text-sm font-semibold text-white">
           Continue to booking <span class="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>

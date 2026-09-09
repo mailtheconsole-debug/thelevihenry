@@ -1,8 +1,8 @@
-// Pre-booking gate for the free discovery call. Captures what the visitor wants
-// to discuss (emails Levi + logs to Airtable), then forwards them to Selar to
-// pick a time. Requires RESEND_API_KEY (+ optional Airtable env vars).
+// Pre-booking gate for the free discovery call. Captures who the visitor is and
+// what they need (emails the team + logs to Airtable), then forwards them to
+// Calendly to pick a time. Requires RESEND_API_KEY (+ optional Airtable env vars).
 
-const SELAR = "https://selar.com/844427i064";
+const BOOKING_URL = "https://calendly.com/levihenrygroup-freediscovery/30min";
 const NOTIFY_TO = "levi@thelevihenry.com";
 const FROM = "LHG Website <levi@thelevihenry.com>";
 
@@ -41,13 +41,14 @@ exports.handler = async (event) => {
 
     const name = (p.get("name") || "").trim();
     const email = (p.get("email") || "").trim();
+    const about = (p.get("about") || "").trim();
     const goal = (p.get("goal") || "").trim();
     const honeypot = (p.get("bot-field") || "").trim();
 
     // Spam bot: forward without recording.
-    if (honeypot) return redirect(SELAR);
+    if (honeypot) return redirect(BOOKING_URL);
     // Even if the form is somehow incomplete, don't block the booking.
-    if (!email || !goal) return redirect(SELAR);
+    if (!email || !goal) return redirect(BOOKING_URL);
 
     // Notify Levi (best effort).
     try {
@@ -65,8 +66,9 @@ exports.handler = async (event) => {
           html: `<div style="font-family:-apple-system,Segoe UI,Arial,sans-serif;font-size:15px;line-height:1.6;color:#212c38;">
             <p>Someone is about to book a discovery call.</p>
             <p><strong>Name:</strong> ${esc(name) || "(not given)"}<br/>
-            <strong>Email:</strong> ${esc(email)}</p>
-            <p><strong>What they want to discuss:</strong></p>
+            <strong>Email:</strong> ${esc(email)}<br/>
+            <strong>About them:</strong> ${esc(about) || "(not given)"}</p>
+            <p><strong>Why they want the call / what they need:</strong></p>
             <p>${esc(goal).replace(/\n/g, "<br/>")}</p></div>`,
         }),
       });
@@ -79,14 +81,15 @@ exports.handler = async (event) => {
       Name: name,
       Email: email,
       Source: "Discovery call",
+      Type: about,
       Message: goal,
       Status: "New",
     });
 
-    // Forward to Selar so they pick a time.
-    return redirect(SELAR);
+    // Forward to Calendly so they pick a time.
+    return redirect(BOOKING_URL);
   } catch (err) {
     console.error("discovery error:", err);
-    return redirect(SELAR);
+    return redirect(BOOKING_URL);
   }
 };

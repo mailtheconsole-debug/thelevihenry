@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Base
+  title="Your ebook is on its way | Levi Henry Group"
+  description="Thanks for grabbing The Remote SDR Career Blueprint."
+  noindex={true}
+>
+  <Header />
+
+  <main id="main">
+    <section class="mx-auto max-w-3xl px-6 py-20 text-center lg:py-28">
+      <p data-reveal class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Free ebook</p>
+      <h1 data-reveal class="mt-4 font-serif text-4xl font-medium leading-[1.07] tracking-tight text-navy sm:text-5xl">Your ebook is ready.</h1>
+      <p data-reveal class="mx-auto mt-5 max-w-xl text-lg text-ink-soft">Thanks for grabbing <strong>The Remote SDR Career Blueprint</strong>. Download it right here, and we've also emailed you a copy — if you don't see it in a couple of minutes, check your spam or promotions tab.</p>
+      <div data-reveal class="mt-8 flex flex-wrap justify-center gap-4">
+        <a href="/assets/downloads/remote-sdr-career-blueprint.pdf" download class="btn-primary inline-flex items-center gap-2 rounded-sm px-7 py-3.5 font-sans text-sm font-semibold text-white">Download the ebook <span>&darr;</span></a>
+        <a href="/book-discovery" class="inline-flex items-center rounded-sm border border-navy px-7 py-3.5 font-sans text-sm font-semibold text-navy transition hover:bg-navy hover:text-white">Book a free discovery call</a>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
