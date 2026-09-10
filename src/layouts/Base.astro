@@ -4,8 +4,44 @@ interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
+  image?: string;
+  jsonld?: Record<string, unknown> | Record<string, unknown>[];
 }
-const { title = 'Levi Henry Group', description = '', noindex = false } = Astro.props;
+const {
+  title = 'Levi Henry Group',
+  description = '',
+  noindex = false,
+  image = '/assets/brand/og-default.jpg',
+  jsonld,
+} = Astro.props;
+
+const SITE = Astro.site ?? new URL('https://thelevihenry.com');
+const canonical = new URL(Astro.url.pathname.replace(/\.html$/, '') || '/', SITE).href.replace(/\/$/, '') || SITE.href;
+const ogImage = new URL(image, SITE).href;
+
+// Site-wide structured data: who we are + the site itself. Helps Google rich
+// results and gives AI assistants a clean, factual entity to cite.
+const orgLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Levi Henry Group',
+  url: SITE.href,
+  logo: new URL('/assets/brand/logo-icon.png', SITE).href,
+  image: ogImage,
+  description:
+    'Consulting, education, and technology company helping individuals build high-income skills and businesses build the systems that produce revenue.',
+  email: 'levi@thelevihenry.com',
+  founder: { '@type': 'Person', name: 'Levi Henry' },
+  areaServed: 'North America',
+  sameAs: ['https://linktr.ee/thelevihenry'],
+};
+const siteLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Levi Henry Group',
+  url: SITE.href,
+};
+const structured = [orgLd, siteLd, ...(jsonld ? (Array.isArray(jsonld) ? jsonld : [jsonld]) : [])];
 ---
 
 <!doctype html>
@@ -15,7 +51,26 @@ const { title = 'Levi Henry Group', description = '', noindex = false } = Astro.
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex" />}
+    {!noindex && <meta name="robots" content="index, follow, max-image-preview:large" />}
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Levi Henry Group" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
     <link rel="icon" href="/assets/brand/favicon-32.png" type="image/png" sizes="64x64" />
     <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png" />
     <meta name="theme-color" content="#0f1219" />
@@ -25,6 +80,7 @@ const { title = 'Levi Henry Group', description = '', noindex = false } = Astro.
       href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&display=swap"
       rel="stylesheet"
     />
+    <script type="application/ld+json" set:html={JSON.stringify(structured)} is:inline />
   </head>
   <body>
     <a

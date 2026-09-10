@@ -1,0 +1,31 @@
+# Levi Henry Group — allow search engines and AI assistants to crawl & cite the site.
+User-agent: *
+Allow: /
+
+# Utility / gated pages that don't belong in search results.
+Disallow: /book-discovery
+Disallow: /ebook-thanks
+
+# Common AI crawlers (explicitly welcomed so the site can be surfaced & cited).
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://thelevihenry.com/sitemap-index.xml
