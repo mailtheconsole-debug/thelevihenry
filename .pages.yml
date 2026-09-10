@@ -1,0 +1,52 @@
+# Pages CMS configuration (https://pagescms.org)
+# Lets you write & publish Insights posts from a browser editor. Posts are saved
+# as Markdown into src/content/insights/ and images into public/assets/insights/;
+# committing them triggers a Netlify rebuild.
+
+media:
+  input: public/assets/insights
+  output: /assets/insights
+
+content:
+  - name: insights
+    label: Insights (Blog)
+    type: collection
+    path: src/content/insights
+    filename: '{fields.title}.md'
+    view:
+      fields: [title, date, draft]
+      sort: [date]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: description
+        label: Summary (used on the card and for SEO)
+        type: text
+        required: true
+      - name: date
+        label: Publish date
+        type: date
+        options:
+          format: yyyy-MM-dd
+        required: true
+      - name: author
+        label: Author
+        type: string
+        default: Levi Henry Group
+      - name: tags
+        label: Tags
+        type: string
+        list: true
+      - name: draft
+        label: Draft (hide from the live site)
+        type: boolean
+        default: false
+      - name: body
+        label: Article
+        type: rich-text
+        required: true
