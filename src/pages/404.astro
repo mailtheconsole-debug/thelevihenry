@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const links = [
+  { href: '/individuals', label: 'For Individuals' },
+  { href: '/businesses', label: 'For Businesses' },
+  { href: '/founders', label: 'For Founders' },
+  { href: '/insights', label: 'Insights' },
+  { href: '/contact', label: 'Contact Us' },
+];
+---
+
+<Base title="Page not found | Levi Henry Group" description="That page doesn't exist. Here's the way back." noindex={true}>
+  <Header />
+
+  <main id="main">
+    <section class="mx-auto flex min-h-[60vh] max-w-3xl flex-col items-center justify-center px-6 py-20 text-center">
+      <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600" data-reveal>Error 404</p>
+      <h1 class="mt-4 font-serif text-5xl font-medium leading-[1.05] tracking-tight text-navy sm:text-6xl" data-reveal>This page moved on.</h1>
+      <p class="mt-5 max-w-lg text-lg text-ink-soft" data-reveal>The link is broken or the page no longer exists. No problem, here's the way back.</p>
+      <div class="mt-8 flex flex-wrap justify-center gap-4" data-reveal>
+        <a href="/" class="btn-primary inline-flex items-center gap-2 rounded-sm px-7 py-3.5 font-sans text-sm font-semibold text-white">Back to home <span>&rarr;</span></a>
+        <a href="/insights" class="inline-flex items-center rounded-sm border border-navy px-7 py-3.5 font-sans text-sm font-semibold text-navy transition hover:bg-navy hover:text-white">Read the Insights</a>
+      </div>
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 border-t border-line pt-8" data-reveal>
+        {links.map((l) => (
+          <a href={l.href} class="font-sans text-sm font-medium text-ink-soft transition hover:text-navy">{l.label}</a>
+        ))}
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
