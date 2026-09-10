@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 /* Map the Levi Henry Group editorial palette + type into Tailwind v4 tokens.
    These become utilities automatically: bg-navy, text-ink-soft, font-serif, etc. */
@@ -152,4 +153,27 @@ body {
   li a[href]:active {
     transform: none;
   }
+}
+
+/* Article prose (the /insights blog) — brand colors + Fraunces headings. */
+.prose-brand {
+  --tw-prose-body: var(--color-ink-soft);
+  --tw-prose-headings: var(--color-navy);
+  --tw-prose-links: var(--color-navy);
+  --tw-prose-bold: var(--color-navy);
+  --tw-prose-quotes: var(--color-navy);
+  --tw-prose-quote-borders: var(--color-navy-600);
+  --tw-prose-bullets: var(--color-navy-600);
+  --tw-prose-counters: var(--color-navy-600);
+  --tw-prose-hr: var(--color-line);
+  --tw-prose-captions: var(--color-ink-faint);
+}
+.prose-brand :where(h1, h2, h3, h4):not(:where([class~="not-prose"] *)) {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+.prose-brand :where(a):not(:where([class~="not-prose"] *)) {
+  text-decoration-color: color-mix(in srgb, var(--color-navy) 35%, transparent);
+  text-underline-offset: 2px;
 }
