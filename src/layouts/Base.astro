@@ -84,6 +84,9 @@ const structured = [orgLd, siteLd, ...(jsonld ? (Array.isArray(jsonld) ? jsonld 
     />
     <script type="application/ld+json" set:html={JSON.stringify(structured)} is:inline />
     <slot name="head" />
+
+    <!-- Cloudflare Web Analytics (privacy-first, cookieless) -->
+    <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "4b6134dc8f9544deab4edb3759a80a73"}'></script>
   </head>
   <body>
     <a
