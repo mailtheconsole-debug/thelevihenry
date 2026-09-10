@@ -1,0 +1,91 @@
+---
+// Standalone helper: renders the signature and copies it (with the logo) to the
+// clipboard as rich HTML, so it pastes straight into Gmail/Outlook signature boxes.
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Email signature — Levi Henry Group</title>
+    <style>
+      body { margin: 0; background: #f4f1ea; color: #14273f; font-family: Arial, Helvetica, sans-serif; padding: 40px 20px; }
+      .wrap { max-width: 720px; margin: 0 auto; }
+      h1 { font-size: 20px; margin: 0 0 6px; }
+      p.sub { color: #515b66; margin: 0 0 24px; font-size: 14px; }
+      .card { background: #fff; border: 1px solid #ddd6c6; border-radius: 12px; padding: 28px; }
+      .btn { display: inline-flex; align-items: center; gap: 8px; background: #14273f; color: #fff; border: 0; border-radius: 6px; padding: 12px 22px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 22px; }
+      .btn:hover { background: #0e1c2e; }
+      .steps { color: #515b66; font-size: 13.5px; line-height: 1.6; margin-top: 22px; }
+      .steps b { color: #14273f; }
+      #status { margin-left: 10px; color: #2E6EB5; font-weight: 700; font-size: 13px; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Your email signature</h1>
+      <p class="sub">Click the button, then paste into your Gmail or Outlook signature box.</p>
+
+      <div class="card">
+        <div id="sig">
+          <table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; font-family:Arial, Helvetica, sans-serif;">
+            <tr>
+              <td style="padding:0 20px 0 0; vertical-align:middle;">
+                <img src="https://thelevihenry.com/assets/brand/email-signature-logo.png" width="150" alt="Levi Henry Group" style="display:block; width:150px; height:auto; border:0;" />
+              </td>
+              <td style="padding:0 20px 0 0; border-left:2px solid #2E6EB5; vertical-align:middle; font-size:1px; line-height:1px;">&nbsp;</td>
+              <td style="vertical-align:middle;">
+                <table cellpadding="0" cellspacing="0" border="0">
+                  <tr><td style="font-family:Arial, Helvetica, sans-serif; font-size:17px; font-weight:bold; color:#0E2A47; padding:0 0 2px 0;">Levi Henry</td></tr>
+                  <tr><td style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#55606F; padding:0 0 8px 0;">Founder, Levi Henry Group</td></tr>
+                  <tr><td style="font-family:Arial, Helvetica, sans-serif; font-size:11px; font-weight:bold; letter-spacing:0.06em; color:#2E6EB5; text-transform:uppercase; padding:0 0 10px 0;">Sales Consulting &nbsp;&middot;&nbsp; Training &amp; Education &nbsp;&middot;&nbsp; Web &amp; Tech Build</td></tr>
+                  <tr><td style="font-family:Arial, Helvetica, sans-serif; font-size:12.5px; color:#12161F; line-height:19px;">
+                    <span style="color:#2E6EB5; font-weight:bold;">P&nbsp;</span><a href="tel:+14108813348" style="color:#12161F; text-decoration:none;">+1 (410) 881-3348</a><br />
+                    <span style="color:#2E6EB5; font-weight:bold;">E&nbsp;</span><a href="mailto:levi@thelevihenry.com" style="color:#12161F; text-decoration:none;">levi@thelevihenry.com</a><br />
+                    <span style="color:#2E6EB5; font-weight:bold;">W&nbsp;</span><a href="https://levihenrygroup.com" style="color:#2E6EB5; text-decoration:none;">levihenrygroup.com</a>
+                  </td></tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <button class="btn" id="copyBtn" type="button">Copy signature</button>
+        <span id="status"></span>
+      </div>
+
+      <div class="steps">
+        <p><b>Then, in Gmail:</b> ⚙️ Settings → See all settings → General → Signature → click your signature box → paste (Ctrl+V / Cmd+V) → Save changes.</p>
+        <p>Set both "For new emails" and "On reply/forward" to this signature so it always appears.</p>
+      </div>
+    </div>
+
+    <script is:inline>
+      const btn = document.getElementById('copyBtn');
+      const status = document.getElementById('status');
+      const sig = document.getElementById('sig');
+      btn.addEventListener('click', async () => {
+        const html = sig.innerHTML;
+        const text = sig.innerText;
+        try {
+          await navigator.clipboard.write([
+            new ClipboardItem({
+              'text/html': new Blob([html], { type: 'text/html' }),
+              'text/plain': new Blob([text], { type: 'text/plain' }),
+            }),
+          ]);
+          status.textContent = 'Copied — now paste in Gmail';
+        } catch (e) {
+          // Fallback: select the rendered signature so the user can Ctrl+C.
+          const range = document.createRange();
+          range.selectNode(sig);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          status.textContent = 'Selected — press Ctrl+C to copy';
+        }
+      });
+    </script>
+  </body>
+</html>

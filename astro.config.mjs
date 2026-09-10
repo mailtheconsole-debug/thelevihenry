@@ -14,7 +14,7 @@ export default defineConfig({
     sitemap({
       // Keep the gated/utility pages out of the sitemap.
       filter: (page) =>
-        !['/gtm-field-manual', '/book-discovery', '/ebook-thanks'].some((p) =>
+        !['/gtm-field-manual', '/book-discovery', '/ebook-thanks', '/email-signature'].some((p) =>
           page.replace(/\/$/, '').endsWith(p)
         ),
     }),
