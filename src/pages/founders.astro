@@ -32,11 +32,31 @@ const covers = [
 
 const input = 'w-full rounded border border-line-strong bg-paper px-3.5 py-2.5 text-ink transition focus:border-brass focus:outline-none focus:ring-2 focus:ring-brass/20';
 const label = 'mb-1.5 block font-sans text-xs font-semibold uppercase tracking-wider text-ink-soft';
+
+const serviceLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Go-To-Market (GTM) Consulting for Startup Founders',
+  serviceType: 'Go-to-market strategy consulting',
+  provider: { '@type': 'Organization', name: 'Levi Henry Group', url: 'https://thelevihenry.com' },
+  areaServed: 'North America',
+  description:
+    'Positioning, target market, customer acquisition, pricing, and a clear go-to-market plan for founders taking a product to market.',
+  url: 'https://thelevihenry.com/founders',
+  offers: {
+    '@type': 'Offer',
+    name: 'GTM Strategy Consultation',
+    description: '60-minute paid 1:1 go-to-market strategy session for startup founders.',
+    url: 'https://selar.com/y1308v4j00',
+    category: 'Consultation',
+  },
+};
 ---
 
 <Base
   title="For Founders | Levi Henry Group"
   description="GTM consulting for early-stage startup founders — go from a built platform to your first paying customers."
+  jsonld={serviceLd}
 >
   <Header />
 

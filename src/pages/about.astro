@@ -8,11 +8,24 @@ const timeline = [
   { i: '02', h: 'The pivot into sales', a: 'Systems & Revenue', d: 'Inside businesses across North America, from million to billion-dollar companies, learning how real businesses run: their tech, their teams, their pipelines, and how revenue actually gets made.' },
   { i: '03', h: 'Levi Henry Group', a: 'Today', d: 'The same teaching instinct, applied to a new room: building the people and the systems that produce revenue for individuals and small business owners.' },
 ];
+
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Levi Henry',
+  jobTitle: 'Founder, Levi Henry Group',
+  description:
+    'Founder of Levi Henry Group, with 15+ years across business, sales, sales leadership, and channel partnerships, working with businesses across North America.',
+  url: 'https://thelevihenry.com/about',
+  worksFor: { '@type': 'Organization', name: 'Levi Henry Group', url: 'https://thelevihenry.com' },
+  sameAs: ['https://linktr.ee/thelevihenry'],
+};
 ---
 
 <Base
   title="About | Levi Henry Group"
   description="The experience behind Levi Henry Group — 15+ years across business, sales leadership, and revenue operations."
+  jsonld={personLd}
 >
   <Header />
 

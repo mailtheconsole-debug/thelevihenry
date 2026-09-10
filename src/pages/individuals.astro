@@ -17,11 +17,37 @@ const steps = [
 ];
 const solid = 'btn-primary inline-flex items-center gap-2 rounded-sm px-6 py-3 font-sans text-sm font-semibold text-white';
 const ghost = 'inline-flex items-center rounded-sm border border-navy px-6 py-3 font-sans text-sm font-semibold text-navy transition hover:bg-navy hover:text-white';
+
+const provider = { '@type': 'Organization', name: 'Levi Henry Group', url: 'https://thelevihenry.com' };
+const courseLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Course',
+  name: 'Remote SDR Mastery Course: Break In and Become a Top Performer',
+  description:
+    'A structured, job-ready course that builds the practical skills of a remote Sales Development Rep: prospecting and outreach, discovery, objection handling, and pipeline management. Eight modules, each with 10 to 16 videos.',
+  provider,
+  url: 'https://thelevihenry.com/individuals',
+  inLanguage: 'en',
+};
+const ebookLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Book',
+  name: 'The Remote SDR Career Blueprint',
+  bookFormat: 'https://schema.org/EBook',
+  description:
+    "A complete beginner's ebook for breaking into remote tech sales: the exact path from no experience to a paid Sales Development role.",
+  author: provider,
+  publisher: provider,
+  isAccessibleForFree: true,
+  url: 'https://thelevihenry.com/individuals',
+  inLanguage: 'en',
+};
 ---
 
 <Base
   title="For Individuals | Levi Henry Group"
   description="Build a high-income sales skill you can carry anywhere — real reps, honest coaching, and job-ready SDR training."
+  jsonld={[courseLd, ebookLd]}
 >
   <Header />
 

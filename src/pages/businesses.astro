@@ -27,11 +27,31 @@ const service2 = [
 const case1Stack = ['Account audit & cleanup', 'Custom landing page', 'Meta Pixel', 'Conversions API', 'Domain verification', 'Ad-copy testing'];
 const case2Stack = ['Site architecture', 'Headless CMS', 'Interactive offer tool', 'Hosting & deploy', 'AI-native build', 'Payments (next)'];
 const chip = 'inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 font-sans text-xs font-medium text-white/70';
+
+const serviceLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Marketing, Paid Acquisition & Revenue Systems',
+  serviceType: 'Marketing and revenue systems consulting',
+  provider: { '@type': 'Organization', name: 'Levi Henry Group', url: 'https://thelevihenry.com' },
+  areaServed: 'North America',
+  description:
+    'Paid acquisition (Facebook, Instagram, TikTok, Google Ads, UGC), tracking & attribution, ad-account audits, funnels, CRM, and revenue infrastructure for small businesses.',
+  url: 'https://thelevihenry.com/businesses',
+  offers: {
+    '@type': 'Offer',
+    name: 'Sales & Revenue Consultation',
+    description: '60-minute paid 1:1 consultation for business owners and service providers.',
+    url: 'https://selar.com/844427i064',
+    category: 'Consultation',
+  },
+};
 ---
 
 <Base
   title="For Businesses | Levi Henry Group"
   description="Marketing, paid acquisition, funnels, and revenue infrastructure for small businesses across North America."
+  jsonld={serviceLd}
 >
   <Header />
 
