@@ -5,48 +5,161 @@ import Footer from '../../components/Footer.astro';
 import { getCollection } from 'astro:content';
 
 const posts = (await getCollection('insights', (p) => !p.data.draft)).sort(
-  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+  (a, b) =>
+    Number(b.data.featured) - Number(a.data.featured) ||
+    b.data.date.getTime() - a.data.date.getTime()
 );
-const fmt = (d) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+
+const featured = posts[0];
+const rest = posts.slice(1);
+const categories = ['All', ...Array.from(new Set(posts.map((p) => p.data.category)))];
+
+const fmt = (d) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+const iso = (d) => d.toISOString().slice(0, 10);
+const readMin = (body) => Math.max(1, Math.round((String(body || '').trim().split(/\s+/).length || 0) / 200));
+
+const pill = 'inline-flex items-center rounded-full border border-line bg-ivory px-3 py-1 font-sans text-xs font-semibold uppercase tracking-wider text-navy-600';
+
+const blogLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: 'Insights | Levi Henry',
+  url: 'https://thelevihenry.com/insights',
+  author: { '@type': 'Person', name: 'Levi Henry' },
+  blogPost: posts.map((p) => ({
+    '@type': 'BlogPosting',
+    headline: p.data.title,
+    description: p.data.description,
+    datePublished: p.data.date.toISOString(),
+    url: `https://thelevihenry.com/insights/${p.id}`,
+  })),
+};
 ---
 
 <Base
-  title="Insights | Levi Henry Group"
-  description="Practical writing on sales, go-to-market, and building the systems that produce revenue — from Levi Henry Group."
+  title="Insights | Levi Henry"
+  description="Levi Henry on selling, teaching, building, and making things. Notes from the work, written as I learn it."
+  jsonld={blogLd}
 >
+  <link
+    slot="head"
+    rel="alternate"
+    type="application/rss+xml"
+    title="Levi Henry — Insights"
+    href="/insights/rss.xml"
+  />
   <Header />
 
   <main id="main">
     <!-- HERO -->
-    <section class="mx-auto max-w-6xl px-6 py-14 lg:py-20">
+    <section class="mx-auto max-w-6xl px-6 pt-14 pb-8 lg:pt-20">
       <div class="max-w-3xl">
         <p data-reveal class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Insights</p>
-        <h1 data-reveal class="mt-4 font-serif text-4xl font-medium leading-[1.07] tracking-tight text-navy sm:text-5xl">Notes on sales, GTM, and building revenue.</h1>
-        <p data-reveal class="mt-5 max-w-2xl text-lg text-ink-soft">Practical writing on breaking into tech sales, taking a product to market, and building the systems that turn effort into revenue. No fluff.</p>
+        <h1 data-reveal class="mt-4 font-serif text-4xl font-medium leading-[1.05] tracking-tight text-navy sm:text-6xl">Notes from the work.</h1>
+        <p data-reveal class="mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft">
+          I sell, I teach, I build, I make things. This is where I write down what I learn doing it.
+          Some of it is tech sales and pipeline. Some of it is what I'm building with AI. Some of it is
+          neither. All of it comes from work I've actually done.
+        </p>
       </div>
+
+      <!-- FILTER -->
+      {categories.length > 2 && (
+        <div class="mt-9 flex flex-wrap gap-2" data-reveal>
+          {categories.map((c, i) => (
+            <button
+              type="button"
+              data-filter={c}
+              class:list={[
+                'filter-pill rounded-full border px-4 py-1.5 font-sans text-sm font-medium transition',
+                i === 0
+                  ? 'border-navy bg-navy text-white'
+                  : 'border-line bg-paper-raised text-ink-soft hover:-translate-y-0.5 hover:border-navy-600/40 hover:text-navy',
+              ]}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
+      )}
     </section>
 
     <!-- POSTS -->
-    <section class="border-t border-line">
-      <div class="mx-auto max-w-6xl px-6 py-16 lg:py-20">
+    <section class="border-t border-line bg-paper">
+      <div class="mx-auto max-w-6xl px-6 py-12 lg:py-16">
         {posts.length === 0 ? (
-          <p class="text-ink-soft" data-reveal>New articles are on the way. Check back soon.</p>
+          <p class="text-ink-soft">New writing is on the way. Check back soon.</p>
         ) : (
-          <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {posts.map((p) => (
-              <a
-                href={`/insights/${p.id}`}
-                class="group flex flex-col rounded-lg border border-line bg-paper-raised p-7 transition duration-300 hover:-translate-y-1 hover:border-navy-600/40 hover:shadow-xl hover:shadow-navy/10"
-                data-reveal
-              >
-                <span class="font-sans text-xs font-semibold uppercase tracking-widest text-navy-600">{fmt(p.data.date)}</span>
-                <h2 class="mt-3 font-serif text-xl font-medium leading-snug text-navy">{p.data.title}</h2>
-                <p class="mt-3 flex-1 text-[0.95rem] leading-relaxed text-ink-soft">{p.data.description}</p>
-                <span class="mt-5 inline-flex items-center gap-2 font-sans text-sm font-semibold text-navy">
-                  Read <span class="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
-                </span>
-              </a>
-            ))}
+          <div class="space-y-8">
+            {/* FEATURED */}
+            {featured && (
+              <article data-post data-category={featured.data.category}>
+                <a
+                  href={`/insights/${featured.id}`}
+                  class="group grid overflow-hidden rounded-2xl border border-line bg-paper-raised shadow-xl shadow-navy/5 transition duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-navy/10 lg:grid-cols-2"
+                >
+                  <div class="order-2 flex flex-col justify-center gap-4 p-8 sm:p-10 lg:order-1">
+                    <span class={pill}>{featured.data.category} · Featured</span>
+                    <h2 class="font-serif text-2xl font-medium leading-snug tracking-tight text-navy sm:text-3xl">{featured.data.title}</h2>
+                    <p class="text-ink-soft">{featured.data.description}</p>
+                    <div class="mt-1 flex items-center gap-2 font-sans text-xs font-semibold uppercase tracking-wider text-ink-faint">
+                      <time datetime={iso(featured.data.date)}>{fmt(featured.data.date)}</time>
+                      <span>·</span>
+                      <span>{readMin(featured.body)} min read</span>
+                    </div>
+                    <span class="mt-2 inline-flex items-center gap-2 font-sans text-sm font-semibold text-navy">
+                      Read <span class="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
+                    </span>
+                  </div>
+                  <div class="relative order-1 min-h-[200px] overflow-hidden lg:order-2 lg:min-h-full">
+                    {featured.data.cover ? (
+                      <img src={featured.data.cover} alt={featured.data.coverAlt || featured.data.title} loading="lazy" class="h-full w-full object-cover transition-transform duration-500 ease-[var(--ease-out)] group-hover:scale-[1.03]" />
+                    ) : (
+                      <div class="panel-brand relative flex h-full min-h-[200px] w-full items-center justify-center overflow-hidden p-10">
+                        <div class="beacon-glow"></div>
+                        <span class="relative z-[1] text-center font-serif text-3xl font-medium leading-tight text-white/95 sm:text-4xl">{featured.data.category}</span>
+                      </div>
+                    )}
+                  </div>
+                </a>
+              </article>
+            )}
+
+            {/* GRID */}
+            {rest.length > 0 && (
+              <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {rest.map((p) => (
+                  <article data-post data-category={p.data.category} class="h-full">
+                    <a
+                      href={`/insights/${p.id}`}
+                      class="group flex h-full flex-col overflow-hidden rounded-xl border border-line bg-paper-raised transition duration-300 hover:-translate-y-1 hover:border-navy-600/40 hover:shadow-xl hover:shadow-navy/10"
+                    >
+                      {p.data.cover ? (
+                        <img src={p.data.cover} alt={p.data.coverAlt || p.data.title} loading="lazy" class="aspect-[16/10] w-full object-cover" />
+                      ) : (
+                        <div class="panel-brand relative flex aspect-[16/10] w-full items-center justify-center overflow-hidden px-6">
+                          <div class="beacon-glow"></div>
+                          <span class="relative z-[1] text-center font-serif text-2xl font-medium leading-tight text-white/95">{p.data.category}</span>
+                        </div>
+                      )}
+                      <div class="flex flex-1 flex-col p-6">
+                        <span class={pill}>{p.data.category}</span>
+                        <h3 class="mt-3 font-serif text-xl font-medium leading-snug text-navy">{p.data.title}</h3>
+                        <p class="mt-2 flex-1 text-[0.95rem] leading-relaxed text-ink-soft">{p.data.description}</p>
+                        <div class="mt-4 flex items-center gap-2 font-sans text-xs font-semibold uppercase tracking-wider text-ink-faint">
+                          <time datetime={iso(p.data.date)}>{fmt(p.data.date)}</time>
+                          <span>·</span>
+                          <span>{readMin(p.body)} min read</span>
+                        </div>
+                      </div>
+                    </a>
+                  </article>
+                ))}
+              </div>
+            )}
+
+            <p id="filter-empty" hidden class="py-10 text-center text-ink-soft">Nothing here under this topic yet. Try another, or check back soon.</p>
           </div>
         )}
       </div>
@@ -55,3 +168,31 @@ const fmt = (d) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long
 
   <Footer />
 </Base>
+
+<script is:inline>
+  (function () {
+    const pills = Array.from(document.querySelectorAll('[data-filter]'));
+    const posts = Array.from(document.querySelectorAll('[data-post]'));
+    const empty = document.getElementById('filter-empty');
+    if (!pills.length) return;
+    function apply(cat) {
+      let shown = 0;
+      posts.forEach((p) => {
+        const match = cat === 'All' || p.getAttribute('data-category') === cat;
+        p.style.display = match ? '' : 'none';
+        if (match) shown++;
+      });
+      pills.forEach((b) => {
+        const on = b.getAttribute('data-filter') === cat;
+        b.classList.toggle('bg-navy', on);
+        b.classList.toggle('text-white', on);
+        b.classList.toggle('border-navy', on);
+        b.classList.toggle('bg-paper-raised', !on);
+        b.classList.toggle('text-ink-soft', !on);
+        b.classList.toggle('border-line', !on);
+      });
+      if (empty) empty.hidden = shown > 0;
+    }
+    pills.forEach((b) => b.addEventListener('click', () => apply(b.getAttribute('data-filter'))));
+  })();
+</script>

@@ -83,6 +83,7 @@ const structured = [orgLd, siteLd, ...(jsonld ? (Array.isArray(jsonld) ? jsonld 
       rel="stylesheet"
     />
     <script type="application/ld+json" set:html={JSON.stringify(structured)} is:inline />
+    <slot name="head" />
   </head>
   <body>
     <a

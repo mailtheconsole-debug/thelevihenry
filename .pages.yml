@@ -1,6 +1,6 @@
 # Pages CMS configuration (https://pagescms.org)
-# Lets you write & publish Insights posts from a browser editor. Posts are saved
-# as Markdown into src/content/insights/ and images into public/assets/insights/;
+# Write & publish Insights posts from a browser editor. Posts are saved as
+# Markdown into src/content/insights/ and images into public/assets/insights/;
 # committing them triggers a Netlify rebuild.
 
 media:
@@ -14,20 +14,29 @@ content:
     path: src/content/insights
     filename: '{fields.title}.md'
     view:
-      fields: [title, date, draft]
-      sort: [date]
+      fields: [title, category, date, draft]
+      primary: title
+      sort: [date, title]
       default:
         sort: date
         order: desc
+      search: true
     fields:
       - name: title
         label: Title
         type: string
         required: true
       - name: description
-        label: Summary (used on the card and for SEO)
+        label: Summary (card + fallback SEO)
         type: text
         required: true
+        description: One line. What the reader walks away able to do, not what the post covers.
+      - name: category
+        label: Category
+        type: select
+        required: true
+        options:
+          values: [Tech Sales, Go-To-Market, Building, Creative, Essays]
       - name: date
         label: Publish date
         type: date
@@ -37,11 +46,29 @@ content:
       - name: author
         label: Author
         type: string
-        default: Levi Henry Group
+        default: Levi Henry
       - name: tags
         label: Tags
         type: string
         list: true
+      - name: cover
+        label: Cover image
+        type: image
+      - name: coverAlt
+        label: Cover alt text
+        type: string
+        description: Describe the image for screen readers and image search.
+      - name: seoTitle
+        label: SEO title (optional)
+        type: string
+        description: ~60 characters. Leave blank to use the post title.
+      - name: seoDescription
+        label: SEO meta description (optional)
+        type: text
+        description: 150-160 characters. Leave blank to use the summary above.
+      - name: featured
+        label: Feature at the top of Insights
+        type: boolean
       - name: draft
         label: Draft (hide from the live site)
         type: boolean

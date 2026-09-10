@@ -11,29 +11,69 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
-const fmt = (d) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+const d = post.data;
+
+const fmt = (x) => x.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+const iso = (x) => x.toISOString().slice(0, 10);
+const readMin = Math.max(1, Math.round((String(post.body || '').trim().split(/\s+/).length || 0) / 200));
 
 const url = `https://thelevihenry.com/insights/${post.id}`;
+const metaTitle = d.seoTitle || `${d.title} | Levi Henry`;
+const metaDesc = d.seoDescription || d.description;
+const ogImage = d.cover || '/assets/brand/og-default.jpg';
+
+// Category-aware closing CTA (kept soft — an invitation, not a pitch).
+const cat = d.category;
+let cta;
+if (cat === 'Tech Sales') {
+  cta = {
+    heading: 'Want to break in for real?',
+    body: "If you're aiming for a remote SDR role, start with the free Remote SDR Career Blueprint. When you want to build the skill with real reps and direct feedback, that's the Mastery Course.",
+    buttons: [
+      { label: 'Get the free blueprint', href: '/individuals', primary: true },
+      { label: 'See the course', href: '/individuals' },
+      { label: 'Book a discovery call', href: '/book-discovery' },
+    ],
+  };
+} else if (cat === 'Go-To-Market') {
+  cta = {
+    heading: 'Taking something to market?',
+    body: 'Start with the free GTM Field Manual, then book a call if you want a plan built around your specific product and stage.',
+    buttons: [
+      { label: 'Get the GTM Field Manual', href: '/founders', primary: true },
+      { label: 'Book a discovery call', href: '/book-discovery' },
+    ],
+  };
+} else {
+  cta = {
+    heading: 'Want to work together?',
+    body: "If something here lines up with what you're building, book a call and let's talk it through.",
+    buttons: [{ label: 'Book a call', href: '/contact', primary: true }],
+  };
+}
+
 const articleLd = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
-  headline: post.data.title,
-  description: post.data.description,
-  datePublished: post.data.date.toISOString(),
-  dateModified: post.data.date.toISOString(),
-  author: { '@type': 'Organization', name: 'Levi Henry Group', url: 'https://thelevihenry.com' },
+  headline: d.title,
+  description: d.description,
+  datePublished: d.date.toISOString(),
+  dateModified: d.date.toISOString(),
+  articleSection: d.category,
+  keywords: [d.category, ...d.tags].join(', '),
+  author: { '@type': 'Person', name: d.author || 'Levi Henry' },
   publisher: {
     '@type': 'Organization',
     name: 'Levi Henry Group',
     logo: { '@type': 'ImageObject', url: 'https://thelevihenry.com/assets/brand/logo-icon.png' },
   },
+  image: new URL(ogImage, 'https://thelevihenry.com').href,
   mainEntityOfPage: url,
   url,
-  keywords: post.data.tags.join(', '),
 };
 ---
 
-<Base title={`${post.data.title} | Levi Henry Group`} description={post.data.description} jsonld={articleLd}>
+<Base title={metaTitle} description={metaDesc} image={ogImage} jsonld={articleLd}>
   <Header />
 
   <main id="main">
@@ -43,28 +83,47 @@ const articleLd = {
       </a>
 
       <header class="mt-6" data-reveal>
-        <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">{fmt(post.data.date)}</p>
-        <h1 class="mt-4 font-serif text-4xl font-medium leading-[1.08] tracking-tight text-navy sm:text-5xl">{post.data.title}</h1>
-        <p class="mt-5 text-lg text-ink-soft">{post.data.description}</p>
-        {post.data.tags.length > 0 && (
-          <div class="mt-5 flex flex-wrap gap-2">
-            {post.data.tags.map((t) => (
-              <span class="inline-flex items-center rounded-full border border-line bg-paper-raised px-3 py-1 font-sans text-xs font-medium text-ink-soft">{t}</span>
-            ))}
-          </div>
-        )}
+        <div class="flex flex-wrap items-center gap-3 font-sans text-xs font-semibold uppercase tracking-wider">
+          <span class="inline-flex items-center rounded-full border border-line bg-paper-raised px-3 py-1 text-navy-600">{d.category}</span>
+          <time datetime={iso(d.date)} class="text-ink-faint">{fmt(d.date)}</time>
+          <span class="text-ink-faint">·</span>
+          <span class="text-ink-faint">{readMin} min read</span>
+        </div>
+        <h1 class="mt-4 font-serif text-4xl font-medium leading-[1.08] tracking-tight text-navy sm:text-5xl">{d.title}</h1>
+        <p class="mt-5 text-lg leading-relaxed text-ink-soft">{d.description}</p>
+        <p class="mt-4 font-sans text-sm text-ink-faint">By {d.author}</p>
       </header>
 
-      <div class="prose prose-brand mt-10 max-w-none prose-headings:mt-10 prose-headings:mb-3 prose-a:font-semibold" data-reveal>
+      {d.cover && (
+        <img src={d.cover} alt={d.coverAlt || d.title} loading="lazy" class="mt-8 w-full rounded-xl border border-line object-cover shadow-lg shadow-navy/10" data-reveal />
+      )}
+
+      <div class="prose prose-brand prose-lg mt-10 prose-headings:mt-10 prose-headings:mb-3 prose-a:font-semibold prose-img:rounded-lg" data-reveal>
         <Content />
       </div>
 
-      <!-- CTA -->
-      <div class="band-dark relative mt-14 overflow-hidden rounded-2xl px-8 py-10 text-center ring-1 ring-white/10" data-reveal>
+      {d.tags.length > 0 && (
+        <div class="mt-10 flex flex-wrap gap-2 border-t border-line pt-6" data-reveal>
+          {d.tags.map((t) => (
+            <span class="inline-flex items-center rounded-full border border-line bg-paper-raised px-3 py-1 font-sans text-xs font-medium text-ink-soft">{t}</span>
+          ))}
+        </div>
+      )}
+
+      <!-- Category-aware CTA -->
+      <div class="band-dark relative mt-12 overflow-hidden rounded-2xl px-8 py-10 text-center ring-1 ring-white/10" data-reveal>
         <div class="beacon-glow"></div>
-        <h2 class="relative z-[1] font-serif text-2xl font-medium leading-tight text-white sm:text-3xl">Ready to build the skill or the system?</h2>
-        <p class="relative z-[1] mx-auto mt-3 max-w-lg text-white/75">Tell us where you are and what you're trying to grow — we'll tell you honestly how we can help.</p>
-        <a href="/contact" class="relative z-[1] mt-6 inline-flex items-center gap-2 rounded-sm bg-white px-7 py-3.5 font-sans text-sm font-semibold text-navy shadow-lg shadow-black/20 transition hover:bg-ivory-deep">Work with us <span>&rarr;</span></a>
+        <h2 class="relative z-[1] font-serif text-2xl font-medium leading-tight text-white sm:text-3xl">{cta.heading}</h2>
+        <p class="relative z-[1] mx-auto mt-3 max-w-lg text-white/75">{cta.body}</p>
+        <div class="relative z-[1] mt-7 flex flex-wrap justify-center gap-4">
+          {cta.buttons.map((b) =>
+            b.primary ? (
+              <a href={b.href} class="inline-flex items-center gap-2 rounded-sm bg-white px-7 py-3.5 font-sans text-sm font-semibold text-navy shadow-lg shadow-black/20 transition hover:bg-ivory-deep">{b.label} <span>&rarr;</span></a>
+            ) : (
+              <a href={b.href} class="inline-flex items-center rounded-sm border border-white/40 px-7 py-3.5 font-sans text-sm font-semibold text-white transition hover:bg-white hover:text-navy">{b.label}</a>
+            )
+          )}
+        </div>
       </div>
     </article>
   </main>

@@ -1,8 +1,8 @@
 ---
 title: How to Become a Remote SDR With No Experience
-description: "A real path into remote tech sales as an SDR with no experience:
-  what the job pays, the skills that get you hired, and how to start this week."
+description: "A real path into remote tech sales as an SDR with no experience: what the job pays, the skills that get you hired, and how to start this week."
 date: 2026-09-09
+category: "Tech Sales"
 author: Levi Henry Group
 tags:
   - break into tech sales
@@ -10,9 +10,9 @@ tags:
   - SDR salary
   - remote sales jobs
   - sales development representative
+featured: true
 draft: false
 ---
-# How to Become a Remote SDR With No Experience
 
 Sales development is one of the few careers where you can start remotely, skip the degree, and still be making real money within a year. Entry-level SDRs average around $55,000 a year, and OTE (base plus commission) at software companies regularly clears $80,000 to $100,000. No CS degree required. No four years of dues-paying in an office.
 
