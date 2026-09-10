@@ -9,10 +9,12 @@ const service1 = [
   { t: 'Google Ads', d: 'Search and Performance Max campaigns that capture high-intent demand and put budget where it converts.' },
   { t: 'UGC as a Service', d: 'A steady pipeline of creator-style user-generated content built to feed and refresh your paid social.' },
   { t: 'Creative & offers', d: 'Angles, hooks, and offers tested systematically so winners scale and losers get cut.' },
-  { t: 'Tracking & attribution', d: 'Know what a customer actually costs, and where they came from.' },
+  { t: 'Account audits & cleanup', d: 'Inherited a messy ad account from a previous agency or freelancer? We audit, clean up, and rebuild the foundation before spending another dollar.' },
+  { t: 'Tracking & attribution', d: "Pixels, Conversions API, and domain verification set up correctly — so you know what a customer actually costs, and your ad platform isn't optimizing on broken data." },
 ];
 const service2 = [
   { t: 'Identify & implement the right tech', d: 'Cut through the tool sprawl: we identify the right stack for your problem and get it working, not just purchased.' },
+  { t: 'Fix what\'s already broken', d: "Half-built funnels, misfiring tracking, disconnected tools — we diagnose what's actually wrong before recommending anything new." },
   { t: 'Websites & funnels', d: 'Build the pages and funnels that convert traffic into leads and leads into customers.' },
   { t: 'Payment integration', d: 'Wire up checkout and payments so the funnel actually collects money: the technical backbone behind client acquisition and sales.' },
   { t: 'CRM & revenue systems', d: 'Set up the CRM and automation so every lead is captured, tracked, and followed up.' },
@@ -20,6 +22,11 @@ const service2 = [
   { t: 'Inbound & outbound lead generation', d: "Generate demand through both channels and feed a pipeline that's actually worked." },
   { t: 'Manage pipeline to revenue', d: 'Build and manage the pipeline all the way to closed revenue, with the discipline to keep it healthy.' },
 ];
+
+// Tech/skill chips shown on each case study — visual texture + expertise signal.
+const case1Stack = ['Account audit & cleanup', 'Custom landing page', 'Meta Pixel', 'Conversions API', 'Domain verification', 'Ad-copy testing'];
+const case2Stack = ['Site architecture', 'Headless CMS', 'Interactive offer tool', 'Hosting & deploy', 'AI-native build', 'Payments (next)'];
+const chip = 'inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 font-sans text-xs font-medium text-white/70';
 ---
 
 <Base
@@ -49,9 +56,9 @@ const service2 = [
           <h2 class="mt-3 font-serif text-3xl font-medium leading-tight tracking-tight text-navy sm:text-4xl">Marketing &amp; Paid Acquisition</h2>
           <p class="mt-4 max-w-2xl text-ink-soft">Paid social that acquires customers instead of impressions. We build the creative, dial in targeting, and manage spend against revenue, across Facebook, Instagram, and TikTok.</p>
         </div>
-        <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="mt-10 flex flex-wrap gap-4">
           {service1.map((s) => (
-            <div class="rounded-lg border border-line bg-paper-raised p-6 transition duration-300 hover:-translate-y-1 hover:border-navy-600/40 hover:shadow-xl hover:shadow-navy/10" data-reveal>
+            <div class="grow basis-full rounded-lg border border-line bg-paper-raised p-6 transition duration-300 hover:-translate-y-1 hover:border-navy-600/40 hover:shadow-xl hover:shadow-navy/10 sm:basis-[calc((100%_-_1rem)/2)] lg:basis-[calc((100%_-_3rem)/4)]" data-reveal>
               <strong class="block font-bold text-navy">{s.t}</strong>
               <span class="mt-2 block text-[0.95rem] leading-relaxed text-ink-soft">{s.d}</span>
             </div>
@@ -68,15 +75,9 @@ const service2 = [
           <h2 class="mt-3 font-serif text-3xl font-medium leading-tight tracking-tight text-navy sm:text-4xl">Funnels, Technology &amp; Revenue Infrastructure</h2>
           <p class="mt-4 max-w-2xl text-ink-soft">We build and advise on the technology that powers revenue: websites, funnels, CRMs, and the systems that turn traffic into paying customers, and we build and train the sales team that works them.</p>
         </div>
-        <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {service2.map((s, i) => (
-            <div
-              class:list={[
-                'rounded-lg border border-line bg-ivory p-6 transition duration-300 hover:-translate-y-1 hover:border-navy-600/40 hover:shadow-xl hover:shadow-navy/10',
-                i === service2.length - 1 && 'sm:col-span-2 lg:col-span-3',
-              ]}
-              data-reveal
-            >
+        <div class="mt-10 flex flex-wrap gap-4">
+          {service2.map((s) => (
+            <div class="grow basis-full rounded-lg border border-line bg-ivory p-6 transition duration-300 hover:-translate-y-1 hover:border-navy-600/40 hover:shadow-xl hover:shadow-navy/10 sm:basis-[calc((100%_-_1rem)/2)] lg:basis-[calc((100%_-_3rem)/4)]" data-reveal>
               <strong class="block font-bold text-navy">{s.t}</strong>
               <span class="mt-2 block text-[0.95rem] leading-relaxed text-ink-soft">{s.d}</span>
             </div>
@@ -90,33 +91,88 @@ const service2 = [
       <div class="mx-auto max-w-6xl px-6 py-16 lg:py-24">
         <div class="max-w-2xl" data-reveal>
           <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-brass-soft">Case studies</p>
-          <h2 class="mt-3 font-serif text-3xl font-medium leading-tight tracking-tight text-white sm:text-4xl">Proof, not promises.</h2>
+          <h2 class="mt-3 font-serif text-3xl font-medium leading-tight tracking-tight text-white sm:text-4xl">Work that produced revenue.</h2>
         </div>
-        <div class="mt-10 grid gap-5 md:grid-cols-2">
-          <div class="rounded-md border border-white/10 bg-white/5 p-8 transition duration-300 hover:-translate-y-1 hover:border-white/25" data-reveal>
-            <span class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-soft">Case study 01</span>
-            <h3 class="mt-2 font-serif text-2xl font-medium text-white">Paid acquisition rebuild</h3>
-            <p class="mt-3 text-white/70">A results-driven rebuild of a paid social program: creative, targeting, and tracking rebuilt around cost-per-acquisition. Full write-up in progress.</p>
-            <a href="/contact" class="mt-5 inline-flex items-center gap-2 border-b border-white/40 pb-0.5 font-sans text-sm font-semibold text-white">Get in touch <span>&rarr;</span></a>
-          </div>
-          <div class="rounded-md border border-white/10 bg-white/5 p-8 transition duration-300 hover:-translate-y-1 hover:border-white/25" data-reveal>
-            <span class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-soft">Case study 02</span>
-            <h3 class="mt-2 font-serif text-2xl font-medium text-white">Revenue infrastructure build</h3>
-            <p class="mt-3 text-white/70">CRM, funnels, and a trained sales team stood up from scratch, turning scattered leads into a managed pipeline. Full write-up in progress.</p>
-            <a href="/contact" class="mt-5 inline-flex items-center gap-2 border-b border-white/40 pb-0.5 font-sans text-sm font-semibold text-white">Get in touch <span>&rarr;</span></a>
-          </div>
+        <div class="mt-10 space-y-5">
+          <!-- Featured case study -->
+          <article class="relative overflow-hidden rounded-xl border border-white/10 border-l-4 border-l-brass-soft/60 bg-white/5 p-8 shadow-xl shadow-black/20 sm:p-10" data-reveal>
+            <span class="pointer-events-none absolute right-5 top-1 select-none font-serif text-[6rem] font-medium leading-none text-white/[0.05] sm:text-[8rem]">01</span>
+            <span class="relative font-sans text-xs font-semibold uppercase tracking-widest text-brass-soft">Case study 01 · Marketing &amp; paid acquisition</span>
+            <h3 class="relative mt-2 font-serif text-2xl font-medium text-white sm:text-3xl">Paid acquisition rebuild — fashion education</h3>
+            <div class="mt-6 grid gap-8 lg:grid-cols-[1.5fr_1fr]">
+              <div>
+                <p class="text-white/70"><span class="font-semibold text-white">The situation:</span> a fashion education business had an existing Meta ad account, but no working conversion tracking, a messy account structure left by a previous team, and no clear path from ad click to paid enrollment.</p>
+                <p class="mt-6 font-sans text-xs font-semibold uppercase tracking-widest text-white/80">What we rebuilt</p>
+                <ul class="mt-3 space-y-2.5 text-[0.95rem] text-white/70">
+                  <li class="flex gap-3"><span class="mt-1 flex-none text-brass-soft">&mdash;</span><span>Full account audit and cleanup: removed stale audiences, broken campaigns, and unclear access.</span></li>
+                  <li class="flex gap-3"><span class="mt-1 flex-none text-brass-soft">&mdash;</span><span>Custom-built and hosted a dedicated landing page, wired with Meta Pixel and Conversions API tracking.</span></li>
+                  <li class="flex gap-3"><span class="mt-1 flex-none text-brass-soft">&mdash;</span><span>Verified domain-level tracking to fix data reliability issues at the source.</span></li>
+                  <li class="flex gap-3"><span class="mt-1 flex-none text-brass-soft">&mdash;</span><span>Wrote high-converting ad copy pulled directly from the client's own sales scripts, then tested multiple angles against the same audience to find what actually moved people to buy.</span></li>
+                  <li class="flex gap-3"><span class="mt-1 flex-none text-brass-soft">&mdash;</span><span>Diagnosed a live funnel issue (broken price data in checkout events) that was corrupting the account's optimization signal.</span></li>
+                </ul>
+              </div>
+              <div class="relative flex flex-col justify-center overflow-hidden rounded-lg border border-brass-soft/30 bg-navy-deep/60 p-6 text-center">
+                <div class="pointer-events-none absolute -top-12 left-1/2 h-32 w-44 -translate-x-1/2 rounded-full bg-brass-soft/20 blur-3xl"></div>
+                <span class="relative font-sans text-xs font-semibold uppercase tracking-widest text-brass-soft">The result</span>
+                <p class="relative mt-2 font-serif text-5xl font-medium leading-none text-white sm:text-6xl">&#8358;10M+</p>
+                <p class="relative mt-3 text-sm text-white/70">in course enrollments generated within days of relaunch — with a fully rebuilt, trackable system the client now owns going forward.</p>
+              </div>
+            </div>
+            <div class="mt-6 flex flex-wrap gap-2">
+              {case1Stack.map((c) => <span class={chip}>{c}</span>)}
+            </div>
+            <a href="/contact" class="mt-6 inline-flex items-center gap-2 border-b border-white/40 pb-0.5 font-sans text-sm font-semibold text-white">Get in touch <span>&rarr;</span></a>
+          </article>
+
+          <!-- Featured case study 02 -->
+          <article class="relative overflow-hidden rounded-xl border border-white/10 border-l-4 border-l-brass-soft/60 bg-white/5 p-8 shadow-xl shadow-black/20 sm:p-10" data-reveal>
+            <span class="pointer-events-none absolute right-5 top-1 select-none font-serif text-[6rem] font-medium leading-none text-white/[0.05] sm:text-[8rem]">02</span>
+            <span class="relative font-sans text-xs font-semibold uppercase tracking-widest text-brass-soft">Case study 02 · Technology &amp; digital build</span>
+            <h3 class="relative mt-2 font-serif text-2xl font-medium text-white sm:text-3xl">Full digital business — music consulting practice</h3>
+            <div class="mt-6 grid gap-8 lg:grid-cols-[1.5fr_1fr]">
+              <div class="space-y-5 text-[0.95rem] text-white/70">
+                <p><span class="font-semibold text-white">The situation:</span> a music industry consultant was building a consulting and education practice, and needed more than a website. He needed a digital home for the practice — something that read as credible to artists and producers, let him publish and sell his own guides and offers without depending on anyone to update it, and could carry the weight of a real sales conversation instead of sitting there as a brochure.</p>
+                <div>
+                  <p class="font-sans text-xs font-semibold uppercase tracking-widest text-white/80">What we built</p>
+                  <p class="mt-3">We designed and built the full system end to end, using an AI-native workflow instead of a dev team or an agency handoff: the site architecture, a CMS so the client could publish guides, offers, and catalog updates without ever touching code, and hosting and deployment configured to stay out of his way. No scoping calls with outside contractors, no build queue, no handoff between designer and developer — moving at the speed of the tools.</p>
+                  <p class="mt-3">The piece that mattered most wasn't the site. It was a <span class="text-white">custom interactive offer tool</span>, built to run live on the sales call: instead of talking the prospect through the offer, the tool walked them through it in real time, on-screen, while we ran the call — and the follow-up went out time-bound, while the conversation was still warm.</p>
+                </div>
+                <div>
+                  <p class="font-sans text-xs font-semibold uppercase tracking-widest text-white/80">What's next</p>
+                  <p class="mt-3">The next phase is already architected: a submission system that lets artists submit and pay for spotlight placement directly through the platform — turning it from a site that supports sales into one that generates revenue on its own. Stack and integrations are mapped and ready to build.</p>
+                </div>
+              </div>
+              <div class="relative flex flex-col justify-center overflow-hidden rounded-lg border border-brass-soft/30 bg-navy-deep/60 p-6">
+                <div class="pointer-events-none absolute -top-12 left-1/2 h-32 w-44 -translate-x-1/2 rounded-full bg-brass-soft/20 blur-3xl"></div>
+                <span class="relative font-sans text-xs font-semibold uppercase tracking-widest text-brass-soft">The takeaway</span>
+                <p class="relative mt-3 font-serif text-xl font-medium leading-snug text-white">A digital presence is only as good as what it does for you in the room.</p>
+                <p class="relative mt-3 text-sm text-white/70">This one was built to close — and it's already scoped to start generating revenue on its own.</p>
+              </div>
+            </div>
+            <div class="mt-6 flex flex-wrap gap-2">
+              {case2Stack.map((c) => <span class={chip}>{c}</span>)}
+            </div>
+            <a href="/contact" class="mt-6 inline-flex items-center gap-2 border-b border-white/40 pb-0.5 font-sans text-sm font-semibold text-white">Get in touch <span>&rarr;</span></a>
+          </article>
         </div>
       </div>
     </section>
 
-    <!-- CTA -->
+    <!-- PAID CONSULTATION -->
     <section class="border-t border-line">
-      <div class="mx-auto max-w-6xl px-6 py-16 lg:py-20">
-        <div class="band-dark relative overflow-hidden rounded-2xl px-8 py-14 text-center ring-1 ring-white/10 sm:px-14" data-reveal>
-          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-white/60">Scale with systems</p>
-          <h2 class="mx-auto mt-3 max-w-lg font-serif text-3xl font-medium leading-tight tracking-tight text-white sm:text-4xl">Let's build the engine behind your revenue.</h2>
-          <p class="mx-auto mt-4 max-w-xl text-white/75">Tell us about your business and where growth is stalling. We'll map the systems that unblock it.</p>
-          <a href="/contact" class="mt-8 inline-flex items-center gap-2 rounded-sm bg-white px-7 py-3.5 font-sans text-sm font-semibold text-navy transition hover:bg-ivory-deep">Book a call <span>&rarr;</span></a>
+      <div class="mx-auto grid max-w-6xl items-center gap-10 px-6 py-16 lg:grid-cols-2 lg:gap-14 lg:py-20">
+        <div class="mx-auto w-full max-w-md" data-reveal>
+          <img src="/assets/photos/sales-revenue-consultation.webp" alt="Sales & Revenue Consultation — 60-minute paid session for business owners and service providers" width="1000" height="1000" loading="lazy" class="w-full rounded-xl shadow-2xl shadow-navy/25 ring-1 ring-navy/10 transition duration-300 ease-[var(--ease-out)] hover:-translate-y-1.5 hover:shadow-navy/35" />
+        </div>
+        <div data-reveal>
+          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Work with us · 1:1</p>
+          <h2 class="mt-3 font-serif text-3xl font-medium leading-tight tracking-tight text-navy sm:text-4xl">Sales &amp; Revenue Consultation</h2>
+          <p class="mt-4 text-ink-soft">Sixty focused minutes on what's working, what's holding you back, and a simple, actionable plan to attract more customers, close more sales, and grow your revenue.</p>
+          <div class="mt-6 flex flex-wrap gap-4">
+            <a href="https://selar.com/844427i064" target="_blank" rel="noopener" class="btn-primary inline-flex items-center gap-2 rounded-sm px-7 py-3.5 font-sans text-sm font-semibold text-white">Book the 60-min consultation <span>&rarr;</span></a>
+            <a href="/book-discovery" class="inline-flex items-center rounded-sm border border-navy px-7 py-3.5 font-sans text-sm font-semibold text-navy transition hover:bg-navy hover:text-white">Free discovery call first</a>
+          </div>
+          <p class="mt-4 text-sm italic text-ink-faint">Paid 60-minute session for business owners &amp; service providers. Prefer to just talk? <a href="/contact" class="underline decoration-navy/30 underline-offset-2 hover:text-navy">Contact us</a>.</p>
         </div>
       </div>
     </section>
