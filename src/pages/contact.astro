@@ -5,12 +5,18 @@ import Footer from '../components/Footer.astro';
 
 const input = 'w-full rounded border border-line-strong bg-white px-3.5 py-2.5 text-ink transition focus:border-brass focus:outline-none focus:ring-2 focus:ring-brass/20';
 const label = 'mb-1.5 block font-sans text-xs font-semibold uppercase tracking-wider text-ink-soft';
+// Cloudflare Turnstile (spam protection). Set PUBLIC_TURNSTILE_SITEKEY in Netlify
+// to activate; the function verifies with TURNSTILE_SECRET.
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITEKEY;
 ---
 
 <Base
   title="Contact Us | Levi Henry Group"
   description="Tell us where you are and what you're trying to grow. We'll reply personally with the honest next step — or book a free 30-minute discovery call."
 >
+  {turnstileSiteKey && (
+    <script slot="head" is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  )}
   <Header />
 
   <main id="main">
@@ -41,12 +47,13 @@ const label = 'mb-1.5 block font-sans text-xs font-semibold uppercase tracking-w
           </div>
           <div class="mb-4">
             <label class={label} for="about">Are you an individual or a business?</label>
-            <input class={input} id="about" name="about" type="text" placeholder="Individual · Business · Not sure yet" />
+            <input class={input} id="about" name="about" type="text" placeholder="Individual · Business · Not sure yet" required />
           </div>
           <div class="mb-4">
             <label class={label} for="message">What are you trying to build?</label>
             <textarea class={`${input} min-h-[140px] resize-y`} id="message" name="message" required></textarea>
           </div>
+          {turnstileSiteKey && <div class="cf-turnstile mb-5" data-sitekey={turnstileSiteKey}></div>}
           <button type="submit" class="group inline-flex items-center gap-2 btn-primary rounded-sm px-7 py-3.5 font-sans text-sm font-semibold text-white">
             Send message <span class="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
           </button>

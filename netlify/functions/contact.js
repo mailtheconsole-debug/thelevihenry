@@ -55,10 +55,35 @@ exports.handler = async (event) => {
     const about = (p.get("about") || "").trim();
     const message = (p.get("message") || "").trim();
     const honeypot = (p.get("bot-field") || "").trim();
+    const turnstileToken = (p.get("cf-turnstile-response") || "").trim();
 
     // Spam bot: pretend success, send nothing.
     if (honeypot) return redirect("/contact?sent=1");
-    if (!email || !message) return redirect("/contact?err=1");
+    // All four fields are required.
+    if (!name || !email || !about || !message) return redirect("/contact?err=1");
+
+    // Cloudflare Turnstile captcha verification (active once TURNSTILE_SECRET is set).
+    const turnstileSecret = process.env.TURNSTILE_SECRET;
+    if (turnstileSecret) {
+      try {
+        const ip = event.headers["x-nf-client-connection-ip"] || event.headers["x-forwarded-for"] || "";
+        const verifyBody = new URLSearchParams({ secret: turnstileSecret, response: turnstileToken });
+        if (ip) verifyBody.set("remoteip", ip.split(",")[0].trim());
+        const vr = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: verifyBody.toString(),
+        });
+        const vj = await vr.json();
+        if (!vj.success) {
+          console.error("Turnstile verification failed:", vj["error-codes"]);
+          return redirect("/contact?err=1");
+        }
+      } catch (e) {
+        console.error("Turnstile verify error:", e);
+        return redirect("/contact?err=1");
+      }
+    }
 
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
