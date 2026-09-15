@@ -60,13 +60,13 @@ const arrow =
                 </figcaption>
               </div>
             ) : (
-              <div class="band-dark relative flex h-[460px] flex-col overflow-hidden rounded-xl p-7 shadow-xl shadow-navy/20 ring-1 ring-white/10">
+              <div class="band-dark relative flex h-[460px] flex-col overflow-hidden rounded-xl p-6 shadow-xl shadow-navy/20 ring-1 ring-white/10">
                 <div class="beacon-glow"></div>
-                <span class="relative font-serif text-6xl leading-[0.8] text-brass-soft" aria-hidden="true">&ldquo;</span>
-                <blockquote class="relative mt-3 flex-1 overflow-hidden font-serif text-xl font-medium leading-snug text-white sm:text-[1.35rem]">
+                <span class="relative font-serif text-5xl leading-[0.8] text-brass-soft" aria-hidden="true">&ldquo;</span>
+                <blockquote class="relative mt-2 flex-1 overflow-hidden font-serif text-lg font-medium leading-snug text-white [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:5]">
                   {t.data.quote}
                 </blockquote>
-                <figcaption class="relative mt-5 flex items-center gap-3">
+                <figcaption class="relative mt-4 flex items-center gap-3">
                   {t.data.avatar ? (
                     <img src={t.data.avatar} alt={t.data.name} width="44" height="44" loading="lazy" class="h-11 w-11 rounded-full object-cover ring-1 ring-white/20" />
                   ) : (
@@ -77,6 +77,21 @@ const arrow =
                     {t.data.role && <span class="block font-sans text-xs text-white/60">{t.data.role}</span>}
                   </span>
                 </figcaption>
+                {t.data.proof && (
+                  <button
+                    type="button"
+                    class="proof-open relative mt-4 flex w-full items-center gap-3 rounded-lg border border-white/15 bg-white/5 p-2 text-left transition hover:border-white/30 hover:bg-white/10"
+                    data-proof={t.data.proof}
+                    data-proof-alt={t.data.proofAlt || `Message from ${t.data.name}`}
+                  >
+                    <img src={t.data.proof} alt="" width="40" height="52" loading="lazy" class="h-13 w-10 shrink-0 rounded object-cover object-top ring-1 ring-white/15" style="height:52px" />
+                    <span class="min-w-0 flex-1">
+                      <span class="block font-sans text-xs font-semibold text-white">See the real message</span>
+                      <span class="block font-sans text-[0.7rem] text-white/55">Screenshot &middot; tap to enlarge</span>
+                    </span>
+                    <svg class="shrink-0 text-white/55" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                  </button>
+                )}
               </div>
             )}
           </article>
@@ -86,8 +101,36 @@ const arrow =
   </section>
 )}
 
+<!-- Proof lightbox (shared) -->
+<div id="proof-lightbox" style="display:none" class="fixed inset-0 z-[100] items-center justify-center bg-black/85 p-4 backdrop-blur-sm">
+  <button type="button" data-proof-close aria-label="Close" class="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-2xl leading-none text-white transition hover:bg-white/20">&times;</button>
+  <img id="proof-img" src="" alt="" class="max-h-[88vh] w-auto max-w-full rounded-xl shadow-2xl" />
+</div>
+
 <script is:inline>
   (function () {
+    // Lightbox for real-message screenshots.
+    const lb = document.getElementById('proof-lightbox');
+    const lbImg = document.getElementById('proof-img');
+    if (lb && lbImg) {
+      const open = (src, alt) => {
+        lbImg.src = src;
+        lbImg.alt = alt || '';
+        lb.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      };
+      const close = () => {
+        lb.style.display = 'none';
+        lbImg.src = '';
+        document.body.style.overflow = '';
+      };
+      document.querySelectorAll('.proof-open').forEach((b) =>
+        b.addEventListener('click', () => open(b.getAttribute('data-proof'), b.getAttribute('data-proof-alt')))
+      );
+      lb.addEventListener('click', (e) => { if (e.target === lb || e.target.hasAttribute('data-proof-close')) close(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && lb.style.display === 'flex') close(); });
+    }
+
     const scroller = document.querySelector('[data-tscroll]');
     if (!scroller) return;
     const prev = document.querySelector('[data-tprev]');

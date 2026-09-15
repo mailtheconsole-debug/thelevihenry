@@ -31,6 +31,8 @@ const testimonials = defineCollection({
     name: z.string(),
     role: z.string().optional(),
     quote: z.string().optional(), // for text testimonials
+    proof: z.string().optional(), // screenshot of the real message (shown in a lightbox)
+    proofAlt: z.string().optional(),
     video: z.string().optional(), // for video testimonials (path under /assets/video)
     poster: z.string().optional(), // poster image for the video
     avatar: z.string().optional(), // optional image for text cards

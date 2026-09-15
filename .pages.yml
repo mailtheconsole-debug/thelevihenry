@@ -117,6 +117,15 @@ content:
         label: Quote (text testimonials)
         type: text
         description: The client's words. Required for text testimonials.
+      - name: proof
+        label: Proof screenshot (optional)
+        type: image
+        options:
+          media: testimonials
+        description: The real message/screenshot. Shown as a thumbnail that enlarges on tap.
+      - name: proofAlt
+        label: Proof alt text
+        type: string
       - name: avatar
         label: Avatar / logo (text testimonials, optional)
         type: image
