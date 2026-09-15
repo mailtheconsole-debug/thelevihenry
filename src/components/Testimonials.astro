@@ -1,0 +1,108 @@
+---
+import { getCollection } from 'astro:content';
+
+const items = (await getCollection('testimonials', (t) => !t.data.draft)).sort(
+  (a, b) =>
+    Number(b.data.featured) - Number(a.data.featured) ||
+    a.data.order - b.data.order ||
+    a.data.name.localeCompare(b.data.name)
+);
+
+const initials = (name) =>
+  name
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join('')
+    .toUpperCase();
+
+const arrow =
+  'flex h-10 w-10 items-center justify-center rounded-full border border-line bg-paper-raised text-navy transition hover:-translate-y-0.5 hover:border-navy-600/50 hover:shadow-md disabled:opacity-40 disabled:hover:translate-y-0 disabled:hover:shadow-none';
+---
+
+{items.length > 0 && (
+  <section class="border-t border-line">
+    <div class="mx-auto max-w-6xl px-6 py-16 lg:py-20">
+      <div class="flex items-end justify-between gap-6" data-reveal>
+        <div class="max-w-2xl">
+          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">In their words</p>
+          <h2 class="mt-3 font-serif text-3xl font-medium leading-tight tracking-tight text-navy sm:text-4xl">What clients say.</h2>
+        </div>
+        <div class="hidden shrink-0 gap-2 sm:flex">
+          <button type="button" data-tprev aria-label="Previous testimonials" class={arrow}><span aria-hidden="true">&larr;</span></button>
+          <button type="button" data-tnext aria-label="Next testimonials" class={arrow}><span aria-hidden="true">&rarr;</span></button>
+        </div>
+      </div>
+
+      <div
+        data-tscroll
+        role="region"
+        aria-label="Client testimonials"
+        tabindex="0"
+        class="mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {items.map((t) => (
+          <article class="w-[300px] shrink-0 snap-start sm:w-[340px]">
+            {t.data.type === 'video' ? (
+              <div class="flex h-[460px] flex-col overflow-hidden rounded-xl bg-navy-deep shadow-xl shadow-navy/20 ring-1 ring-navy/10">
+                <video
+                  class="min-h-0 w-full flex-1 object-cover"
+                  controls
+                  preload="none"
+                  playsinline
+                  poster={t.data.poster}
+                  src={t.data.video}
+                ></video>
+                <figcaption class="flex items-center gap-2 px-4 py-3">
+                  <span class="text-beacon-soft" aria-hidden="true">&#9658;</span>
+                  <span class="font-sans text-sm font-semibold text-white">{t.data.name}</span>
+                  {t.data.role && <span class="truncate font-sans text-xs text-white/60">&middot; {t.data.role}</span>}
+                </figcaption>
+              </div>
+            ) : (
+              <div class="band-dark relative flex h-[460px] flex-col overflow-hidden rounded-xl p-7 shadow-xl shadow-navy/20 ring-1 ring-white/10">
+                <div class="beacon-glow"></div>
+                <span class="relative font-serif text-6xl leading-[0.8] text-brass-soft" aria-hidden="true">&ldquo;</span>
+                <blockquote class="relative mt-3 flex-1 overflow-hidden font-serif text-xl font-medium leading-snug text-white sm:text-[1.35rem]">
+                  {t.data.quote}
+                </blockquote>
+                <figcaption class="relative mt-5 flex items-center gap-3">
+                  {t.data.avatar ? (
+                    <img src={t.data.avatar} alt={t.data.name} width="44" height="44" loading="lazy" class="h-11 w-11 rounded-full object-cover ring-1 ring-white/20" />
+                  ) : (
+                    <span class="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 font-sans text-sm font-bold text-brass-soft ring-1 ring-white/20">{initials(t.data.name)}</span>
+                  )}
+                  <span>
+                    <span class="block font-sans text-sm font-semibold text-white">{t.data.name}</span>
+                    {t.data.role && <span class="block font-sans text-xs text-white/60">{t.data.role}</span>}
+                  </span>
+                </figcaption>
+              </div>
+            )}
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<script is:inline>
+  (function () {
+    const scroller = document.querySelector('[data-tscroll]');
+    if (!scroller) return;
+    const prev = document.querySelector('[data-tprev]');
+    const next = document.querySelector('[data-tnext]');
+    const step = () => Math.min(scroller.clientWidth * 0.85, 365);
+    prev && prev.addEventListener('click', () => scroller.scrollBy({ left: -step(), behavior: 'smooth' }));
+    next && next.addEventListener('click', () => scroller.scrollBy({ left: step(), behavior: 'smooth' }));
+    // Dim arrows at the ends.
+    const update = () => {
+      const max = scroller.scrollWidth - scroller.clientWidth - 4;
+      if (prev) prev.disabled = scroller.scrollLeft <= 4;
+      if (next) next.disabled = scroller.scrollLeft >= max;
+    };
+    scroller.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  })();
+</script>

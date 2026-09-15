@@ -4,8 +4,12 @@
 # committing them triggers a Netlify rebuild.
 
 media:
-  input: public/assets/insights
-  output: /assets/insights
+  - name: insights
+    input: public/assets/insights
+    output: /assets/insights
+  - name: testimonials
+    input: public/assets/testimonials
+    output: /assets/testimonials
 
 content:
   - name: insights
@@ -54,6 +58,8 @@ content:
       - name: cover
         label: Cover image
         type: image
+        options:
+          media: insights
       - name: coverAlt
         label: Cover alt text
         type: string
@@ -77,3 +83,62 @@ content:
         label: Article
         type: rich-text
         required: true
+
+  - name: testimonials
+    label: Testimonials
+    type: collection
+    path: src/content/testimonials
+    filename: '{fields.name}.md'
+    view:
+      fields: [name, type, featured, order, draft]
+      primary: name
+      sort: [order, name]
+      default:
+        sort: order
+        order: asc
+      search: true
+    fields:
+      - name: type
+        label: Type
+        type: select
+        required: true
+        default: text
+        options:
+          values: [text, video]
+      - name: name
+        label: Name
+        type: string
+        required: true
+      - name: role
+        label: Role / company
+        type: string
+        description: e.g. "Founder, The Lauren Henry"
+      - name: quote
+        label: Quote (text testimonials)
+        type: text
+        description: The client's words. Required for text testimonials.
+      - name: avatar
+        label: Avatar / logo (text testimonials, optional)
+        type: image
+        options:
+          media: testimonials
+      - name: video
+        label: Video path (video testimonials)
+        type: string
+        description: e.g. /assets/video/testimonial-name.mp4 (upload the MP4 to that folder)
+      - name: poster
+        label: Poster image (video testimonials)
+        type: image
+        options:
+          media: testimonials
+      - name: featured
+        label: Feature first
+        type: boolean
+      - name: order
+        label: Sort order (lower shows first)
+        type: number
+        default: 100
+      - name: draft
+        label: Draft (hide from the live site)
+        type: boolean
+        default: false

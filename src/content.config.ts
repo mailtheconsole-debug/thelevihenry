@@ -22,4 +22,22 @@ const insights = defineCollection({
   }),
 });
 
-export const collections = { insights };
+// Testimonials — video or text. Data-driven so the slider scales to many, and
+// new ones can be added gradually (via Pages CMS or a file) without code changes.
+const testimonials = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/testimonials' }),
+  schema: z.object({
+    type: z.enum(['video', 'text']).default('text'),
+    name: z.string(),
+    role: z.string().optional(),
+    quote: z.string().optional(), // for text testimonials
+    video: z.string().optional(), // for video testimonials (path under /assets/video)
+    poster: z.string().optional(), // poster image for the video
+    avatar: z.string().optional(), // optional image for text cards
+    featured: z.boolean().default(false),
+    order: z.number().default(100), // lower shows first
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { insights, testimonials };

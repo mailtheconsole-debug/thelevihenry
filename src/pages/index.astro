@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Testimonials from '../components/Testimonials.astro';
 
 const fork = [
   { n: '01 — For Individuals', h: 'Build high-income skills', href: '/individuals',
@@ -21,11 +22,6 @@ const pillars = [
   { i: '03', h: 'Technology Services', a: 'Build', d: 'End-to-end build support for the infrastructure that makes revenue systems actually work: websites, funnels, payment integration, and the technical backbone behind client acquisition and sales.' },
 ];
 
-const testimonials = [
-  { name: 'Geoffrey', poster: '/assets/photos/poster-geoffrey.webp', src: '/assets/video/testimonial-geoffrey.mp4' },
-  { name: 'Manny', poster: '/assets/photos/poster-manny.webp', src: '/assets/video/testimonial-manny.mp4' },
-  { name: 'Nanmwa', poster: '/assets/photos/poster-nanmwa.webp', src: '/assets/video/testimonial-nanmwa.mp4' },
-];
 ---
 
 <Base
@@ -129,42 +125,7 @@ const testimonials = [
     </section>
 
     <!-- TESTIMONIALS -->
-    <section class="border-t border-line">
-      <div class="mx-auto max-w-6xl px-6 py-16 lg:py-20">
-        <div class="max-w-2xl" data-reveal>
-          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">In their words</p>
-          <h2 class="mt-3 font-serif text-3xl font-medium leading-tight tracking-tight text-navy sm:text-4xl">What clients say.</h2>
-        </div>
-        <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {testimonials.map((t) => (
-            <figure class="group m-0 overflow-hidden rounded-lg bg-navy-deep shadow-2xl shadow-navy/30" data-reveal>
-              <video class="aspect-[9/12] w-full object-cover" controls preload="none" playsinline poster={t.poster} src={t.src}></video>
-              <figcaption class="flex items-center gap-2 px-4 py-3 font-sans text-sm font-semibold text-white">
-                <span class="text-beacon-soft">&#9658;</span> {t.name}
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-
-        <!-- Written testimonial (client message) -->
-        <div class="mt-6 grid items-center gap-8 rounded-2xl border border-line bg-paper-raised p-6 shadow-xl shadow-navy/5 sm:p-9 lg:grid-cols-[1.25fr_0.75fr]" data-reveal>
-          <div>
-            <span class="font-serif text-5xl leading-none text-navy-600">&ldquo;</span>
-            <blockquote class="mt-2 font-serif text-2xl font-medium leading-snug tracking-tight text-navy sm:text-[1.75rem]">
-              None of this would be possible without you. Thank you so much!
-            </blockquote>
-            <figcaption class="mt-5">
-              <span class="block font-sans text-sm font-bold text-navy">Lauren Henry</span>
-              <span class="block font-sans text-sm text-ink-soft">Founder, The Lauren Henry</span>
-              <span class="mt-2 block text-sm text-ink-soft">After her brand landed on Nestuge's top-creator leaderboard.</span>
-            </figcaption>
-          </div>
-          <div class="mx-auto w-full max-w-[280px]">
-            <img src="/assets/photos/testimonial-lauren.webp" alt="WhatsApp message from Lauren Henry thanking Levi Henry Group after landing on Nestuge's creator leaderboard" width="760" height="1436" loading="lazy" class="w-full rounded-xl border border-line shadow-lg shadow-navy/15" />
-          </div>
-        </div>
-      </div>
-    </section>
+    <Testimonials />
 
     <!-- CTA -->
     <section class="border-t border-line">
