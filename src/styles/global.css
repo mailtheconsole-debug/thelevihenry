@@ -178,14 +178,7 @@ body {
   text-underline-offset: 2px;
 }
 
-/* Testimonials slider — premium touches: edge fade + animated swipe cue. */
-.testi-track {
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
-  mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
-}
-@media (max-width: 640px) {
-  .testi-track { -webkit-mask-image: none; mask-image: none; }
-}
+/* Testimonials slider — animated swipe cue. */
 @keyframes swipe-nudge {
   0%, 100% { transform: translateX(0); }
   50% { transform: translateX(5px); }
