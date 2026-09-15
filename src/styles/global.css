@@ -82,18 +82,35 @@
   z-index: 0;
 }
 
-/* Primary button: gradient face, hairline top highlight, layered shadow. */
+/* Primary button: gradient face, glossy shine, layered shadow, hover light-sweep. */
 .btn-primary {
+  position: relative;
+  overflow: hidden;
   background: linear-gradient(180deg, #1e3a5c 0%, var(--color-navy) 55%, var(--color-navy-deep) 100%);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 11px 22px -14px rgba(255, 255, 255, 0.28),
     0 10px 24px -8px rgba(20, 39, 63, 0.55);
 }
 .btn-primary:hover {
   background: linear-gradient(180deg, #244a76 0%, #16324f 60%, var(--color-navy-deep) 100%);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    inset 0 11px 22px -14px rgba(255, 255, 255, 0.3),
     0 14px 30px -8px rgba(20, 39, 63, 0.6);
+}
+/* Light sweep across the button on hover. */
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 32%, rgba(255, 255, 255, 0.33) 50%, transparent 68%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .btn-primary::after { transition: transform 0.7s var(--ease-out); }
+  .btn-primary:hover::after { transform: translateX(120%); }
 }
 
 /* Raised card: subtle top-edge highlight + soft shadow at rest. */
