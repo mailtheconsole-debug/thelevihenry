@@ -177,3 +177,20 @@ body {
   text-decoration-color: color-mix(in srgb, var(--color-navy) 35%, transparent);
   text-underline-offset: 2px;
 }
+
+/* Testimonials slider — premium touches: edge fade + animated swipe cue. */
+.testi-track {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
+}
+@media (max-width: 640px) {
+  .testi-track { -webkit-mask-image: none; mask-image: none; }
+}
+@keyframes swipe-nudge {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(5px); }
+}
+.swipe-arrow { animation: swipe-nudge 1.2s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .swipe-arrow { animation: none; }
+}

@@ -17,7 +17,7 @@ const initials = (name) =>
     .toUpperCase();
 
 const arrow =
-  'flex h-10 w-10 items-center justify-center rounded-full border border-line bg-paper-raised text-navy transition hover:-translate-y-0.5 hover:border-navy-600/50 hover:shadow-md disabled:opacity-40 disabled:hover:translate-y-0 disabled:hover:shadow-none';
+  'flex h-11 w-11 items-center justify-center rounded-full border border-line bg-paper-raised text-navy shadow-sm transition hover:-translate-y-0.5 hover:border-navy-600/50 hover:shadow-md disabled:pointer-events-none disabled:opacity-30';
 ---
 
 {items.length > 0 && (
@@ -39,31 +39,33 @@ const arrow =
         role="region"
         aria-label="Client testimonials"
         tabindex="0"
-        class="mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        class="testi-track mt-10 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth px-1 pb-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {items.map((t) => (
-          <article class="w-[300px] shrink-0 snap-start sm:w-[340px]">
+          <article class="w-[300px] shrink-0 snap-center sm:w-[340px]">
             {t.data.type === 'video' ? (
-              <div class="flex h-[460px] flex-col overflow-hidden rounded-xl bg-navy-deep shadow-xl shadow-navy/20 ring-1 ring-navy/10">
-                <video
-                  class="min-h-0 w-full flex-1 object-cover"
-                  controls
-                  preload="none"
-                  playsinline
-                  poster={t.data.poster}
-                  src={t.data.video}
-                ></video>
-                <figcaption class="flex items-center gap-2 px-4 py-3">
-                  <span class="text-beacon-soft" aria-hidden="true">&#9658;</span>
+              <div class="group/card relative flex h-[480px] flex-col overflow-hidden rounded-2xl bg-navy-deep shadow-xl shadow-navy/25 ring-1 ring-white/10 transition duration-300 ease-[var(--ease-out)] hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-navy/30">
+                <div class="relative min-h-0 flex-1">
+                  <video class="absolute inset-0 h-full w-full object-cover" preload="none" playsinline poster={t.data.poster} src={t.data.video}></video>
+                  <button type="button" class="video-play absolute inset-0 z-[2] flex items-center justify-center bg-gradient-to-t from-navy-deep/45 via-transparent to-transparent transition" aria-label={`Play ${t.data.name}'s testimonial`}>
+                    <span class="flex h-16 w-16 items-center justify-center rounded-full bg-white/92 shadow-xl ring-1 ring-white/50 backdrop-blur transition duration-300 group-hover/card:scale-110">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="#14273f" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                    </span>
+                  </button>
+                  <span class="pointer-events-none absolute left-4 top-4 z-[2] inline-flex items-center gap-1.5 rounded-full bg-black/35 px-3 py-1 font-sans text-[0.7rem] font-semibold uppercase tracking-wider text-white backdrop-blur-sm">
+                    <span class="text-beacon-soft" aria-hidden="true">&#9658;</span> Video
+                  </span>
+                </div>
+                <figcaption class="flex items-center gap-2 px-5 py-4">
                   <span class="font-sans text-sm font-semibold text-white">{t.data.name}</span>
-                  {t.data.role && <span class="truncate font-sans text-xs text-white/60">&middot; {t.data.role}</span>}
+                  {t.data.role && <span class="truncate font-sans text-xs text-white/55">&middot; {t.data.role}</span>}
                 </figcaption>
               </div>
             ) : (
-              <div class="band-dark relative flex h-[460px] flex-col overflow-hidden rounded-xl p-6 shadow-xl shadow-navy/20 ring-1 ring-white/10">
+              <div class="group/card band-dark relative flex h-[480px] flex-col overflow-hidden rounded-2xl p-6 shadow-xl shadow-navy/25 ring-1 ring-white/10 transition duration-300 ease-[var(--ease-out)] hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-navy/30">
                 <div class="beacon-glow"></div>
                 <span class="relative font-serif text-5xl leading-[0.8] text-brass-soft" aria-hidden="true">&ldquo;</span>
-                <blockquote class="relative mt-2 flex-1 overflow-hidden font-serif text-lg font-medium leading-snug text-white [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:5]">
+                <blockquote class="relative mt-2 flex-1 overflow-hidden font-serif text-lg font-medium leading-snug text-white [-webkit-box-orient:vertical] [-webkit-line-clamp:5] [display:-webkit-box]">
                   {t.data.quote}
                 </blockquote>
                 <figcaption class="relative mt-4 flex items-center gap-3">
@@ -84,7 +86,7 @@ const arrow =
                     data-proof={t.data.proof}
                     data-proof-alt={t.data.proofAlt || `Message from ${t.data.name}`}
                   >
-                    <img src={t.data.proof} alt="" width="40" height="52" loading="lazy" class="h-13 w-10 shrink-0 rounded object-cover object-top ring-1 ring-white/15" style="height:52px" />
+                    <img src={t.data.proof} alt="" width="40" height="52" loading="lazy" class="w-10 shrink-0 rounded object-cover object-top ring-1 ring-white/15" style="height:52px" />
                     <span class="min-w-0 flex-1">
                       <span class="block font-sans text-xs font-semibold text-white">See the real message</span>
                       <span class="block font-sans text-[0.7rem] text-white/55">Screenshot &middot; tap to enlarge</span>
@@ -96,6 +98,16 @@ const arrow =
             )}
           </article>
         ))}
+      </div>
+
+      <!-- progress + swipe cue -->
+      <div class="mt-7 flex items-center gap-4" data-reveal>
+        <div class="h-1 flex-1 overflow-hidden rounded-full bg-line/70">
+          <div data-tprogress class="h-full rounded-full bg-navy transition-[width] duration-150 ease-out" style="width:25%"></div>
+        </div>
+        <span data-thint class="flex shrink-0 items-center gap-1.5 font-sans text-xs font-semibold uppercase tracking-[0.15em] text-navy-600 transition-opacity duration-300">
+          Swipe to view more <span class="swipe-arrow" aria-hidden="true">&rarr;</span>
+        </span>
       </div>
     </div>
   </section>
@@ -109,21 +121,24 @@ const arrow =
 
 <script is:inline>
   (function () {
-    // Lightbox for real-message screenshots.
+    // Video play overlays.
+    document.querySelectorAll('.video-play').forEach((btn) => {
+      const video = btn.parentElement.querySelector('video');
+      if (!video) return;
+      btn.addEventListener('click', () => {
+        video.controls = true;
+        video.play();
+        btn.style.display = 'none';
+      });
+      video.addEventListener('ended', () => { video.controls = false; btn.style.display = 'flex'; });
+    });
+
+    // Proof lightbox.
     const lb = document.getElementById('proof-lightbox');
     const lbImg = document.getElementById('proof-img');
     if (lb && lbImg) {
-      const open = (src, alt) => {
-        lbImg.src = src;
-        lbImg.alt = alt || '';
-        lb.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-      };
-      const close = () => {
-        lb.style.display = 'none';
-        lbImg.src = '';
-        document.body.style.overflow = '';
-      };
+      const open = (src, alt) => { lbImg.src = src; lbImg.alt = alt || ''; lb.style.display = 'flex'; document.body.style.overflow = 'hidden'; };
+      const close = () => { lb.style.display = 'none'; lbImg.src = ''; document.body.style.overflow = ''; };
       document.querySelectorAll('.proof-open').forEach((b) =>
         b.addEventListener('click', () => open(b.getAttribute('data-proof'), b.getAttribute('data-proof-alt')))
       );
@@ -131,18 +146,26 @@ const arrow =
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && lb.style.display === 'flex') close(); });
     }
 
+    // Slider: arrows, progress bar, swipe hint.
     const scroller = document.querySelector('[data-tscroll]');
     if (!scroller) return;
     const prev = document.querySelector('[data-tprev]');
     const next = document.querySelector('[data-tnext]');
-    const step = () => Math.min(scroller.clientWidth * 0.85, 365);
+    const progress = document.querySelector('[data-tprogress]');
+    const hint = document.querySelector('[data-thint]');
+    const step = () => Math.min(scroller.clientWidth * 0.85, 366);
     prev && prev.addEventListener('click', () => scroller.scrollBy({ left: -step(), behavior: 'smooth' }));
     next && next.addEventListener('click', () => scroller.scrollBy({ left: step(), behavior: 'smooth' }));
-    // Dim arrows at the ends.
     const update = () => {
-      const max = scroller.scrollWidth - scroller.clientWidth - 4;
+      const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+      const scrollable = maxScroll > 8;
       if (prev) prev.disabled = scroller.scrollLeft <= 4;
-      if (next) next.disabled = scroller.scrollLeft >= max;
+      if (next) next.disabled = scroller.scrollLeft >= maxScroll - 4;
+      if (progress) {
+        const pct = scrollable ? ((scroller.scrollLeft + scroller.clientWidth) / scroller.scrollWidth) * 100 : 100;
+        progress.style.width = Math.min(100, Math.max(15, pct)) + '%';
+      }
+      if (hint) hint.style.opacity = scrollable && scroller.scrollLeft < maxScroll - 12 ? '1' : '0';
     };
     scroller.addEventListener('scroll', update, { passive: true });
     window.addEventListener('resize', update);
