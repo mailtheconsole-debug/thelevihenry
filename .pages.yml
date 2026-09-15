@@ -40,7 +40,7 @@ content:
         type: select
         required: true
         options:
-          values: [Tech Sales, Go-To-Market, Building, Creative, Essays]
+          values: [Tech Sales, Marketing & Ads, Go-To-Market, Building, Creative, Essays]
       - name: date
         label: Publish date
         type: date

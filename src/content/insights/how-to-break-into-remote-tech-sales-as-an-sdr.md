@@ -10,7 +10,7 @@ tags:
   - SDR salary
   - remote sales jobs
   - sales development representative
-featured: true
+featured: false
 draft: false
 ---
 

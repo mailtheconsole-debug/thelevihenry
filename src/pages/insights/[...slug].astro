@@ -44,6 +44,15 @@ if (cat === 'Tech Sales') {
       { label: 'Book a discovery call', href: '/book-discovery' },
     ],
   };
+} else if (cat === 'Marketing & Ads') {
+  cta = {
+    heading: 'Is your ad spend actually working?',
+    body: "If you're spending and can't tell what it's producing, that's usually a tracking and setup problem, not a creative one. Book a Sales & Revenue Consultation and we'll audit what you have and build the foundation that makes spend pay off.",
+    buttons: [
+      { label: 'Book a Sales & Revenue Consultation', href: 'https://selar.com/844427i064', primary: true, external: true },
+      { label: 'Free discovery call', href: '/book-discovery' },
+    ],
+  };
 } else {
   cta = {
     heading: 'Want to work together?',
@@ -128,9 +137,9 @@ const articleLd = {
         <div class="relative z-[1] mt-7 flex flex-wrap justify-center gap-4">
           {cta.buttons.map((b) =>
             b.primary ? (
-              <a href={b.href} class="inline-flex items-center gap-2 rounded-sm bg-white px-7 py-3.5 font-sans text-sm font-semibold text-navy shadow-lg shadow-black/20 transition hover:bg-ivory-deep">{b.label} <span>&rarr;</span></a>
+              <a href={b.href} target={b.external ? '_blank' : undefined} rel={b.external ? 'noopener' : undefined} class="inline-flex items-center gap-2 rounded-sm bg-white px-7 py-3.5 font-sans text-sm font-semibold text-navy shadow-lg shadow-black/20 transition hover:bg-ivory-deep">{b.label} <span>&rarr;</span></a>
             ) : (
-              <a href={b.href} class="inline-flex items-center rounded-sm border border-white/40 px-7 py-3.5 font-sans text-sm font-semibold text-white transition hover:bg-white hover:text-navy">{b.label}</a>
+              <a href={b.href} target={b.external ? '_blank' : undefined} rel={b.external ? 'noopener' : undefined} class="inline-flex items-center rounded-sm border border-white/40 px-7 py-3.5 font-sans text-sm font-semibold text-white transition hover:bg-white hover:text-navy">{b.label}</a>
             )
           )}
         </div>
