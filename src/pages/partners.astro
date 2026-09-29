@@ -1,0 +1,58 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+// Partner logos are deliberately not links: visitors stay on this site.
+// Cloud Tech Gurus wording follows their guidance ("Independent Partner", never employment).
+const partners = [
+  {
+    logo: '/assets/brand/cloud-tech-gurus.png',
+    name: 'Cloud Tech Gurus',
+    w: 584,
+    h: 170,
+    role: 'Independent Partner',
+    d: 'A consulting and advisory firm for customer experience and AI transformation, helping companies choose and implement the right contact center technology.',
+  },
+  {
+    logo: '/assets/brand/kastech.png',
+    name: 'Kastech Network',
+    w: 585,
+    h: 175,
+    role: 'Technology Partner',
+    d: 'An IT solutions company offering software and web development, cloud hosting, managed IT services, cybersecurity, and IT consulting.',
+  },
+];
+---
+
+<Base
+  title="Partners | Levi Henry Group"
+  description="The companies Levi Henry Group works with: Cloud Tech Gurus for customer experience and AI advisory, and Kastech Network for technology services."
+>
+  <Header />
+
+  <main id="main">
+    <section class="mx-auto max-w-6xl px-6 py-14 lg:py-16">
+      <div class="max-w-3xl">
+        <p data-reveal class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Partners</p>
+        <h1 data-reveal class="mt-4 font-serif text-4xl font-medium leading-[1.07] tracking-tight text-navy sm:text-5xl">The companies we work with.</h1>
+        <p data-reveal class="mt-5 max-w-2xl text-lg text-ink-soft">Levi Henry Group partners with established companies so the advice and the build work we offer are backed by people who do this every day.</p>
+      </div>
+    </section>
+
+    <section class="border-t border-line bg-paper">
+      <div class="mx-auto grid max-w-6xl gap-6 px-6 py-16 md:grid-cols-2 lg:py-20">
+        {partners.map((p) => (
+          <div data-reveal class="card-raised flex flex-col items-center rounded-2xl border border-line bg-paper-raised p-7 text-center sm:p-9">
+            <img src={p.logo} alt={p.name} width={p.w} height={p.h} loading="lazy" class="h-14 w-auto sm:h-16" />
+            <p class="mt-6 font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">{p.role}</p>
+            <h2 class="mt-2 font-serif text-2xl font-medium leading-tight text-navy sm:text-3xl">{p.name}</h2>
+            <p class="mt-3 text-ink-soft">{p.d}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
