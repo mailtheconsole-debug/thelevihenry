@@ -1,0 +1,311 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+// Google Apps Script web app URL (ends in /exec) that saves each signup to a
+// Google Sheet. See google-sheets-script.gs for setup. Left as a placeholder on purpose.
+const formAction = 'https://script.google.com/macros/s/AKfycbxtx7CTGV_LFaOkaZq-vFc71IjHYqpJm3wZrwCFvcENRC9HdIhYnt3-PORXZRWWzBaU/exec';
+// Name of this waitlist. Saved with every signup so one sheet can hold many waitlists.
+const WAITLIST = 'Meta Ads Bootcamp';
+
+const facts = [
+  { b: '5', s: 'live sessions' },
+  { b: '6 weeks', s: 'including a week for your ads to run' },
+  { b: '10', s: 'spots' },
+  { b: '1', s: 'real campaign launched' },
+];
+
+const stats = [
+  { b: '#1', s: 'digital ad platform in the world, projected to pass Google in 2026 with 26.8% of global digital ad spend', n: 1 },
+  { b: '3.56B', s: "people use Meta's apps every day", n: 2 },
+  { b: '$196B', s: 'spent by businesses on Meta ads in 2025, up 22% from 2024', n: 3 },
+  { b: '38M', s: 'people in Nigeria you can reach with Facebook ads', n: 4 },
+];
+
+const sources = [
+  { html: 'Emarketer forecast, April 2026, via <a href="https://www.marketingdive.com/news/meta-to-surpass-google-in-digital-ad-revenue-for-first-time-emarketer/817384/" target="_blank" rel="noopener">Marketing Dive</a>' },
+  { html: 'Meta, <a href="https://investor.atmeta.com/investor-news/press-release-details/2026/Meta-Reports-First-Quarter-2026-Results/default.aspx" target="_blank" rel="noopener">Q1 2026 results</a> (daily active people, March 2026)' },
+  { html: 'Meta, <a href="https://investor.atmeta.com/investor-news/press-release-details/2026/Meta-Reports-Fourth-Quarter-and-Full-Year-2025-Results/default.aspx" target="_blank" rel="noopener">full year 2025 results</a>' },
+  { html: 'DataReportal, <a href="https://datareportal.com/reports/digital-2026-nigeria" target="_blank" rel="noopener">Digital 2026: Nigeria</a> (Oct 2025 data)' },
+  { html: 'Socialinsider data, via <a href="https://sproutsocial.com/insights/organic-reach/" target="_blank" rel="noopener">Sprout Social</a>' },
+];
+
+const sessions = [
+  { n: '01', t: 'Foundations and setup', d: 'Your offer, your audience, your goal and budget. Then Business Manager, the Pixel and tracking, set up correctly from day one.' },
+  { n: '02', t: 'Creative and copy', d: 'Hooks, formats, and how to make good ads with your phone and simple AI tools. You leave with ads ready to run.' },
+  { n: '03', t: 'Build and launch', d: 'Campaign structure, targeting and budget. Everyone launches a live campaign.' },
+  { n: '04', t: 'Reading the numbers', d: 'We go through your actual results: which numbers matter, what to cut, what to keep, and what to test next.' },
+  { n: '05', t: 'Scaling and what happens after the click', d: 'Two weeks after session 4, so your campaign has enough data to scale. Landing pages, follow-up, retargeting, and a 90-day plan so your ads turn into sales.' },
+];
+
+const goodFit = [
+  'Run a business and want more customers from social media',
+  "Have boosted posts before and weren't sure they worked",
+  'Want to understand your ads instead of guessing',
+  'Can show up live once a week',
+];
+const expect = [
+  'Recordings of every session',
+  'A group chat for questions between calls',
+  'Personal feedback on your own campaign',
+  'A separate ad budget of about ₦50,000 for your test',
+];
+
+const faqs = [
+  { q: 'What does joining the waitlist mean?', a: "You're first in line. When enrollment opens, I'll reach out to you personally with the dates and how to secure your spot. Joining doesn't commit you to anything." },
+  { q: "I already boost posts. Isn't that the same thing?", a: "No. Boosting is a shortcut with limited targeting, no real testing, and almost no tracking of sales. In the bootcamp you'll build proper campaigns in Meta Ads Manager, which is how businesses that grow with ads actually run them." },
+  { q: 'Is the ad budget included in the price?', a: 'No. The ₦100,000 covers the bootcamp. Your ads run on your own account with your own budget, which I recommend keeping around ₦50,000 for the program so you have real results to learn from.' },
+  { q: "I've never run an ad. Can I still join?", a: 'Yes. The first session starts from zero and sets everything up with you.' },
+  { q: 'What if I miss a session?', a: 'Every session is recorded, and you can bring your questions to the group chat or the next call.' },
+];
+
+const input = 'w-full rounded border border-line-strong bg-white px-3.5 py-2.5 text-base text-ink transition focus:border-brass focus:outline-none focus:ring-2 focus:ring-brass/20';
+const label = 'grid gap-1.5 font-sans text-xs font-semibold uppercase tracking-wider text-ink-soft';
+const h2 = 'font-serif text-2xl font-medium leading-tight tracking-tight text-navy sm:text-3xl';
+---
+
+<Base
+  title="Meta Ads Bootcamp Waitlist | Levi Henry Group"
+  description="Join the waitlist for Levi Henry's Meta Ads Bootcamp: 5 live sessions where business owners learn to run their own Meta ads and launch a real campaign."
+>
+  <Header />
+
+  <main id="main">
+    <div class="mx-auto grid max-w-6xl gap-12 px-6 py-14 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,.85fr)] lg:gap-14 lg:py-16">
+      <div>
+        <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Meta Ads Bootcamp · First cohort</p>
+        <h1 class="mt-4 font-serif text-4xl font-medium leading-[1.07] tracking-tight text-navy sm:text-5xl">Learn to run Meta ads that bring in customers.</h1>
+        <p class="mt-5 max-w-2xl text-base text-ink-soft sm:text-lg">A small, live bootcamp for business owners who want to run their own Meta ads on Facebook and Instagram properly, in Meta Ads Manager. You'll build and launch a real campaign for your business, and I'll review it with you until you know how to read the results and improve them.</p>
+
+        <a id="heroCta" href="#join" class="btn-primary mt-6 flex items-center justify-center gap-2 rounded-sm px-7 py-4 font-sans text-sm font-semibold text-white sm:inline-flex lg:hidden">
+          Join the waitlist <span aria-hidden="true">&darr;</span>
+        </a>
+
+        <div class="mt-8 grid grid-cols-2 overflow-hidden rounded-xl border border-line bg-paper sm:grid-cols-4" role="list">
+          {facts.map((f) => (
+            <div role="listitem" class="border-line px-4 py-4 [&:nth-child(n+3)]:border-t sm:[&:nth-child(n+3)]:border-t-0 [&:nth-child(even)]:border-l sm:[&:nth-child(n+2)]:border-l">
+              <b class="block font-serif text-xl font-medium text-navy">{f.b}</b>
+              <span class="text-xs text-ink-soft">{f.s}</span>
+            </div>
+          ))}
+        </div>
+
+        <img src="/assets/photos/meta-ads-bootcamp-product.webp" alt="Meta Ads Bootcamp by Levi Henry Group: learn to run Meta ads that bring in customers, with hands-on learning in Meta Ads Manager and live support" width="1024" height="1536" loading="lazy" class="mx-auto mt-8 w-full max-w-md rounded-lg shadow-2xl shadow-navy/25 ring-1 ring-navy/10" />
+
+        <section class="mt-14" aria-labelledby="why-title">
+          <h2 id="why-title" class={h2}>Why Meta ads</h2>
+          <p class="mt-3 max-w-xl text-ink-soft">Meta is where the attention is, and it's where businesses put their ad money. Facebook, Instagram, Messenger and WhatsApp all sit under Meta, and one campaign in Ads Manager can reach people across them.</p>
+          <div class="mt-6 grid gap-3 sm:grid-cols-2">
+            {stats.map((s) => (
+              <div class="card-raised grid content-start gap-1.5 rounded-xl border border-line bg-paper-raised p-5">
+                <b class="font-serif text-4xl font-medium leading-none text-navy">{s.b}</b>
+                <span class="text-sm leading-snug text-ink-soft">{s.s}<sup class="ml-px text-[0.7em] leading-none text-navy-600">{s.n}</sup></span>
+              </div>
+            ))}
+          </div>
+          <div class="mt-8">
+            <h3 class="font-serif text-xl font-medium leading-snug text-navy">You're not really selling until ads are part of your strategy.</h3>
+            <p class="mt-2 max-w-xl text-ink-soft">Posting alone reaches very few people. A typical Instagram post now reaches only about 3 to 4% of your own followers<sup class="ml-px text-[0.7em] leading-none text-navy-600">5</sup>, and people who have never heard of you won't see it at all. Ads put your offer in front of the people most likely to buy, every day, on a budget you control. Content builds trust. Ads bring the buyers.</p>
+          </div>
+          <ol class="sources mt-5 grid list-decimal gap-1 pl-5 text-xs text-ink-faint">
+            {sources.map((s) => <li set:html={s.html} />)}
+          </ol>
+        </section>
+
+        <section class="card-raised mt-14 rounded-r-xl rounded-l border border-l-[3px] border-line border-l-navy-600 bg-paper-raised p-6" aria-labelledby="boost-title">
+          <h2 id="boost-title" class="font-serif text-xl font-medium leading-snug text-navy sm:text-2xl">Boosting a post and running Meta ads are two different things.</h2>
+          <p class="mt-3 text-ink-soft">The Boost button gives you a few basic settings and very little data. Real Meta ads are built in Ads Manager, where you choose the campaign objective, test different ads against each other, track sales with the Pixel, and see exactly what each naira brought back.</p>
+          <p class="mt-3 font-medium text-ink">If boosting hasn't worked for you, this is usually why. Ads Manager is what this bootcamp teaches.</p>
+        </section>
+
+        <section class="mt-14">
+          <h2 class={h2}>What we'll cover</h2>
+          <ol class="mt-5 border-b border-line">
+            {sessions.map((s) => (
+              <li class="grid grid-cols-[44px_minmax(0,1fr)] gap-3.5 border-t border-line py-4">
+                <span class="pt-0.5 font-serif text-base font-medium text-navy-600">{s.n}</span>
+                <div>
+                  <h3 class="font-sans text-base font-semibold text-navy">{s.t}</h3>
+                  <p class="mt-0.5 text-[0.95rem] text-ink-soft">{s.d}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section class="mt-14">
+          <h2 class={h2}>Is this for you?</h2>
+          <div class="mt-5 grid gap-6 sm:grid-cols-2">
+            <div>
+              <h3 class="mb-2 font-sans text-sm font-semibold text-navy">A good fit if you</h3>
+              <ul class="grid list-disc gap-1.5 pl-5 text-[0.95rem] text-ink-soft">{goodFit.map((i) => <li>{i}</li>)}</ul>
+            </div>
+            <div>
+              <h3 class="mb-2 font-sans text-sm font-semibold text-navy">Also expect</h3>
+              <ul class="grid list-disc gap-1.5 pl-5 text-[0.95rem] text-ink-soft">{expect.map((i) => <li>{i}</li>)}</ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="mt-14">
+          <h2 class={h2}>Questions</h2>
+          <div class="mt-5 border-b border-line">
+            {faqs.map((f) => (
+              <details class="group border-t border-line py-4">
+                <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 font-semibold text-navy [&::-webkit-details-marker]:hidden">
+                  {f.q}
+                  <span aria-hidden="true" class="text-navy-600 group-open:hidden">+</span>
+                  <span aria-hidden="true" class="hidden text-navy-600 group-open:inline">&ndash;</span>
+                </summary>
+                <p class="mt-2.5 text-[0.95rem] text-ink-soft">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      <aside id="join" aria-labelledby="join-title" class="lg:sticky lg:top-24 lg:self-start">
+        <div class="card-raised rounded-2xl border border-line bg-paper-raised p-6 sm:p-7">
+          <div id="formView">
+            <h2 id="join-title" class="font-serif text-2xl font-medium text-navy">Join the waitlist</h2>
+            <p class="mb-5 mt-1.5 text-sm text-ink-soft">Waitlist members hear about Meta Ads Bootcamp enrollment first.</p>
+            <div class="mb-5 flex flex-wrap items-baseline gap-2.5 rounded-lg border border-dashed border-line-strong px-4 py-3.5">
+              <b class="font-serif text-2xl font-medium text-navy">₦100,000</b>
+              <s class="text-sm text-ink-faint">₦150,000</s>
+              <small class="basis-full text-xs text-ink-soft">Price for the first cohort only</small>
+            </div>
+
+            <form id="waitlist" action={formAction} method="POST" novalidate class="grid gap-3.5">
+              <label class={label} for="name">Full name
+                <input class={input} id="name" name="name" type="text" autocomplete="name" required />
+              </label>
+              <div class="grid gap-3.5 sm:grid-cols-2">
+                <label class={label} for="whatsapp">WhatsApp number
+                  <input class={input} id="whatsapp" name="whatsapp" type="tel" autocomplete="tel" placeholder="+234" required />
+                </label>
+                <label class={label} for="email">Email
+                  <input class={input} id="email" name="email" type="email" autocomplete="email" required />
+                </label>
+              </div>
+              <label class={label} for="business">Business name
+                <input class={input} id="business" name="business" type="text" autocomplete="organization" required />
+              </label>
+              <label class={label} for="sells">What do you sell?
+                <input class={input} id="sells" name="what_they_sell" type="text" placeholder="e.g. skincare products, catering, real estate" required />
+              </label>
+              <label class={label} for="experience">Have you run ads before?
+                <select class={input} id="experience" name="ads_experience" required>
+                  <option value="">Choose one</option>
+                  <option>Never</option>
+                  <option>I've only boosted posts</option>
+                  <option>I've run campaigns in Ads Manager</option>
+                  <option>I run ads regularly</option>
+                </select>
+              </label>
+              <label class={label} for="goal">What do you want ads to do for you? <span class="font-normal normal-case tracking-normal text-ink-faint">(optional)</span>
+                <textarea class={`${input} min-h-[84px] resize-y`} id="goal" name="goal"></textarea>
+              </label>
+              <input type="hidden" name="waitlist" value={WAITLIST} />
+              <input class="absolute -left-[9999px]" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" />
+              <button id="submitBtn" type="submit" class="btn-primary mt-1 rounded-sm px-7 py-3.5 font-sans text-sm font-semibold text-white disabled:cursor-wait disabled:opacity-60">Join the waitlist</button>
+              <p id="status" role="status" aria-live="polite" class="min-h-[1em] text-sm"></p>
+              <p class="text-xs text-ink-soft">Your details are only used to contact you about the bootcamp.</p>
+            </form>
+          </div>
+
+          <div id="doneView" hidden>
+            <h2 class="font-serif text-2xl font-medium text-navy">You're on the list.</h2>
+            <p class="mt-2 text-ink-soft">Thanks for signing up. I'll message you on WhatsApp as soon as enrollment opens, before anyone else hears about it.</p>
+            <p class="mt-2 text-ink-soft">Levi</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <div id="stickyCta" hidden class="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-ivory/95 px-4 pt-3 backdrop-blur-md lg:hidden" style="padding-bottom: max(0.75rem, env(safe-area-inset-bottom))">
+    <a href="#join" class="btn-primary flex items-center justify-between gap-3 rounded-sm px-5 py-3.5 font-sans text-sm font-semibold text-white">
+      <span>Join the waitlist</span>
+      <span class="opacity-80">₦100,000</span>
+    </a>
+  </div>
+
+  <Footer />
+</Base>
+
+<style is:global>
+  .sources a { color: inherit; text-decoration: underline; }
+</style>
+
+<script>
+  // Sticky "Join" bar on phones: visible once the hero button scrolls away, hidden
+  // when the form is reached (or passed).
+  const bar = document.getElementById('stickyCta');
+  const hero = document.getElementById('heroCta');
+  const join = document.getElementById('join');
+  if (bar && hero && join) {
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const heroGone = hero.getBoundingClientRect().bottom < 0;
+      const formReached = join.getBoundingClientRect().top < window.innerHeight - 80;
+      bar.hidden = !(heroGone && !formReached);
+    };
+    window.addEventListener('scroll', () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  }
+
+  const form = document.getElementById('waitlist') as HTMLFormElement | null;
+  const btn = document.getElementById('submitBtn') as HTMLButtonElement | null;
+  const status = document.getElementById('status');
+
+  if (form && btn && status) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      status.textContent = '';
+      status.style.color = '';
+
+      const firstInvalid = Array.from(form.elements).find(
+        (el): el is HTMLInputElement => el instanceof HTMLInputElement || el instanceof HTMLSelectElement || el instanceof HTMLTextAreaElement
+          ? el.willValidate && !el.checkValidity()
+          : false,
+      ) as HTMLInputElement | undefined;
+      if (firstInvalid) {
+        status.style.color = '#b3422f';
+        status.textContent =
+          firstInvalid.type === 'email' && firstInvalid.value
+            ? 'Please check your email address.'
+            : 'Please fill in all the required fields.';
+        firstInvalid.focus();
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+
+      fetch(form.action, {
+        method: 'POST',
+        body: new URLSearchParams(new FormData(form) as unknown as Record<string, string>),
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error('bad status');
+          return res.json();
+        })
+        .then((data) => {
+          if (!data || data.result !== 'success') throw new Error('not saved');
+          document.getElementById('formView')!.hidden = true;
+          document.getElementById('doneView')!.hidden = false;
+        })
+        .catch(() => {
+          status.style.color = '#b3422f';
+          status.textContent = "That didn't go through. Check your connection and try again.";
+          btn.disabled = false;
+          btn.textContent = 'Join the waitlist';
+        });
+    });
+  }
+</script>

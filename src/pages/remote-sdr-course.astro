@@ -1,0 +1,261 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+// Google Apps Script web app that saves each signup to the shared Google Sheet.
+const formAction = 'https://script.google.com/macros/s/AKfycbxtx7CTGV_LFaOkaZq-vFc71IjHYqpJm3wZrwCFvcENRC9HdIhYnt3-PORXZRWWzBaU/exec';
+// Name of this waitlist. Saved with every signup so one sheet can hold many waitlists.
+const WAITLIST = 'Remote SDR Mastery Course';
+const PREORDER_URL = 'https://nestuge.com/8mgm6ykmr';
+
+const facts = [
+  { b: '8', s: 'modules' },
+  { b: '10 to 16', s: 'videos in every module' },
+  { b: '0', s: 'sales experience needed to start' },
+  { b: 'Oct 18', s: 'course opens for purchase' },
+];
+
+const learn = [
+  { t: 'Prospecting and outreach', d: 'Find the right people and start real conversations, inbound and outbound, without sounding like a script.' },
+  { t: 'Discovery and qualification', d: 'Ask the questions that surface real needs and separate buyers from browsers.' },
+  { t: 'Objection handling', d: 'Stay calm and useful when a prospect pushes back, and keep the conversation moving.' },
+  { t: 'Pipeline management', d: 'Track, follow up, and manage opportunities so nothing valuable slips.' },
+];
+
+const goodFit = [
+  'Want a high-income skill you can use from anywhere',
+  'Are aiming for a remote Sales Development Rep role',
+  'Are starting from zero or from another career',
+  'Prefer clear, step-by-step video lessons',
+];
+const expect = [
+  'Every skill broken down and demonstrated step by step',
+  'A path that takes you from beginner to hireable',
+  'The Remote SDR Career Blueprint as your map, and this course as the walkthrough',
+];
+
+const faqs = [
+  { q: 'What does joining the waitlist mean?', a: "You're first in line. The course opens for purchase on October 18. When it does, I'll reach out to you personally with the details. Joining doesn't commit you to anything." },
+  { q: "What's the difference between the preorder and the waitlist?", a: 'The preorder lets you reserve your spot today, ahead of the October 18 opening. The waitlist is for people who want to hear first before they decide. You can do either one.' },
+  { q: "I've never worked in sales. Can I still join?", a: 'Yes. The course is built to take you from beginner to hireable, starting with the basics.' },
+  { q: 'What is the free ebook?', a: 'The Remote SDR Career Blueprint maps the path from no experience to a paid Sales Development role. The course walks you through it. You can get the ebook free on the Individuals page.' },
+];
+
+const input = 'w-full rounded border border-line-strong bg-white px-3.5 py-2.5 text-base text-ink transition focus:border-brass focus:outline-none focus:ring-2 focus:ring-brass/20';
+const label = 'grid gap-1.5 font-sans text-xs font-semibold uppercase tracking-wider text-ink-soft';
+const h2 = 'font-serif text-2xl font-medium leading-tight tracking-tight text-navy sm:text-3xl';
+---
+
+<Base
+  title="Remote SDR Mastery Course Waitlist | Levi Henry Group"
+  description="Join the waitlist for the Remote SDR Mastery Course, opening for purchase October 18: eight modules of step-by-step video lessons that take you from beginner to a hireable remote Sales Development Rep."
+>
+  <Header />
+
+  <main id="main">
+    <div class="mx-auto grid max-w-6xl gap-12 px-6 py-14 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,.85fr)] lg:gap-14 lg:py-16">
+      <div>
+        <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Remote SDR Mastery Course</p>
+        <h1 class="mt-4 font-serif text-4xl font-medium leading-[1.07] tracking-tight text-navy sm:text-5xl">Break into remote sales and become a top performer.</h1>
+        <p class="mt-5 max-w-2xl text-base text-ink-soft sm:text-lg">A structured, job-ready course that builds the practical skills of a remote Sales Development Rep, from prospecting and outreach to discovery, objection handling and pipeline management. Where the blueprint maps the path, this course walks you through it.</p>
+
+        <a id="heroCta" href="#join" class="btn-primary mt-6 flex items-center justify-center gap-2 rounded-sm px-7 py-4 font-sans text-sm font-semibold text-white sm:inline-flex lg:hidden">
+          Join the waitlist <span aria-hidden="true">&darr;</span>
+        </a>
+
+        <div class="mt-8 grid grid-cols-2 overflow-hidden rounded-xl border border-line bg-paper sm:grid-cols-4" role="list">
+          {facts.map((f) => (
+            <div role="listitem" class="border-line px-4 py-4 [&:nth-child(n+3)]:border-t sm:[&:nth-child(n+3)]:border-t-0 [&:nth-child(even)]:border-l sm:[&:nth-child(n+2)]:border-l">
+              <b class="block font-serif text-xl font-medium text-navy">{f.b}</b>
+              <span class="text-xs text-ink-soft">{f.s}</span>
+            </div>
+          ))}
+        </div>
+
+        <img src="/assets/photos/sdr-course-product.webp" alt="Remote SDR Mastery Course by Levi Henry Group: course box, video lessons and modules" width="1400" height="933" class="mt-8 w-full rounded-lg shadow-2xl shadow-navy/25 ring-1 ring-navy/10" />
+
+        <section class="mt-14">
+          <h2 class={h2}>What you'll learn</h2>
+          <p class="mt-3 max-w-xl text-ink-soft">Eight modules, each packed with 10 to 16 videos, so every skill is broken down and demonstrated step by step.</p>
+          <ol class="mt-5 border-b border-line">
+            {learn.map((s, i) => (
+              <li class="grid grid-cols-[44px_minmax(0,1fr)] gap-3.5 border-t border-line py-4">
+                <span class="pt-0.5 font-serif text-base font-medium text-navy-600">{String(i + 1).padStart(2, '0')}</span>
+                <div>
+                  <h3 class="font-sans text-base font-semibold text-navy">{s.t}</h3>
+                  <p class="mt-0.5 text-[0.95rem] text-ink-soft">{s.d}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section class="mt-14">
+          <h2 class={h2}>Is this for you?</h2>
+          <div class="mt-5 grid gap-6 sm:grid-cols-2">
+            <div>
+              <h3 class="mb-2 font-sans text-sm font-semibold text-navy">A good fit if you</h3>
+              <ul class="grid list-disc gap-1.5 pl-5 text-[0.95rem] text-ink-soft">{goodFit.map((i) => <li>{i}</li>)}</ul>
+            </div>
+            <div>
+              <h3 class="mb-2 font-sans text-sm font-semibold text-navy">Also expect</h3>
+              <ul class="grid list-disc gap-1.5 pl-5 text-[0.95rem] text-ink-soft">{expect.map((i) => <li>{i}</li>)}</ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="card-raised mt-14 rounded-r-xl rounded-l border border-l-[3px] border-line border-l-navy-600 bg-paper-raised p-6" aria-labelledby="pre-title">
+          <h2 id="pre-title" class="font-serif text-xl font-medium leading-snug text-navy sm:text-2xl">Ready now? Preorder the course.</h2>
+          <p class="mt-3 text-ink-soft">The course opens for purchase on October 18. You can preorder today to reserve your spot, or join the waitlist to hear the moment it opens.</p>
+          <a href={PREORDER_URL} target="_blank" rel="noopener" class="mt-4 inline-flex items-center gap-2 rounded-sm border border-navy px-6 py-3 font-sans text-sm font-semibold text-navy transition hover:bg-navy hover:text-white">Preorder now <span aria-hidden="true">&rarr;</span></a>
+        </section>
+
+        <section class="mt-14">
+          <h2 class={h2}>Questions</h2>
+          <div class="mt-5 border-b border-line">
+            {faqs.map((f) => (
+              <details class="group border-t border-line py-4">
+                <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 font-semibold text-navy [&::-webkit-details-marker]:hidden">
+                  {f.q}
+                  <span aria-hidden="true" class="text-navy-600 group-open:hidden">+</span>
+                  <span aria-hidden="true" class="hidden text-navy-600 group-open:inline">&ndash;</span>
+                </summary>
+                <p class="mt-2.5 text-[0.95rem] text-ink-soft">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      <aside id="join" aria-labelledby="join-title" class="lg:sticky lg:top-24 lg:self-start">
+        <div class="card-raised rounded-2xl border border-line bg-paper-raised p-6 sm:p-7">
+          <div id="formView">
+            <h2 id="join-title" class="font-serif text-2xl font-medium text-navy">Join the waitlist</h2>
+            <p class="mb-5 mt-1.5 text-sm text-ink-soft">The course opens for purchase on October 18. Waitlist members hear first.</p>
+
+            <div class="mb-5 flex flex-wrap items-baseline gap-2.5 rounded-lg border border-dashed border-line-strong px-4 py-3.5">
+              <b class="font-serif text-2xl font-medium text-navy">₦60,000</b>
+              <small class="basis-full text-xs text-ink-soft">One-time price. Opens for purchase October 18.</small>
+            </div>
+
+            <form id="waitlist" action={formAction} method="POST" novalidate class="grid gap-3.5">
+              <label class={label} for="name">Full name
+                <input class={input} id="name" name="name" type="text" autocomplete="name" required />
+              </label>
+              <div class="grid gap-3.5 sm:grid-cols-2">
+                <label class={label} for="whatsapp">WhatsApp number
+                  <input class={input} id="whatsapp" name="whatsapp" type="tel" autocomplete="tel" placeholder="+234" required />
+                </label>
+                <label class={label} for="email">Email
+                  <input class={input} id="email" name="email" type="email" autocomplete="email" required />
+                </label>
+              </div>
+              <label class={label} for="experience">Do you have any sales experience?
+                <select class={input} id="experience" name="ads_experience" required>
+                  <option value="">Choose one</option>
+                  <option>None yet</option>
+                  <option>Some customer-facing or sales experience</option>
+                  <option>I'm already working as an SDR</option>
+                  <option>I work in another sales role</option>
+                </select>
+              </label>
+              <label class={label} for="goal">What do you want from this course? <span class="font-normal normal-case tracking-normal text-ink-faint">(optional)</span>
+                <textarea class={`${input} min-h-[84px] resize-y`} id="goal" name="goal"></textarea>
+              </label>
+              <input type="hidden" name="waitlist" value={WAITLIST} />
+              <input class="absolute -left-[9999px]" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" />
+              <button id="submitBtn" type="submit" class="btn-primary mt-1 rounded-sm px-7 py-3.5 font-sans text-sm font-semibold text-white disabled:cursor-wait disabled:opacity-60">Join the waitlist</button>
+              <p id="status" role="status" aria-live="polite" class="min-h-[1em] text-sm"></p>
+              <p class="text-xs text-ink-soft">Your details are only used to contact you about the course.</p>
+            </form>
+          </div>
+
+          <div id="doneView" hidden>
+            <h2 class="font-serif text-2xl font-medium text-navy">You're on the list.</h2>
+            <p class="mt-2 text-ink-soft">Thanks for signing up. I'll message you on WhatsApp the moment the course opens on October 18, before anyone else hears about it.</p>
+            <p class="mt-2 text-ink-soft">Levi</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <div id="stickyCta" hidden class="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-ivory/95 px-4 pt-3 backdrop-blur-md lg:hidden" style="padding-bottom: max(0.75rem, env(safe-area-inset-bottom))">
+    <a href="#join" class="btn-primary flex items-center justify-center rounded-sm px-5 py-3.5 font-sans text-sm font-semibold text-white">Join the waitlist</a>
+  </div>
+
+  <Footer />
+</Base>
+
+<script>
+  // Sticky "Join" bar on phones: visible once the hero button scrolls away, hidden
+  // when the form is reached (or passed).
+  const bar = document.getElementById('stickyCta');
+  const hero = document.getElementById('heroCta');
+  const join = document.getElementById('join');
+  if (bar && hero && join) {
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const heroGone = hero.getBoundingClientRect().bottom < 0;
+      const formReached = join.getBoundingClientRect().top < window.innerHeight - 80;
+      bar.hidden = !(heroGone && !formReached);
+    };
+    window.addEventListener('scroll', () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  }
+
+  const form = document.getElementById('waitlist') as HTMLFormElement | null;
+  const btn = document.getElementById('submitBtn') as HTMLButtonElement | null;
+  const status = document.getElementById('status');
+
+  if (form && btn && status) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      status.textContent = '';
+      status.style.color = '';
+
+      const firstInvalid = Array.from(form.elements).find(
+        (el): el is HTMLInputElement => el instanceof HTMLInputElement || el instanceof HTMLSelectElement || el instanceof HTMLTextAreaElement
+          ? el.willValidate && !el.checkValidity()
+          : false,
+      ) as HTMLInputElement | undefined;
+      if (firstInvalid) {
+        status.style.color = '#b3422f';
+        status.textContent =
+          firstInvalid.type === 'email' && firstInvalid.value
+            ? 'Please check your email address.'
+            : 'Please fill in all the required fields.';
+        firstInvalid.focus();
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+
+      fetch(form.action, {
+        method: 'POST',
+        body: new URLSearchParams(new FormData(form) as unknown as Record<string, string>),
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error('bad status');
+          return res.json();
+        })
+        .then((data) => {
+          if (!data || data.result !== 'success') throw new Error('not saved');
+          document.getElementById('formView')!.hidden = true;
+          document.getElementById('doneView')!.hidden = false;
+        })
+        .catch(() => {
+          status.style.color = '#b3422f';
+          status.textContent = "That didn't go through. Check your connection and try again.";
+          btn.disabled = false;
+          btn.textContent = 'Join the waitlist';
+        });
+    });
+  }
+</script>

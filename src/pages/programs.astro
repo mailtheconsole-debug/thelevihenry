@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+// Add each new program here. `href` is the program's own page (waitlist or enrollment).
+const programs = [
+  {
+    name: 'Meta Ads Bootcamp',
+    status: 'Waitlist open · First cohort',
+    blurb: "Stop boosting posts and hoping they work. In five live sessions, you'll set up Meta Ads Manager properly, launch a real campaign for your business, and learn to read the numbers so you know exactly what to fix and what to scale.",
+    facts: ['5 live sessions', '6 weeks', '10 spots', '₦100,000'],
+    cta: 'Save my spot',
+    href: '/meta-ads-bootcamp',
+  },
+  {
+    name: 'Remote SDR Mastery Course',
+    status: 'Opens October 18',
+    blurb: "I started my sales career making cold calls as an SDR. This course teaches everything I learned on the way up: prospecting, discovery, objection handling, and managing a pipeline. You'll go from beginner to ready for remote SDR roles, one short video at a time.",
+    facts: ['8 modules', '10 to 16 videos each', 'Self-paced', 'Beginner friendly', '₦60,000'],
+    cta: 'Get notified on October 18',
+    href: '/remote-sdr-course',
+  },
+];
+---
+
+<Base
+  title="Programs | Levi Henry Group"
+  description="Live programs and courses from Levi Henry Group. See what's open and join the waitlist for the next cohort."
+>
+  <Header />
+
+  <main id="main">
+    <section class="mx-auto max-w-6xl px-6 py-14 lg:py-16">
+      <div class="max-w-3xl">
+        <p data-reveal class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Programs</p>
+        <h1 data-reveal class="mt-4 font-serif text-4xl font-medium leading-[1.07] tracking-tight text-navy sm:text-5xl">Fifteen years of teaching people to turn skill into income. Now in programs you can join.</h1>
+        <p data-reveal class="mt-5 max-w-2xl text-lg text-ink-soft">Every program is built around doing the work while you learn it. You'll apply each lesson to your own business or career, so you finish with something working: a live ad campaign, a sales pipeline, a skill someone will pay you for.</p>
+        <p data-reveal class="mt-3 max-w-2xl text-lg text-ink-soft">Join a waitlist to hear first when enrollment opens.</p>
+      </div>
+    </section>
+
+    <section class="border-t border-line bg-paper">
+      <div class="mx-auto grid max-w-6xl gap-6 px-6 py-16 md:grid-cols-2 lg:py-20">
+        {programs.map((p) => (
+          <a href={p.href} data-reveal class="card-raised group flex flex-col rounded-2xl border border-line bg-paper-raised p-6 transition-transform duration-[var(--dur-press)] ease-[var(--ease-out)] hover:-translate-y-0.5 sm:p-7">
+            <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">{p.status}</p>
+            <h2 class="mt-3 font-serif text-2xl font-medium leading-tight text-navy sm:text-3xl">{p.name}</h2>
+            <p class="mt-3 text-ink-soft">{p.blurb}</p>
+            <ul class="mt-4 flex flex-wrap gap-2">
+              {p.facts.map((f) => <li class="rounded-full border border-line px-3 py-1 text-xs text-ink-soft">{f}</li>)}
+            </ul>
+            <span class="mt-6 inline-flex items-center gap-2 font-sans text-sm font-semibold text-navy">
+              {p.cta} <span class="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>

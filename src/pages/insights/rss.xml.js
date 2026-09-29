@@ -7,7 +7,7 @@ export async function GET(context) {
   );
 
   return rss({
-    title: 'Levi Henry — Insights',
+    title: 'Levi Henry — Blog',
     description: 'Notes from the work: selling, teaching, building, and making things.',
     site: context.site,
     items: posts.map((p) => ({

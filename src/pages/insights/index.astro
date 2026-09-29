@@ -24,7 +24,7 @@ const pill = 'inline-flex items-center rounded-full border border-line bg-ivory 
 const blogLd = {
   '@context': 'https://schema.org',
   '@type': 'Blog',
-  name: 'Insights | Levi Henry',
+  name: 'Blog | Levi Henry',
   url: 'https://thelevihenry.com/insights',
   author: { '@type': 'Person', name: 'Levi Henry' },
   blogPost: posts.map((p) => ({
@@ -38,7 +38,7 @@ const blogLd = {
 ---
 
 <Base
-  title="Insights | Levi Henry"
+  title="Blog | Levi Henry"
   description="Levi Henry on selling, teaching, building, and making things. Notes from the work, written as I learn it."
   jsonld={blogLd}
 >
@@ -46,7 +46,7 @@ const blogLd = {
     slot="head"
     rel="alternate"
     type="application/rss+xml"
-    title="Levi Henry — Insights"
+    title="Levi Henry — Blog"
     href="/insights/rss.xml"
   />
   <Header />
@@ -55,7 +55,7 @@ const blogLd = {
     <!-- HERO -->
     <section class="mx-auto max-w-6xl px-6 pt-14 pb-8 lg:pt-20">
       <div class="max-w-3xl">
-        <p data-reveal class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Insights</p>
+        <p data-reveal class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Blog</p>
         <h1 data-reveal class="mt-4 font-serif text-4xl font-medium leading-[1.05] tracking-tight text-navy sm:text-6xl">Notes from the work.</h1>
         <p data-reveal class="mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft">
           I sell, I teach, I build, I make things. This is where I write down what I learn doing it.

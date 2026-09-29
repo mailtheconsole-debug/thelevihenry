@@ -6,7 +6,8 @@ const links = [
   { href: "/individuals", label: "For Individuals" },
   { href: "/businesses", label: "For Businesses" },
   { href: "/founders", label: "For Founders" },
-  { href: "/insights", label: "Insights" },
+  { href: "/programs", label: "Programs" },
+  { href: "/insights", label: "Blog" },
   { href: "/contact", label: "Contact Us" },
 ];
 const isCurrent = (href: string) => path === href;
@@ -29,19 +30,19 @@ const isCurrent = (href: string) => path === href;
     <button
       data-nav-toggle
       aria-expanded="false"
-      class="rounded-sm border border-line-strong px-3 py-2 font-sans text-xs font-semibold uppercase tracking-wider text-navy md:hidden"
+      class="rounded-sm border border-line-strong px-4 py-3 font-sans text-xs font-semibold uppercase tracking-wider text-navy md:hidden"
       >Menu</button
     >
 
     <!-- Desktop nav -->
-    <nav class="hidden items-center gap-7 md:flex" aria-label="Primary">
+    <nav class="hidden items-center gap-3.5 md:flex lg:gap-7" aria-label="Primary">
       {
         links.map((l) => (
           <a
             href={l.href}
             aria-current={isCurrent(l.href) ? "page" : undefined}
             class:list={[
-              "font-sans text-[0.8rem] font-semibold uppercase tracking-wider transition-colors hover:text-navy",
+              "whitespace-nowrap font-sans text-[0.7rem] font-semibold uppercase tracking-wide transition-colors hover:text-navy lg:text-[0.8rem] lg:tracking-wider",
               isCurrent(l.href) ? "text-navy" : "text-ink-soft",
             ]}
           >
@@ -51,7 +52,7 @@ const isCurrent = (href: string) => path === href;
       }
       <a
         href="/contact"
-        class="btn-primary rounded-sm px-5 py-2.5 font-sans text-sm font-bold text-white"
+        class="btn-primary whitespace-nowrap rounded-sm px-3.5 py-2.5 font-sans text-xs font-bold text-white lg:px-5 lg:text-sm"
         >Work With Us</a
       >
     </nav>
@@ -66,7 +67,7 @@ const isCurrent = (href: string) => path === href;
             href={l.href}
             aria-current={isCurrent(l.href) ? "page" : undefined}
             class:list={[
-              "border-b border-line py-3 font-sans text-sm font-semibold",
+              "border-b border-line py-3.5 font-sans text-sm font-semibold",
               isCurrent(l.href) ? "text-navy" : "text-ink-soft",
             ]}
           >
@@ -74,7 +75,7 @@ const isCurrent = (href: string) => path === href;
           </a>
         ))
       }
-      <a href="/contact" class="py-3 font-sans text-sm font-bold text-navy">Work With Us &rarr;</a>
+      <a href="/contact" class="py-3.5 font-sans text-sm font-bold text-navy">Work With Us &rarr;</a>
     </nav>
   </div>
 </header>

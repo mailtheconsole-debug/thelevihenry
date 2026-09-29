@@ -1,5 +1,5 @@
 # Pages CMS configuration (https://pagescms.org)
-# Write & publish Insights posts from a browser editor. Posts are saved as
+# Write & publish Blog posts from a browser editor. Posts are saved as
 # Markdown into src/content/insights/ and images into public/assets/insights/;
 # committing them triggers a Netlify rebuild.
 
@@ -13,7 +13,7 @@ media:
 
 content:
   - name: insights
-    label: Insights (Blog)
+    label: Blog
     type: collection
     path: src/content/insights
     filename: '{fields.title}.md'
@@ -73,7 +73,7 @@ content:
         type: text
         description: 150-160 characters. Leave blank to use the summary above.
       - name: featured
-        label: Feature at the top of Insights
+        label: Feature at the top of the Blog
         type: boolean
       - name: draft
         label: Draft (hide from the live site)
