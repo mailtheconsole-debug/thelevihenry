@@ -94,4 +94,4 @@ Teach it well and it works hard for you.
 
 **Want to learn to run your own Meta ads properly?** I'm putting together a Meta Ads Bootcamp for business owners who want to stop boosting posts and start running real campaigns in Ads Manager. [Join the waitlist here](/meta-ads-bootcamp).
 
-*Credit: the ideas in this post come from a video recapping the creator's day with Alex Hormozi.*
+*Credit: the ideas in this post come from [this video](https://www.youtube.com/watch?v=oTWfDI_91Fs) recapping the creator's day with Alex Hormozi.*
