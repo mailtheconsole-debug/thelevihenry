@@ -56,6 +56,15 @@
     linear-gradient(180deg, #183654 0%, var(--color-navy) 46%, var(--color-navy-deep) 100%);
 }
 
+/* Hero band: fills the full viewport width on wide monitors so the hero never
+   reads as a narrow centered strip. Content stays constrained in the shell. */
+.hero-band {
+  background:
+    radial-gradient(55% 75% at 88% -5%, rgba(34, 92, 192, 0.08), transparent 60%),
+    radial-gradient(45% 60% at 4% 108%, rgba(20, 39, 63, 0.05), transparent 62%),
+    linear-gradient(180deg, var(--color-paper-raised) 0%, var(--color-ivory) 100%);
+}
+
 /* Hero brand panel that the cutout stands in — cobalt depth + a soft beacon. */
 .panel-brand {
   background:

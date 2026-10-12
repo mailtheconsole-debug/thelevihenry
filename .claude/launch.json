@@ -4,7 +4,7 @@
     {
       "name": "levihenry-static",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "5178", "--directory", "C:/Users/hp/Documents/thelevihenry"],
+      "runtimeArgs": ["-m", "http.server", "5178", "--directory", "C:/Users/hp/Documents/thelevihenry/dist"],
       "port": 5178
     }
   ]

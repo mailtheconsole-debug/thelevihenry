@@ -33,7 +33,7 @@ const programs = [
   <Header />
 
   <main id="main">
-    <section class="mx-auto max-w-6xl px-6 py-14 lg:py-16">
+    <section class="mx-auto max-w-7xl 2xl:max-w-[88rem] px-6 py-14 lg:py-16">
       <div class="max-w-3xl">
         <p data-reveal class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Programs</p>
         <h1 data-reveal class="mt-4 font-serif text-4xl font-medium leading-[1.07] tracking-tight text-navy sm:text-5xl">Fifteen years of teaching people to turn skill into income. Now in programs you can join.</h1>
@@ -43,7 +43,7 @@ const programs = [
     </section>
 
     <section class="border-t border-line bg-paper">
-      <div class="mx-auto grid max-w-6xl gap-6 px-6 py-16 md:grid-cols-2 lg:py-20">
+      <div class="mx-auto grid max-w-7xl 2xl:max-w-[88rem] gap-6 px-6 py-16 md:grid-cols-2 lg:py-20">
         {programs.map((p) => (
           <a href={p.href} data-reveal class:list={[p.bg, 'group relative flex min-h-[340px] flex-col overflow-hidden rounded-2xl p-7 text-white shadow-xl shadow-navy/20 ring-1 ring-white/10 sm:p-9', 'motion-safe:transition motion-safe:duration-[var(--dur-hover)] motion-safe:ease-[var(--ease-out)] motion-safe:hover:-translate-y-2 motion-safe:hover:shadow-2xl motion-safe:hover:shadow-navy/45 motion-safe:active:translate-y-0 motion-safe:active:duration-[var(--dur-press)]']}>
             <div class="beacon-glow opacity-70 motion-safe:transition-opacity motion-safe:duration-[var(--dur-hover)] group-hover:opacity-100"></div>
