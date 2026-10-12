@@ -1,26 +1,35 @@
 ---
 /**
- * Image underlay for `.band-dark` sections — adds visible dimensional depth on
- * the right while a left-weighted scrim keeps text crisp. The parent section
- * must be `relative overflow-hidden`, and the band's content wrapper should sit
- * above with `relative z-[1]`.
+ * Image underlay for section bands — adds dimensional depth on the right while
+ * a scrim keeps text crisp on the left. The parent section must be
+ * `relative overflow-hidden`, and the content wrapper should sit above with
+ * `relative z-[1]`.
  *
- * Defaults to the prism beam (its subject is on the left, so it's mirrored to
- * bring the bright glass to the right). Pass a different `src` + `mirror={false}`
- * for an image whose subject already sits on the right (e.g. the growth steps).
+ * theme="dark"  → navy scrim, for `.band-dark` sections (default).
+ * theme="light" → paper scrim, for light (paper/ivory) sections.
+ *
+ * Images whose subject sits on the left are mirrored (mirror, default) to bring
+ * the detail to the right, away from the copy; pass mirror={false} for images
+ * whose subject already sits on the right or are full-frame patterns.
  */
 interface Props {
   src?: string;
   mirror?: boolean;
   opacity?: number;
+  theme?: 'dark' | 'light';
 }
 const {
   src = '/assets/brand/bg-prism-dark.webp',
   mirror = true,
   opacity = 0.16,
+  theme = 'dark',
 } = Astro.props;
 const objPos = mirror ? 'left center' : 'right center';
 const flip = mirror ? ';transform:scaleX(-1)' : '';
+const scrim =
+  theme === 'light'
+    ? 'linear-gradient(90deg, rgba(251,249,244,0.98) 0%, rgba(251,249,244,0.7) 26%, rgba(251,249,244,0.12) 58%, rgba(251,249,244,0) 86%)'
+    : 'linear-gradient(90deg, rgba(14,28,46,0.97) 0%, rgba(14,28,46,0.78) 30%, rgba(14,28,46,0.15) 66%, rgba(14,28,46,0) 100%)';
 ---
 <div class="pointer-events-none absolute inset-0" aria-hidden="true">
   <img
@@ -30,9 +39,5 @@ const flip = mirror ? ';transform:scaleX(-1)' : '';
     class="absolute inset-0 h-full w-full object-cover"
     style={`opacity:${opacity};object-position:${objPos}${flip}`}
   />
-  <div
-    class="absolute inset-0"
-    style="background:linear-gradient(90deg, rgba(14,28,46,0.97) 0%, rgba(14,28,46,0.78) 30%, rgba(14,28,46,0.15) 66%, rgba(14,28,46,0) 100%)"
-  >
-  </div>
+  <div class="absolute inset-0" style={`background:${scrim}`}></div>
 </div>
