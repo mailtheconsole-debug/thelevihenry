@@ -3,6 +3,8 @@ title: "Three Meta Ads Lessons From a Six-Figure Day With Alex Hormozi"
 description: "More creative, cleaner data, and teaching Meta what a good lead looks like. Three lessons from a Meta ads expert's day with Alex Hormozi, read through the eyes of someone who spent years qualifying leads for a living."
 date: 2026-09-29
 category: "Marketing & Ads"
+cover: /assets/insights/ad-growth.webp
+coverAlt: "A navy topographic field with a single gold line tracing an upward path"
 author: "Levi Henry"
 tags: ["Meta Ads", "Paid Acquisition", "Lead Generation"]
 seoTitle: "3 Meta Ads Lessons From Alex Hormozi: creative, data, lead quality"

@@ -3,6 +3,8 @@ title: How to Become a Remote SDR With No Experience
 description: "A real path into remote tech sales as an SDR with no experience: what the job pays, the skills that get you hired, and how to start this week."
 date: 2026-09-09
 category: "Tech Sales"
+cover: /assets/insights/sdr-rep.webp
+coverAlt: "A sales development rep on a call, CRM open on the laptop in front of them"
 author: Levi Henry Group
 tags:
   - break into tech sales

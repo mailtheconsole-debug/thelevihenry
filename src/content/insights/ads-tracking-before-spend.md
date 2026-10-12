@@ -3,6 +3,8 @@ title: "What I did before I ran a single ad"
 description: "We acquired ₦100,000 customers for about ₦7,700 each. The landing page and the setup work behind that number are the part nobody talks about."
 date: 2026-09-15
 category: "Marketing & Ads"
+cover: /assets/insights/ad-funnel.webp
+coverAlt: "A glass funnel drawing in traffic and dropping out a few qualified leads"
 author: "Levi Henry"
 tags: ["Meta Ads", "Tracking", "Paid Acquisition"]
 seoTitle: "Meta ads tracking setup: what to fix before you spend more"
