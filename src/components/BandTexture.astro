@@ -1,0 +1,38 @@
+---
+/**
+ * Image underlay for `.band-dark` sections — adds visible dimensional depth on
+ * the right while a left-weighted scrim keeps text crisp. The parent section
+ * must be `relative overflow-hidden`, and the band's content wrapper should sit
+ * above with `relative z-[1]`.
+ *
+ * Defaults to the prism beam (its subject is on the left, so it's mirrored to
+ * bring the bright glass to the right). Pass a different `src` + `mirror={false}`
+ * for an image whose subject already sits on the right (e.g. the growth steps).
+ */
+interface Props {
+  src?: string;
+  mirror?: boolean;
+  opacity?: number;
+}
+const {
+  src = '/assets/brand/bg-prism-dark.webp',
+  mirror = true,
+  opacity = 0.16,
+} = Astro.props;
+const objPos = mirror ? 'left center' : 'right center';
+const flip = mirror ? ';transform:scaleX(-1)' : '';
+---
+<div class="pointer-events-none absolute inset-0" aria-hidden="true">
+  <img
+    src={src}
+    alt=""
+    loading="lazy"
+    class="absolute inset-0 h-full w-full object-cover"
+    style={`opacity:${opacity};object-position:${objPos}${flip}`}
+  />
+  <div
+    class="absolute inset-0"
+    style="background:linear-gradient(90deg, rgba(14,28,46,0.97) 0%, rgba(14,28,46,0.78) 30%, rgba(14,28,46,0.15) 66%, rgba(14,28,46,0) 100%)"
+  >
+  </div>
+</div>
