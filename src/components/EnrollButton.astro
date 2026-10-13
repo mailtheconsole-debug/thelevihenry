@@ -1,0 +1,190 @@
+---
+// Enroll in an LHG Academy program with Paystack checkout, right on this site.
+// After payment, Paystack notifies the Academy (learn.thelevihenry.com), which checks the amount against the
+// program's price, creates the student's account, and emails them a login link. Nothing to sync by hand.
+//
+// Keep `ngn` equal to the program's "Price now" in the Academy admin, or payments get flagged as underpaid.
+interface Props {
+  course: string; // the program's slug in the Academy
+  title: string;
+  ngn: number; // naira charged now
+  listNgn?: number; // regular naira price, shown crossed out during a promo
+  usd?: number | null; // dollars, once Paystack approves USD
+  label?: string;
+  align?: 'start' | 'center';
+}
+const { course, title, ngn, listNgn, usd = null, label = 'Enroll now', align = 'start' } = Astro.props;
+const PAYSTACK_PUBLIC_KEY = 'pk_live_4efc16f853a87c00c9bb482d5ddc25b27f96d0be'; // LHG Academy public key: safe in the browser
+const id = `enroll-${course}`;
+const naira = (n: number) => '₦' + n.toLocaleString('en-NG');
+const justify = align === 'center' ? 'justify-center' : '';
+---
+
+<div class="enroll" data-enroll data-course={course} data-title={title} data-key={PAYSTACK_PUBLIC_KEY} data-ngn={ngn} data-usd={usd ?? ''}>
+  <div class:list={['flex flex-wrap items-baseline gap-x-3 gap-y-1', justify]}>
+    {usd ? (
+      <div class="mb-1 inline-flex rounded-sm border border-line p-0.5 font-sans text-xs font-semibold" role="group" aria-label="Currency">
+        <button type="button" data-cur="NGN" class="cur rounded-sm px-3 py-1.5">NGN</button>
+        <button type="button" data-cur="USD" class="cur rounded-sm px-3 py-1.5">USD</button>
+      </div>
+    ) : null}
+    <span data-price-ngn class="font-serif text-3xl font-medium text-navy">{naira(ngn)}</span>
+    {listNgn && listNgn > ngn ? <span data-price-ngn class="font-sans text-lg text-ink-faint line-through">{naira(listNgn)}</span> : null}
+    {listNgn && listNgn > ngn ? <span data-price-ngn class="rounded-sm bg-brass-soft/20 px-2 py-0.5 font-sans text-xs font-bold uppercase tracking-wider text-navy">Launch price</span> : null}
+    {usd ? <span data-price-usd hidden class="font-serif text-3xl font-medium text-navy">${usd.toLocaleString('en-US')}</span> : null}
+  </div>
+
+  <div class:list={['mt-5 flex flex-wrap items-center gap-4', justify]}>
+    <button type="button" data-open class="btn-primary inline-flex items-center gap-2 rounded-sm px-7 py-3.5 font-sans text-sm font-semibold text-white">
+      {label} <span aria-hidden="true">&rarr;</span>
+    </button>
+    <a href="https://learn.thelevihenry.com/login" class="font-sans text-sm font-semibold text-navy underline-offset-4 hover:underline">Already enrolled? Log in</a>
+  </div>
+
+  <dialog id={id} class="enroll-dialog w-[min(92vw,440px)] rounded-lg border border-line p-0 shadow-2xl backdrop:bg-black/50">
+    <form data-form class="space-y-4 p-6" novalidate>
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Enroll</p>
+          <h3 class="mt-1 font-serif text-2xl font-medium leading-tight text-navy">{title}</h3>
+        </div>
+        <button type="button" data-close class="-mr-2 rounded-sm p-2 text-ink-faint hover:text-navy" aria-label="Close">&times;</button>
+      </div>
+      <p class="text-sm text-ink-soft">Your login link for the Academy goes to this email right after payment.</p>
+      <label class="block">
+        <span class="mb-1 block font-sans text-sm font-semibold text-navy">Full name</span>
+        <input name="name" required autocomplete="name" maxlength="120" class="w-full rounded-sm border border-line px-3 py-2.5 text-base outline-none focus:border-navy" />
+      </label>
+      <label class="block">
+        <span class="mb-1 block font-sans text-sm font-semibold text-navy">Email</span>
+        <input name="email" type="email" required autocomplete="email" maxlength="200" class="w-full rounded-sm border border-line px-3 py-2.5 text-base outline-none focus:border-navy" />
+      </label>
+      <p data-error class="hidden text-sm font-medium text-red-700" role="alert"></p>
+      <button type="submit" data-pay class="btn-primary w-full rounded-sm px-6 py-3.5 font-sans text-sm font-semibold text-white disabled:opacity-60">
+        Pay <span data-pay-amount>{naira(ngn)}</span> securely
+      </button>
+      <p class="text-center text-xs text-ink-faint">Secure payment by Paystack: card, bank transfer or USSD.</p>
+    </form>
+
+    <div data-done hidden class="space-y-4 p-6 text-center">
+      <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Payment received</p>
+      <h3 class="font-serif text-2xl font-medium leading-tight text-navy">Welcome to LHG Academy</h3>
+      <p class="text-ink-soft">Check <strong data-done-email></strong> for your login link. It arrives within a few minutes (check spam too).</p>
+      <a href="https://learn.thelevihenry.com/login" class="btn-primary inline-flex items-center gap-2 rounded-sm px-7 py-3.5 font-sans text-sm font-semibold text-white">Go to the Academy <span aria-hidden="true">&rarr;</span></a>
+    </div>
+  </dialog>
+</div>
+
+<style>
+  .enroll .cur[aria-pressed='true'] { background: var(--color-navy, #14273f); color: #fff; }
+  .enroll-dialog::backdrop { background: rgb(0 0 0 / 0.5); }
+</style>
+
+<script>
+  declare global {
+    interface Window {
+      PaystackPop?: new () => { newTransaction: (o: Record<string, unknown>) => void };
+    }
+  }
+
+  // Paystack's checkout script, loaded once, only when someone opens the form.
+  let paystackLoading: Promise<void> | null = null;
+  function loadPaystack() {
+    if (window.PaystackPop) return Promise.resolve();
+    paystackLoading ??= new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = 'https://js.paystack.co/v2/inline.js';
+      s.async = true;
+      s.onload = () => resolve();
+      s.onerror = () => { paystackLoading = null; reject(new Error('Paystack failed to load')); };
+      document.head.appendChild(s);
+    });
+    return paystackLoading;
+  }
+
+  const naira = (n: number) => '₦' + n.toLocaleString('en-NG');
+
+  document.querySelectorAll<HTMLElement>('[data-enroll]').forEach((root) => {
+    const { course = '', title = '', key = '' } = root.dataset;
+    const ngn = Number(root.dataset.ngn);
+    const usd = Number(root.dataset.usd) || null;
+    const dialog = root.querySelector('dialog') as HTMLDialogElement;
+    const form = root.querySelector('[data-form]') as HTMLFormElement;
+    const done = root.querySelector('[data-done]') as HTMLElement;
+    const err = root.querySelector('[data-error]') as HTMLElement;
+    const pay = root.querySelector('[data-pay]') as HTMLButtonElement;
+    const payAmount = root.querySelector('[data-pay-amount]') as HTMLElement;
+
+    // Currency: naira for visitors in Nigeria, dollars elsewhere (only when a dollar price exists).
+    let currency: 'NGN' | 'USD' = 'NGN';
+    const setCurrency = (c: 'NGN' | 'USD') => {
+      currency = usd ? c : 'NGN';
+      root.querySelectorAll<HTMLElement>('[data-price-ngn]').forEach((el) => (el.hidden = currency !== 'NGN'));
+      root.querySelectorAll<HTMLElement>('[data-price-usd]').forEach((el) => (el.hidden = currency !== 'USD'));
+      root.querySelectorAll<HTMLButtonElement>('.cur').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.cur === currency)));
+      payAmount.textContent = currency === 'USD' && usd ? '$' + usd.toLocaleString('en-US') : naira(ngn);
+    };
+    const inNigeria = Intl.DateTimeFormat().resolvedOptions().timeZone === 'Africa/Lagos';
+    setCurrency(inNigeria ? 'NGN' : 'USD');
+    root.querySelectorAll<HTMLButtonElement>('.cur').forEach((b) => b.addEventListener('click', () => setCurrency(b.dataset.cur as 'NGN' | 'USD')));
+
+    const showError = (m: string) => { err.textContent = m; err.classList.toggle('hidden', !m); };
+
+    root.querySelector('[data-open]')?.addEventListener('click', () => {
+      showError('');
+      form.hidden = false;
+      done.hidden = true;
+      dialog.showModal();
+      loadPaystack().catch(() => {});
+    });
+    root.querySelector('[data-close]')?.addEventListener('click', () => dialog.close());
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const name = String(fd.get('name') ?? '').trim();
+      const email = String(fd.get('email') ?? '').trim().toLowerCase();
+      if (name.length < 2) return showError('Add your full name. It goes on your certificate.');
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return showError('Check your email address.');
+      showError('');
+      pay.disabled = true;
+      try {
+        await loadPaystack();
+      } catch {
+        pay.disabled = false;
+        return showError("Payment couldn't load. Check your connection and try again.");
+      }
+      const amount = currency === 'USD' && usd ? Math.round(usd * 100) : Math.round(ngn * 100);
+      // Paystack opens its own window on top; step our form out of the way while it's up.
+      dialog.close();
+      const reopen = () => { pay.disabled = false; if (!dialog.open) dialog.showModal(); };
+      const popup = new window.PaystackPop!();
+      popup.newTransaction({
+        key,
+        email,
+        amount,
+        currency,
+        metadata: {
+          course,
+          full_name: name,
+          custom_fields: [
+            { display_name: 'Program', variable_name: 'program', value: title },
+            { display_name: 'Full name', variable_name: 'full_name', value: name },
+          ],
+        },
+        onSuccess: () => {
+          pay.disabled = false;
+          form.hidden = true;
+          done.hidden = false;
+          (root.querySelector('[data-done-email]') as HTMLElement).textContent = email;
+          if (!dialog.open) dialog.showModal();
+        },
+        onCancel: () => reopen(),
+        onError: () => {
+          reopen();
+          showError("Payment didn't go through. Nothing was charged. Try again or use another method.");
+        },
+      });
+    });
+  });
+</script>
