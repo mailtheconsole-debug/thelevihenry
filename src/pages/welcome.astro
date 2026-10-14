@@ -1,0 +1,136 @@
+---
+import Base from '../layouts/Base.astro';
+
+// Post-purchase "you're in" page. The Enroll button redirects here on a
+// successful Paystack payment (and stashes the buyer's email in sessionStorage
+// so we can personalise without putting it in the URL). noindex: not for search.
+
+// Drop a Bunny Stream video id here once the short welcome video is recorded and
+// the embed + step appear automatically. Empty = no video block yet.
+const welcomeVideoId = '';
+const embed = (id: string) => `https://iframe.mediadelivery.net/embed/776834/${id}?preload=false`;
+
+const LOGIN = 'https://learn.thelevihenry.com/login';
+
+const steps: [string, string][] = [
+  [
+    'Check your email for the login link',
+    'It is on its way now and usually lands within a few minutes — check your spam and promotions folders too. The link signs you straight in, and you can set a password from Account once you are inside.',
+  ],
+  [
+    'Open the "Start here" module',
+    'Your course opens with a Start here module: a kickoff video and your Remote SDR Career Blueprint. Begin there, then work through the eight modules in order.',
+  ],
+  [
+    'Do the reps and get them reviewed',
+    'Submit each assignment and a coach reviews your work and tells you exactly what to fix. Show up every week — the number-one student on the leaderboard wins a one-hour session with me.',
+  ],
+];
+---
+
+<Base
+  title="You're enrolled | Levi Henry Group"
+  description="Welcome to LHG Academy — your enrollment is confirmed. Here's how to get started."
+  noindex={true}
+>
+  <!-- Minimal header: logo + Student login only (no main nav) -->
+  <header class="sticky top-0 z-40 border-b border-line bg-ivory/90 backdrop-blur-md">
+    <div class="mx-auto flex max-w-7xl 2xl:max-w-[100rem] items-center justify-between gap-4 px-6 py-3.5">
+      <a href="/" aria-label="Levi Henry Group home">
+        <img src="/assets/brand/logo-horizontal.png" alt="Levi Henry Group" width="2232" height="955" class="h-8 w-auto sm:h-9" />
+      </a>
+      <a href={LOGIN} class="font-sans text-sm font-semibold text-navy underline-offset-4 hover:underline">Student login</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Confirmation -->
+    <section class="hero-band relative overflow-hidden border-b border-line">
+      <img src="/assets/brand/bg-hero-light.webp" alt="" aria-hidden="true" class="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-70" style="object-position:right center" />
+      <div class="pointer-events-none absolute inset-0" style="background:radial-gradient(70% 80% at 50% 40%, rgba(251,249,244,0.88), rgba(251,249,244,0.42) 55%, rgba(251,249,244,0.1) 100%)"></div>
+      <div class="relative z-[1] mx-auto max-w-2xl px-6 py-16 text-center lg:py-20">
+        <span class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand/10 ring-1 ring-brand/30" data-reveal>
+          <svg class="text-brand" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5" /></svg>
+        </span>
+        <p class="mt-6 font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600" data-reveal>Payment confirmed</p>
+        <h1 class="mt-3 font-serif text-[2.1rem] font-medium leading-[1.08] tracking-tight text-navy sm:text-4xl lg:text-5xl" data-reveal>You're in. Welcome to the Academy.</h1>
+        <p class="mt-5 text-lg leading-relaxed text-ink-soft" data-reveal>Your enrollment in <strong class="font-semibold text-navy">Remote SDR Training</strong> is confirmed, and <strong class="font-semibold text-navy" data-enrolled-email>your login link is on its way</strong>.</p>
+        <div class="mt-8 flex justify-center" data-reveal>
+          <a href={LOGIN} class="btn-primary inline-flex items-center gap-2 rounded-sm px-7 py-3.5 font-sans text-sm font-semibold text-white">Log in to the Academy <span aria-hidden="true">&rarr;</span></a>
+        </div>
+      </div>
+    </section>
+
+    {welcomeVideoId && (
+      <section class="border-t border-line bg-paper">
+        <div class="mx-auto max-w-3xl px-6 py-14 lg:py-16">
+          <div class="max-w-xl" data-reveal>
+            <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Watch this first</p>
+            <h2 class="mt-2 font-serif text-2xl font-medium leading-tight tracking-tight text-navy sm:text-3xl">A 3-minute tour of how everything works</h2>
+          </div>
+          <div class="mt-7 overflow-hidden rounded-xl bg-navy-deep shadow-lg ring-1 ring-line" style="aspect-ratio:16/9" data-reveal>
+            <iframe src={embed(welcomeVideoId)} loading="lazy" title="Welcome to LHG Academy" class="h-full w-full" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- What happens next -->
+    <section class="border-t border-line">
+      <div class="mx-auto max-w-3xl px-6 py-14 lg:py-16">
+        <h2 class="font-serif text-2xl font-medium leading-tight tracking-tight text-navy sm:text-3xl" data-reveal>Here's what happens next</h2>
+        <ol class="mt-8 space-y-px overflow-hidden rounded-xl border border-line">
+          {steps.map(([t, d], i) => (
+            <li class="flex gap-4 border-t border-line bg-paper-raised px-5 py-5 first:border-t-0 sm:px-6">
+              <span class="font-serif text-xl font-medium leading-none text-brand">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <p class="font-serif text-lg font-medium text-navy">{t}</p>
+                <p class="mt-1 text-[0.97rem] leading-relaxed text-ink-soft">{d}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- Help -->
+    <section class="border-t border-line bg-paper">
+      <div class="mx-auto max-w-3xl px-6 py-12 text-center lg:py-14">
+        <p class="text-ink-soft" data-reveal>
+          Didn't get the email within 10 minutes? Check spam and promotions first, then
+          <a href="/contact" class="font-semibold text-navy underline underline-offset-2">contact us</a>
+          or email <a href="mailto:levi@thelevihenry.com" class="font-semibold text-navy underline underline-offset-2">levi@thelevihenry.com</a>
+          and we'll get you in.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Minimal footer -->
+  <footer class="border-t border-white/10 bg-ink-black text-white/60">
+    <div class="mx-auto flex max-w-7xl 2xl:max-w-[100rem] flex-col items-center gap-3 px-6 py-8 text-center text-xs sm:flex-row sm:justify-between sm:text-left">
+      <span>&copy; <span data-year></span> Levi Henry Group. All rights reserved.</span>
+      <span class="flex flex-wrap items-center justify-center gap-x-5 gap-y-1">
+        <a href={LOGIN} class="transition hover:text-white">Student login</a>
+        <a href="/privacy" class="transition hover:text-white">Privacy</a>
+        <a href="/terms" class="transition hover:text-white">Terms</a>
+      </span>
+    </div>
+  </footer>
+
+  <script is:inline>
+    // Personalise the confirmation with the buyer's email, passed via
+    // sessionStorage (never the URL). textContent only — no injection.
+    try {
+      var raw = sessionStorage.getItem('lhg_enrolled');
+      if (raw) {
+        var d = JSON.parse(raw);
+        if (d && d.email) {
+          var el = document.querySelector('[data-enrolled-email]');
+          if (el) el.textContent = 'your login link is on its way to ' + d.email;
+        }
+        sessionStorage.removeItem('lhg_enrolled');
+      }
+    } catch (e) {}
+  </script>
+</Base>

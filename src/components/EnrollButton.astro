@@ -234,11 +234,18 @@ const promo = !!(listNgn && listNgn > ngn);
           ],
         },
         onSuccess: () => {
-          pay.disabled = false;
-          form.hidden = true;
-          done.hidden = false;
-          (root.querySelector('[data-done-email]') as HTMLElement).textContent = email;
-          if (!dialog.open) dialog.showModal();
+          // Hand off to the post-purchase page. Pass the email via sessionStorage
+          // (never the URL) so /welcome can personalise the confirmation.
+          try { sessionStorage.setItem('lhg_enrolled', JSON.stringify({ email, course, title })); } catch {}
+          window.location.assign('/welcome');
+          // Fallback: if navigation is somehow blocked, show the inline confirmation.
+          setTimeout(() => {
+            pay.disabled = false;
+            form.hidden = true;
+            done.hidden = false;
+            (root.querySelector('[data-done-email]') as HTMLElement).textContent = email;
+            if (!dialog.open) dialog.showModal();
+          }, 1200);
         },
         onCancel: () => reopen(),
         onError: () => {
