@@ -148,7 +148,9 @@ const prose = 'mx-auto max-w-4xl px-6';
 
     <!-- Step 2: headline + sub-headline -->
     <section class="hero-band relative overflow-hidden border-b border-line">
-      <div class="mx-auto max-w-4xl px-6 py-14 text-center lg:py-20">
+      <img src="/assets/brand/bg-hero-light.webp" alt="" aria-hidden="true" class="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-70" style="object-position:right center" />
+      <div class="pointer-events-none absolute inset-0" style="background:radial-gradient(70% 80% at 50% 40%, rgba(251,249,244,0.86), rgba(251,249,244,0.4) 55%, rgba(251,249,244,0.08) 100%)"></div>
+      <div class="relative z-[1] mx-auto max-w-4xl px-6 py-14 text-center lg:py-20">
         <h1 class="font-serif text-[2.1rem] font-medium leading-[1.08] tracking-tight text-navy sm:text-4xl lg:text-5xl" data-reveal>
           Get hired as a remote SDR by a US, UK, or Canadian company, even if you've never worked in sales
         </h1>
@@ -301,8 +303,9 @@ const prose = 'mx-auto max-w-4xl px-6';
     </section>
 
     <!-- Step 8: social proof -->
-    <section class="border-t border-line bg-paper">
-      <div class="mx-auto max-w-7xl 2xl:max-w-[100rem] px-6 py-14 lg:py-16">
+    <section class="relative overflow-hidden border-t border-line bg-paper">
+      <BandTexture src="/assets/brand/bg-crystal-light.webp" mirror={true} opacity={0.5} theme="light" />
+      <div class="relative z-[1] mx-auto max-w-7xl 2xl:max-w-[100rem] px-6 py-14 lg:py-16">
         <div class="max-w-2xl" data-reveal>
           <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">What students say</p>
           <h2 class="mt-2 font-serif text-2xl font-medium leading-tight tracking-tight text-navy sm:text-3xl">The first cohort, in their own words.</h2>
@@ -487,8 +490,10 @@ const prose = 'mx-auto max-w-4xl px-6';
     </section>
 
     <!-- Step 15: call to action -->
-    <section id="enroll" class="scroll-mt-20 border-t border-line bg-paper">
-      <div class="mx-auto max-w-4xl px-6 py-14 text-center lg:py-16">
+    <section id="enroll" class="relative scroll-mt-20 overflow-hidden border-t border-line bg-paper">
+      <img src="/assets/brand/bg-hero-light.webp" alt="" aria-hidden="true" loading="lazy" class="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-60" style="object-position:center" />
+      <div class="pointer-events-none absolute inset-0" style="background:radial-gradient(75% 90% at 50% 45%, rgba(251,249,244,0.88), rgba(251,249,244,0.45) 55%, rgba(251,249,244,0.12) 100%)"></div>
+      <div class="relative z-[1] mx-auto max-w-4xl px-6 py-14 text-center lg:py-16">
         <h2 class="font-serif text-2xl font-medium leading-tight tracking-tight text-navy sm:text-3xl" data-reveal>Enroll now for <span class="text-[#a66a12]">₦60,000</span></h2>
         <p class="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-ink-soft" data-reveal>Click the button, enter your name and email, and pay securely with Paystack (card, bank transfer, or USSD). Your login link arrives by email within minutes, and you can start Module 1 today.</p>
         <div class="mt-8 flex justify-center" data-reveal>
