@@ -121,7 +121,7 @@ const skills = [
 ];
 
 const embed = (id: string) => `https://iframe.mediadelivery.net/embed/776834/${id}?preload=false`;
-const prose = 'mx-auto max-w-3xl px-6';
+const prose = 'mx-auto max-w-4xl px-6';
 ---
 
 <Base
@@ -130,7 +130,7 @@ const prose = 'mx-auto max-w-3xl px-6';
 >
   <!-- Minimal header: logo + Student login only (no main nav) -->
   <header class="sticky top-0 z-40 border-b border-line bg-ivory/90 backdrop-blur-md">
-    <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-3.5">
+    <div class="mx-auto flex max-w-7xl 2xl:max-w-[100rem] items-center justify-between gap-4 px-6 py-3.5">
       <a href="/" aria-label="Levi Henry Group home">
         <img src="/assets/brand/logo-horizontal.png" alt="Levi Henry Group" width="2232" height="955" class="h-8 w-auto sm:h-9" />
       </a>
@@ -140,15 +140,15 @@ const prose = 'mx-auto max-w-3xl px-6';
 
   <main id="main">
     <!-- Step 1: audience callout -->
-    <div class="bg-navy text-center">
-      <p class="mx-auto max-w-3xl px-6 py-3 font-sans text-[0.7rem] font-bold uppercase leading-snug tracking-[0.12em] text-white/90 sm:text-xs">
-        Attention: Nigerians who want to earn in dollars from home, as a remote sales development rep for companies in the US, UK, and Canada
+    <div class="border-b border-beacon/30 bg-navy text-center">
+      <p class="mx-auto max-w-5xl px-6 py-3.5 font-sans text-sm font-extrabold uppercase leading-snug tracking-[0.08em] text-white sm:text-[0.95rem]">
+        <span class="text-beacon">Attention:</span> Nigerians who want to earn in dollars from home, as a remote sales development rep for companies in the US, UK, and Canada
       </p>
     </div>
 
     <!-- Step 2: headline + sub-headline -->
     <section class="hero-band relative overflow-hidden border-b border-line">
-      <div class="mx-auto max-w-3xl px-6 py-14 text-center lg:py-20">
+      <div class="mx-auto max-w-4xl px-6 py-14 text-center lg:py-20">
         <h1 class="font-serif text-[2.1rem] font-medium leading-[1.08] tracking-tight text-navy sm:text-4xl lg:text-5xl" data-reveal>
           Get hired as a remote SDR by a US, UK, or Canadian company, even if you've never worked in sales
         </h1>
@@ -199,7 +199,7 @@ const prose = 'mx-auto max-w-3xl px-6';
           <p data-reveal>A Sales Development Rep's whole job is to find the right person at a company, start a conversation, and book a meeting. That's exactly how you'll land your role. You'll apply, then reach the hiring manager on LinkedIn, follow up by email, and pick up the phone. By the time you're interviewed, you've already shown them you can do the job.</p>
           <p data-reveal>It's 8 modules, in order, from your first LinkedIn message to the final interview.</p>
         </div>
-        <ol class="mx-auto mt-8 max-w-3xl space-y-px overflow-hidden rounded-xl border border-line px-0" data-reveal>
+        <ol class="mx-auto mt-8 max-w-4xl space-y-px overflow-hidden rounded-xl border border-line px-0" data-reveal>
           {modules.map(([t, d], i) => (
             <li class="flex gap-4 border-t border-line bg-paper-raised px-5 py-4 first:border-t-0 sm:px-6">
               <span class="font-serif text-xl font-medium leading-none text-brand">{String(i + 1).padStart(2, '0')}</span>
@@ -215,7 +215,7 @@ const prose = 'mx-auto max-w-3xl px-6';
 
     <!-- Step 6: credentials -->
     <section class="border-t border-line">
-      <div class="mx-auto max-w-6xl px-6 py-14 lg:py-16">
+      <div class="mx-auto max-w-7xl 2xl:max-w-[100rem] px-6 py-14 lg:py-16">
         <div class="grid items-start gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:gap-14">
           <figure class="m-0 overflow-hidden rounded-2xl bg-navy shadow-xl shadow-navy/25 ring-1 ring-navy/10" data-reveal>
             <img src="/assets/photos/headshot-editorial.webp" alt="Levi Henry, founder of Levi Henry Group and your coach" width="1280" height="1600" loading="lazy" class="aspect-[4/5] w-full object-cover" />
@@ -233,7 +233,7 @@ const prose = 'mx-auto max-w-3xl px-6';
           </div>
         </div>
       </div>
-      <div class="mx-auto max-w-3xl px-6" data-reveal>
+      <div class="mx-auto max-w-4xl px-6" data-reveal>
         <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">My path at Ivinex, a US CRM and AI company, fully remote from Nigeria</p>
         <div class="mt-5 space-y-px overflow-hidden rounded-xl border border-line">
           {path.map(([role, when, d]) => (
@@ -253,7 +253,7 @@ const prose = 'mx-auto max-w-3xl px-6';
         <p class="font-serif text-xl text-navy" data-reveal>Talent is common. The systems that turn talent into income are rare. This course is the system.</p>
       </div>
 
-      <div class="mx-auto mt-12 max-w-3xl px-6" data-reveal>
+      <div class="mx-auto mt-12 max-w-4xl px-6" data-reveal>
         <figure class="overflow-hidden rounded-2xl border border-line border-l-[3px] border-l-brass bg-paper-raised p-6 shadow-lg shadow-navy/10 sm:p-8">
           <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">From a colleague at Ivinex</p>
           <blockquote class="mt-4 font-serif text-lg font-medium leading-snug text-navy sm:text-xl">
@@ -263,7 +263,7 @@ const prose = 'mx-auto max-w-3xl px-6';
         </figure>
       </div>
 
-      <div class="mx-auto mt-12 max-w-6xl px-6">
+      <div class="mx-auto mt-12 max-w-7xl 2xl:max-w-[100rem] px-6">
         <div class="max-w-2xl" data-reveal>
           <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">What my sales team says</p>
           <p class="mt-2 text-ink-soft">The people I trained and led, in their own words.</p>
@@ -287,7 +287,7 @@ const prose = 'mx-auto max-w-3xl px-6';
     <!-- Step 7: benefits -->
     <section class="band-dark relative overflow-hidden">
       <BandTexture src="/assets/brand/bg-hero-facets.webp" mirror={false} opacity={0.18} />
-      <div class="relative z-[1] mx-auto max-w-6xl px-6 py-14 lg:py-16">
+      <div class="relative z-[1] mx-auto max-w-7xl 2xl:max-w-[100rem] px-6 py-14 lg:py-16">
         <h2 class="font-serif text-2xl font-medium leading-tight tracking-tight text-white sm:text-3xl" data-reveal>Here's what changes when you finish</h2>
         <div class="mt-8 grid gap-x-10 gap-y-6 sm:grid-cols-2">
           {benefits.map(([t, d]) => (
@@ -302,7 +302,7 @@ const prose = 'mx-auto max-w-3xl px-6';
 
     <!-- Step 8: social proof -->
     <section class="border-t border-line bg-paper">
-      <div class="mx-auto max-w-6xl px-6 py-14 lg:py-16">
+      <div class="mx-auto max-w-7xl 2xl:max-w-[100rem] px-6 py-14 lg:py-16">
         <div class="max-w-2xl" data-reveal>
           <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">What students say</p>
           <h2 class="mt-2 font-serif text-2xl font-medium leading-tight tracking-tight text-navy sm:text-3xl">The first cohort, in their own words.</h2>
@@ -364,7 +364,7 @@ const prose = 'mx-auto max-w-3xl px-6';
           <h2 class="font-serif text-2xl font-medium leading-tight tracking-tight text-navy sm:text-3xl" data-reveal>Here's everything you get when you enroll today</h2>
           <p data-reveal>Lifetime access to Remote SDR Training: 116 video lessons (18 hours) across 8 modules, every tool you need to run your job search like a sales pipeline, and a coach reviewing your work, for less than many people spend on a single month of data and transport looking for a job.</p>
         </div>
-        <div class="mx-auto mt-7 max-w-3xl px-6" data-reveal>
+        <div class="mx-auto mt-7 max-w-4xl px-6" data-reveal>
           <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">What's inside</p>
           <ul class="mt-4 space-y-2.5">
             {inside.map((f) => (
@@ -383,7 +383,7 @@ const prose = 'mx-auto max-w-3xl px-6';
 
     <!-- Step 10: bonuses -->
     <section class="border-t border-line bg-paper">
-      <div class="mx-auto max-w-6xl px-6 py-14 lg:py-16">
+      <div class="mx-auto max-w-7xl 2xl:max-w-[100rem] px-6 py-14 lg:py-16">
         <h2 class="font-serif text-2xl font-medium leading-tight tracking-tight text-navy sm:text-3xl" data-reveal>Enroll today and you also get</h2>
         <div class="mt-7 grid items-start gap-4 sm:grid-cols-2">
           {bonuses.map(([t, d, worth]) => (
@@ -401,7 +401,7 @@ const prose = 'mx-auto max-w-3xl px-6';
 
     <!-- Step 11: value stack -->
     <section class="border-t border-line">
-      <div class="mx-auto max-w-3xl px-6 py-14 lg:py-16">
+      <div class="mx-auto max-w-4xl px-6 py-14 lg:py-16">
         <h2 class="font-serif text-2xl font-medium leading-tight tracking-tight text-navy sm:text-3xl" data-reveal>What it all adds up to</h2>
         <div class="mt-7 overflow-hidden rounded-xl border border-line" data-reveal>
           <table class="w-full border-collapse text-left text-[0.95rem]">
@@ -448,7 +448,7 @@ const prose = 'mx-auto max-w-3xl px-6';
     <!-- Step 12: price reveal -->
     <section class="band-dark relative overflow-hidden">
       <BandTexture src="/assets/brand/bg-gold-streak.webp" mirror={false} opacity={0.24} />
-      <div class="relative z-[1] mx-auto max-w-3xl px-6 py-14 text-center lg:py-20">
+      <div class="relative z-[1] mx-auto max-w-4xl px-6 py-14 text-center lg:py-20">
         <p class="text-lg text-white/75" data-reveal>That's <strong class="font-serif text-xl font-semibold text-beacon-soft">₦340,000</strong> of training, tools, and bonuses.</p>
         <p class="mt-4 text-lg text-white/75" data-reveal>The regular price for Remote SDR Training is <strong class="font-semibold text-white/55 line-through decoration-white/40">₦80,000</strong>.</p>
         <p class="mt-6 font-serif text-3xl font-medium leading-tight text-white sm:text-4xl" data-reveal>For the first 100 students, it's <span class="text-beacon">₦60,000</span>. One payment. Lifetime access. No subscription.</p>
@@ -468,7 +468,7 @@ const prose = 'mx-auto max-w-3xl px-6';
 
     <!-- Step 14: my commitment -->
     <section class="border-t border-line">
-      <div class="mx-auto max-w-3xl px-6 py-14 lg:py-16">
+      <div class="mx-auto max-w-4xl px-6 py-14 lg:py-16">
         <h2 class="font-serif text-2xl font-medium leading-tight tracking-tight text-navy sm:text-3xl" data-reveal>My commitment</h2>
         <p class="mt-5 text-lg leading-relaxed text-ink-soft" data-reveal><strong class="font-semibold text-navy">You get instant access to every lesson, guide, and tool the moment you pay.</strong> What I give you from there is every reason to finish:</p>
         <div class="mt-6 space-y-4">
@@ -488,7 +488,7 @@ const prose = 'mx-auto max-w-3xl px-6';
 
     <!-- Step 15: call to action -->
     <section id="enroll" class="scroll-mt-20 border-t border-line bg-paper">
-      <div class="mx-auto max-w-3xl px-6 py-14 text-center lg:py-16">
+      <div class="mx-auto max-w-4xl px-6 py-14 text-center lg:py-16">
         <h2 class="font-serif text-2xl font-medium leading-tight tracking-tight text-navy sm:text-3xl" data-reveal>Enroll now for <span class="text-[#a66a12]">₦60,000</span></h2>
         <p class="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-ink-soft" data-reveal>Click the button, enter your name and email, and pay securely with Paystack (card, bank transfer, or USSD). Your login link arrives by email within minutes, and you can start Module 1 today.</p>
         <div class="mt-8 flex justify-center" data-reveal>
@@ -509,14 +509,15 @@ const prose = 'mx-auto max-w-3xl px-6';
     <!-- Step 17: P.S. -->
     <section class="border-t border-line bg-paper">
       <div class={`${prose} py-14 text-lg leading-relaxed text-ink-soft lg:py-16`}>
-        <p data-reveal><strong class="font-semibold text-navy">P.S.</strong> If you've scrolled straight here: Remote SDR Training gives you the exact system to get hired as a remote SDR by a US, UK, or Canadian company, even with no sales experience. That's 8 modules, 116 lessons, 31 coach-reviewed assignments, every tool you need, a verifiable certificate, and lifetime access, for ₦60,000 instead of ₦80,000, for the first 100 students only. Click <a href="#enroll" class="font-semibold text-navy underline underline-offset-2">Enroll now</a>, pay securely with Paystack, and start Module 1 today.</p>
+        <p data-reveal><strong class="font-semibold text-navy">P.S.</strong> If you've scrolled straight here: Remote SDR Training gives you the exact system to get hired as a remote SDR by a US, UK, or Canadian company, even with no sales experience. That's 8 modules, 116 lessons, 31 coach-reviewed assignments, every tool you need, a verifiable certificate, and lifetime access, for ₦60,000 instead of ₦80,000, for the first 100 students only.</p>
+        <p class="mt-4" data-reveal>Click <a href="#enroll" class="font-semibold text-navy underline underline-offset-2">Enroll now</a>, pay securely with Paystack, and start Module 1 today.</p>
       </div>
     </section>
   </main>
 
   <!-- Minimal footer -->
   <footer class="border-t border-white/10 bg-ink-black text-white/60">
-    <div class="mx-auto flex max-w-6xl flex-col items-center gap-3 px-6 py-8 text-center text-xs sm:flex-row sm:justify-between sm:text-left">
+    <div class="mx-auto flex max-w-7xl 2xl:max-w-[100rem] flex-col items-center gap-3 px-6 py-8 text-center text-xs sm:flex-row sm:justify-between sm:text-left">
       <span>&copy; <span data-year></span> Levi Henry Group. All rights reserved.</span>
       <span class="flex flex-wrap items-center justify-center gap-x-5 gap-y-1">
         <a href="https://learn.thelevihenry.com/login" class="transition hover:text-white">Student login</a>
