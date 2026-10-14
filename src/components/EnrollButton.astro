@@ -1,14 +1,15 @@
 ---
 // Enroll in an LHG Academy program with Paystack checkout, right on this site.
-// After payment, Paystack notifies the Academy (learn.thelevihenry.com), which checks the amount against the
-// program's price, creates the student's account, and emails them a login link. Nothing to sync by hand.
-//
-// Keep `ngn` equal to the program's "Price now" in the Academy admin, or payments get flagged as underpaid.
+// On load (and again when the dialog opens) it reads the live offer from the Academy
+// (learn.thelevihenry.com/api/offers/<course>) so the price, the crossed-out regular price
+// and the launch-spots counter are always current. The `ngn`/`listNgn` props are the
+// server-rendered fallback used if that fetch fails. After payment, Paystack notifies the
+// Academy, which verifies the amount, creates the student's account, and emails a login link.
 interface Props {
   course: string; // the program's slug in the Academy
   title: string;
-  ngn: number; // naira charged now
-  listNgn?: number; // regular naira price, shown crossed out during a promo
+  ngn: number; // fallback naira price (the live offer overrides this)
+  listNgn?: number; // fallback regular naira price, shown crossed out during a promo
   usd?: number | null; // dollars, once Paystack approves USD
   label?: string;
   align?: 'start' | 'center';
@@ -18,6 +19,7 @@ const PAYSTACK_PUBLIC_KEY = 'pk_live_4efc16f853a87c00c9bb482d5ddc25b27f96d0be'; 
 const id = `enroll-${course}`;
 const naira = (n: number) => '₦' + n.toLocaleString('en-NG');
 const justify = align === 'center' ? 'justify-center' : '';
+const promo = !!(listNgn && listNgn > ngn);
 ---
 
 <div class="enroll" data-enroll data-course={course} data-title={title} data-key={PAYSTACK_PUBLIC_KEY} data-ngn={ngn} data-usd={usd ?? ''}>
@@ -28,11 +30,13 @@ const justify = align === 'center' ? 'justify-center' : '';
         <button type="button" data-cur="USD" class="cur rounded-sm px-3 py-1.5">USD</button>
       </div>
     ) : null}
-    <span data-price-ngn class="font-serif text-3xl font-medium text-navy">{naira(ngn)}</span>
-    {listNgn && listNgn > ngn ? <span data-price-ngn class="font-sans text-lg text-ink-faint line-through">{naira(listNgn)}</span> : null}
-    {listNgn && listNgn > ngn ? <span data-price-ngn class="rounded-sm bg-brass-soft/20 px-2 py-0.5 font-sans text-xs font-bold uppercase tracking-wider text-navy">Launch price</span> : null}
+    <span data-price-ngn data-price-main class="font-serif text-3xl font-medium text-navy">{naira(ngn)}</span>
+    <span data-price-ngn data-price-regular class="font-sans text-lg text-ink-faint line-through" hidden={!promo}>{naira(listNgn ?? ngn)}</span>
+    <span data-price-ngn data-price-tag class="rounded-sm bg-brass-soft/20 px-2 py-0.5 font-sans text-xs font-bold uppercase tracking-wider text-navy" hidden={!promo}>Launch price</span>
     {usd ? <span data-price-usd hidden class="font-serif text-3xl font-medium text-navy">${usd.toLocaleString('en-US')}</span> : null}
   </div>
+  <p data-launch-note class:list={['mt-1.5 font-sans text-xs font-medium text-ink-soft', align === 'center' ? 'text-center' : '']} hidden></p>
+  <p data-launch-count class:list={['mt-1 font-sans text-xs font-semibold text-navy-600', align === 'center' ? 'text-center' : '']} hidden></p>
 
   <div class:list={['mt-5 flex flex-wrap items-center gap-4', justify]}>
     <button type="button" data-open class="btn-primary inline-flex items-center gap-2 rounded-sm px-7 py-3.5 font-sans text-sm font-semibold text-white">
@@ -114,6 +118,15 @@ const justify = align === 'center' ? 'justify-center' : '';
     const err = root.querySelector('[data-error]') as HTMLElement;
     const pay = root.querySelector('[data-pay]') as HTMLButtonElement;
     const payAmount = root.querySelector('[data-pay-amount]') as HTMLElement;
+    const priceMain = root.querySelector('[data-price-main]') as HTMLElement | null;
+    const priceRegular = root.querySelector('[data-price-regular]') as HTMLElement | null;
+    const priceTag = root.querySelector('[data-price-tag]') as HTMLElement | null;
+    const launchNote = root.querySelector('[data-launch-note]') as HTMLElement | null;
+    const launchCount = root.querySelector('[data-launch-count]') as HTMLElement | null;
+
+    // The naira price actually charged. Starts at the server-rendered fallback and is
+    // replaced by the Academy's live offer whenever that fetch succeeds.
+    let currentNgn = ngn;
 
     // Currency: naira for visitors in Nigeria, dollars elsewhere (only when a dollar price exists).
     let currency: 'NGN' | 'USD' = 'NGN';
@@ -122,11 +135,58 @@ const justify = align === 'center' ? 'justify-center' : '';
       root.querySelectorAll<HTMLElement>('[data-price-ngn]').forEach((el) => (el.hidden = currency !== 'NGN'));
       root.querySelectorAll<HTMLElement>('[data-price-usd]').forEach((el) => (el.hidden = currency !== 'USD'));
       root.querySelectorAll<HTMLButtonElement>('.cur').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.cur === currency)));
-      payAmount.textContent = currency === 'USD' && usd ? '$' + usd.toLocaleString('en-US') : naira(ngn);
+      payAmount.textContent = currency === 'USD' && usd ? '$' + usd.toLocaleString('en-US') : naira(currentNgn);
     };
+
+    // Reflect the Academy's live offer: price, crossed-out regular, launch tag and spots left.
+    const applyOffer = (o: any) => {
+      if (!o || typeof o.priceNgn !== 'number') return;
+      currentNgn = o.priceNgn;
+      const regular = typeof o.regularNgn === 'number' ? o.regularNgn : 0;
+      const launchActive = !!(o.launch && o.launch.active);
+      const showPromo = launchActive && regular > currentNgn;
+      if (priceMain) priceMain.textContent = naira(currentNgn);
+      if (currency === 'NGN') payAmount.textContent = naira(currentNgn);
+      if (priceRegular) { priceRegular.textContent = naira(regular); priceRegular.hidden = !showPromo; }
+      if (priceTag) priceTag.hidden = !showPromo;
+      if (launchNote) {
+        // Scarcity line carried on every page: states the launch deal without a live count.
+        const cap = o.launch && typeof o.launch.cap === 'number' ? o.launch.cap : null;
+        if (launchActive && cap !== null && regular > currentNgn) {
+          launchNote.textContent = `Launch price for the first ${cap} students only. Then ${naira(regular)}.`;
+          launchNote.hidden = false;
+        } else {
+          launchNote.hidden = true;
+        }
+      }
+      if (launchCount) {
+        // Only reveal a spots count once it is genuinely low, so a high count never
+        // discourages early buyers. Never show a sold count or an inflated number.
+        const remaining = o.launch && typeof o.launch.remaining === 'number' ? o.launch.remaining : null;
+        if (launchActive && remaining !== null && remaining <= 20) {
+          launchCount.textContent = `Only ${remaining} launch spots left at ${naira(currentNgn)}`;
+          launchCount.hidden = false;
+        } else {
+          launchCount.hidden = true;
+        }
+      }
+    };
+
+    const fetchOffer = async () => {
+      if (!course) return;
+      try {
+        const res = await fetch(`https://learn.thelevihenry.com/api/offers/${encodeURIComponent(course)}`, { cache: 'no-store' });
+        if (!res.ok) return;
+        applyOffer(await res.json());
+      } catch {
+        /* keep the server-rendered fallback price */
+      }
+    };
+
     const inNigeria = Intl.DateTimeFormat().resolvedOptions().timeZone === 'Africa/Lagos';
     setCurrency(inNigeria ? 'NGN' : 'USD');
     root.querySelectorAll<HTMLButtonElement>('.cur').forEach((b) => b.addEventListener('click', () => setCurrency(b.dataset.cur as 'NGN' | 'USD')));
+    fetchOffer(); // live price on load
 
     const showError = (m: string) => { err.textContent = m; err.classList.toggle('hidden', !m); };
 
@@ -136,6 +196,7 @@ const justify = align === 'center' ? 'justify-center' : '';
       done.hidden = true;
       dialog.showModal();
       loadPaystack().catch(() => {});
+      fetchOffer(); // refresh the amount right before payment
     });
     root.querySelector('[data-close]')?.addEventListener('click', () => dialog.close());
 
@@ -154,7 +215,7 @@ const justify = align === 'center' ? 'justify-center' : '';
         pay.disabled = false;
         return showError("Payment couldn't load. Check your connection and try again.");
       }
-      const amount = currency === 'USD' && usd ? Math.round(usd * 100) : Math.round(ngn * 100);
+      const amount = currency === 'USD' && usd ? Math.round(usd * 100) : Math.round(currentNgn * 100);
       // Paystack opens its own window on top; step our form out of the way while it's up.
       dialog.close();
       const reopen = () => { pay.disabled = false; if (!dialog.open) dialog.showModal(); };
