@@ -15,16 +15,16 @@ const WHATSAPP_GROUP = 'https://chat.whatsapp.com/F6xAOZPA6UCBSLhoH8HGzr?mode=gi
 
 const steps: [string, string][] = [
   [
-    'Check your email for the login link',
-    'It is on its way now and usually lands within a few minutes — check your spam and promotions folders too. The link signs you straight in, and you can set a password from Account once you are inside.',
+    'Check your email for your login link',
+    'You\'ll get two emails within a minute or two. One is your login link: the email titled "Your LHG Academy login link", with a gold "Log in to the Academy" button that signs you straight in. The other welcomes you and carries the WhatsApp group link. Can\'t find them? Check spam and promotions. The login link works once and expires in 15 minutes, so use it soon.',
   ],
   [
-    'Open the "Start here" module',
-    'Your course opens with a Start here module: a kickoff video and your Remote SDR Career Blueprint. Begin there, then work through the eight modules in order.',
+    'Follow the welcome checklist on your Home page',
+    'The link lands you on your Home page, and right at the top is a "Welcome to Remote SDR Training" checklist: join the WhatsApp group, read the Career Blueprint book, watch the course intro, set a password, and log your first day in RepActs. Start with the Blueprint, then work through the 8 modules, best done in order.',
   ],
   [
     'Do the reps and get them reviewed',
-    'Submit each assignment and a coach reviews your work and tells you exactly what to fix. Show up every week — the number-one student on the leaderboard wins a one-hour session with me.',
+    'The course works when you work it. Every assignment you submit, Levi reviews and sends back with feedback. Show up each week: the top student on the leaderboard that week wins a free one-hour session with me, and passing the final test earns you a verifiable certificate.',
   ],
 ];
 ---
@@ -120,10 +120,11 @@ const steps: [string, string][] = [
     <section class="border-t border-line bg-paper">
       <div class="mx-auto max-w-3xl px-6 py-12 text-center lg:py-14">
         <p class="text-ink-soft" data-reveal>
-          Didn't get the email within 10 minutes? Check spam and promotions first, then
-          <a href="/contact" class="font-semibold text-navy underline underline-offset-2">contact us</a>
-          or email <a href="mailto:levi@thelevihenry.com" class="font-semibold text-navy underline underline-offset-2">levi@thelevihenry.com</a>
-          and we'll get you in.
+          No login email after 10 minutes? Go to the
+          <a href={LOGIN} class="font-semibold text-navy underline underline-offset-2">login page</a>
+          and tap "Email me a login link" with the email you paid with. Still nothing? Email
+          <a href="mailto:levi@thelevihenry.com" class="font-semibold text-navy underline underline-offset-2">levi@thelevihenry.com</a>
+          with your payment email, and we'll get you in.
         </p>
       </div>
     </section>
