@@ -57,6 +57,14 @@ const leaderVideos = [
   '292659c0-753b-4a78-93b2-2d805bc3fdd2',
 ];
 
+const banter = [
+  ['banter-ginger', 'Nigerian X post: "Omo Nigerian Remote Workers hide Update pass Yahoo boys" (410K views, 14K likes)'],
+  ['banter-ololade', 'Nigerian X post: "Remote Workers No Dey Hide Updates Pass Yahoo Boys, Na You No Follow Who Know Road"'],
+  ['banter-harry', 'Nigerian X post: "I need a source of income that\'s completely based online. Abeg share update."'],
+  ['banter-gabriel', 'Nigerian X post: "Nigerian remote workers give us update!!!!"'],
+  ['banter-adura', 'Nigerian X post: "Nobody hide update pass people wey dey do remote job for Nigeria"'],
+];
+
 const results = [
   { name: 'Joy', text: 'I finally landed a role. Your lessons paid off.', img: 'joy-landed-role' },
   { name: 'Indira', text: 'A gig with a UK-based digital marketing agency, and through to the video-interview stage for an SDR role at Casefuel.', img: 'indira-uk-agency-casefuel' },
@@ -182,6 +190,26 @@ const prose = 'mx-auto max-w-4xl px-6';
         <p data-reveal>So you stay where you are. And family keeps asking when things will change.</p>
         <p data-reveal>Here is what it is costing you. Every month this continues, you fall further behind. The money you earn buys less than last year. People who started where you are, but found the right door, now earn in dollars and move ahead of you. And slowly, you begin to believe it was never possible for you.</p>
         <p data-reveal>But here is the truth nobody tells you: <strong class="font-semibold text-navy">the way you are doing it was never going to work.</strong> Hundreds of people apply for every remote job. Your CV is one file in a big pile. A recruiter looks at it for six seconds. Applying harder only gets you ignored faster.</p>
+      </div>
+    </section>
+
+    <!-- Why you've been stuck: the ones who made it hide the way -->
+    <section class="border-t border-line bg-paper">
+      <div class="mx-auto max-w-7xl 2xl:max-w-[100rem] px-6 py-14 lg:py-16">
+        <div class="max-w-2xl space-y-4 text-lg leading-relaxed text-ink-soft">
+          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600" data-reveal>And nobody shows you the way</p>
+          <h2 class="font-serif text-2xl font-medium leading-tight tracking-tight text-navy sm:text-3xl" data-reveal>The ones who made it won't tell you how</h2>
+          <p data-reveal>There is a joke all over Nigerian Twitter: remote workers hide their updates more than yahoo boys. It is a joke because everyone knows it is true.</p>
+          <p data-reveal>People beg online for anyone to show them how. The ones who figured it out stay quiet. So you keep guessing. And guessing keeps you stuck.</p>
+        </div>
+        <div class="mt-8 columns-1 gap-4 sm:columns-2 lg:columns-3 2xl:columns-4 [&>figure]:mb-4 [&>figure]:break-inside-avoid">
+          {banter.map(([img, alt]) => (
+            <figure class="m-0 overflow-hidden rounded-xl shadow-sm ring-1 ring-line" data-reveal>
+              <img src={`/assets/testimonials/${img}.webp`} alt={alt} loading="lazy" class="block w-full" />
+            </figure>
+          ))}
+        </div>
+        <p class="mt-10 max-w-2xl font-serif text-xl text-navy" data-reveal>I'm doing the opposite. I'm going to show you the full way, step by step.</p>
       </div>
     </section>
 
