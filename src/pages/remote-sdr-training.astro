@@ -62,7 +62,6 @@ const banter = [
   ['banter-gabriel', 'Nigerian X post: "Nigerian remote workers give us update!!!!"'],
   ['banter-adura', 'Nigerian X post: "Nobody hide update pass people wey dey do remote job for Nigeria"'],
   ['banter-harry', 'Nigerian X post: "I need a source of income that\'s completely based online. Abeg share update."'],
-  ['banter-ololade', 'Nigerian X post: "Remote Workers No Dey Hide Updates Pass Yahoo Boys, Na You No Follow Who Know Road"'],
   ['banter-hersoft', 'Nigerian X post: "Nobody hide update pass NIGERIAN remote workers. Not even yahoo boys."'],
 ];
 
@@ -177,6 +176,28 @@ const prose = 'mx-auto max-w-4xl px-6';
       </div>
     </section>
 
+    <!-- Do you agree? The banter about remote workers hiding the way -->
+    <section class="border-t border-line bg-paper">
+      <div class="mx-auto max-w-4xl px-6 py-14 lg:py-16">
+        <div class="space-y-4 text-lg leading-relaxed text-ink-soft">
+          <h2 class="font-serif text-2xl font-medium leading-tight tracking-tight text-navy sm:text-3xl" data-reveal>Do you agree?</h2>
+          <p data-reveal>There is this banter all over Nigerian Twitter: remote workers hide their updates more than yahoo boys. People laugh, but everyone knows it is true.</p>
+          <p data-reveal>People beg online for anyone to show them how. The ones who figured it out stay quiet. So you keep guessing. And guessing keeps you stuck.</p>
+        </div>
+        <figure class="m-0 mt-8 overflow-hidden rounded-xl shadow-md ring-1 ring-line" data-reveal>
+          <img src="/assets/testimonials/banter-ololade.webp" alt="Nigerian X post: Remote Workers No Dey Hide Updates Pass Yahoo Boys, Na You No Follow Who Know Road" loading="lazy" class="block w-full" />
+        </figure>
+        <div class="mt-4 columns-1 gap-4 sm:columns-2 [&>figure]:mb-4 [&>figure]:break-inside-avoid">
+          {banter.map(([img, alt]) => (
+            <figure class="m-0 overflow-hidden rounded-xl shadow-sm ring-1 ring-line" data-reveal>
+              <img src={`/assets/testimonials/${img}.webp`} alt={alt} loading="lazy" class="block w-full" />
+            </figure>
+          ))}
+        </div>
+        <p class="mt-10 font-serif text-xl text-navy" data-reveal>I'm doing the opposite. I'm going to show you the full way, step by step.</p>
+      </div>
+    </section>
+
     <!-- The problem + what it's costing you (early agitation) -->
     <section class="border-t border-line bg-paper">
       <div class={`${prose} space-y-5 py-14 text-lg leading-relaxed text-ink-soft lg:py-16`}>
@@ -191,26 +212,6 @@ const prose = 'mx-auto max-w-4xl px-6';
         <p data-reveal>So you stay where you are. And family keeps asking when things will change.</p>
         <p data-reveal>Here is what it is costing you. Every month this continues, you fall further behind. The money you earn buys less than last year. People who started where you are, but found the right door, now earn in dollars and move ahead of you. And slowly, you begin to believe it was never possible for you.</p>
         <p data-reveal>But here is the truth nobody tells you: <strong class="font-semibold text-navy">the way you are doing it was never going to work.</strong> Hundreds of people apply for every remote job. Your CV is one file in a big pile. A recruiter looks at it for six seconds. Applying harder only gets you ignored faster.</p>
-      </div>
-    </section>
-
-    <!-- Why you've been stuck: the ones who made it hide the way -->
-    <section class="border-t border-line bg-paper">
-      <div class="mx-auto max-w-4xl px-6 py-14 lg:py-16">
-        <div class="space-y-4 text-lg leading-relaxed text-ink-soft">
-          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600" data-reveal>And nobody shows you the way</p>
-          <h2 class="font-serif text-2xl font-medium leading-tight tracking-tight text-navy sm:text-3xl" data-reveal>The ones who made it won't tell you how</h2>
-          <p data-reveal>There is a joke all over Nigerian Twitter: remote workers hide their updates more than yahoo boys. It is a joke because everyone knows it is true.</p>
-          <p data-reveal>People beg online for anyone to show them how. The ones who figured it out stay quiet. So you keep guessing. And guessing keeps you stuck.</p>
-        </div>
-        <div class="mt-8 columns-1 gap-4 sm:columns-2 [&>figure]:mb-4 [&>figure]:break-inside-avoid">
-          {banter.map(([img, alt]) => (
-            <figure class="m-0 overflow-hidden rounded-xl shadow-sm ring-1 ring-line" data-reveal>
-              <img src={`/assets/testimonials/${img}.webp`} alt={alt} loading="lazy" class="block w-full" />
-            </figure>
-          ))}
-        </div>
-        <p class="mt-10 font-serif text-xl text-navy" data-reveal>I'm doing the opposite. I'm going to show you the full way, step by step.</p>
       </div>
     </section>
 
@@ -533,7 +534,7 @@ const prose = 'mx-auto max-w-4xl px-6';
             </tbody>
           </table>
         </div>
-        <p class="mt-6 text-ink-soft" data-reveal><strong class="font-semibold text-navy">Remote SDR roles typically pay $500 to $1,000+ a month in base pay, before commission.</strong> At about ₦1,334 to the dollar, that's roughly ₦667,000 to ₦1.3 million a month. The full course costs ₦60,000 (about $45): less than a tenth of a single month's base pay at the entry level.</p>
+        <p class="mt-6 text-ink-soft" data-reveal><strong class="font-semibold text-navy">Remote SDR roles typically pay $500 to $1,000+ a month in base pay, before commission.</strong> At about ₦1,334 to the dollar, that's roughly ₦667,000 to ₦1.3 million a month. The full course costs less than a tenth of a single month's base pay at the entry level.</p>
       </div>
     </section>
 
