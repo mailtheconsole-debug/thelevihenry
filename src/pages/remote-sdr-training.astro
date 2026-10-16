@@ -274,9 +274,9 @@ const prose = 'mx-auto max-w-4xl px-6';
           <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">I have real-world experience</p>
           <p class="mt-2 text-ink-soft">Here are some clips of me working with some of the biggest tech leaders in the US.</p>
         </div>
-        <div class="mt-7 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-5">
+        <div class="mt-7 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:grid lg:grid-cols-5 lg:gap-5 lg:overflow-visible">
           {leaderVideos.map((id, i) => (
-            <div class="relative overflow-hidden rounded-xl bg-navy-deep shadow-lg ring-1 ring-line" style="aspect-ratio:9/16" data-reveal>
+            <div class="relative w-[62%] max-w-[240px] shrink-0 snap-start overflow-hidden rounded-xl bg-navy-deep shadow-lg ring-1 ring-line sm:w-[40%] lg:w-auto lg:max-w-none" style="aspect-ratio:9/16" data-reveal>
               <iframe src={embed(id)} loading="lazy" title={`Levi working with US tech company leaders, clip ${i + 1}`} class="absolute inset-0 h-full w-full" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
             </div>
           ))}
