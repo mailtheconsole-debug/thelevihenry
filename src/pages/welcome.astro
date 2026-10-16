@@ -7,7 +7,7 @@ import Base from '../layouts/Base.astro';
 
 // Drop a Bunny Stream video id here once the short welcome video is recorded and
 // the embed + step appear automatically. Empty = no video block yet.
-const welcomeVideoId = '';
+const welcomeVideoId = '5a92ddd5-f575-49f1-9104-f0f028955dac';
 const embed = (id: string) => `https://iframe.mediadelivery.net/embed/776834/${id}?preload=false`;
 
 const LOGIN = 'https://learn.thelevihenry.com/login';
@@ -62,6 +62,20 @@ const steps: [string, string][] = [
       </div>
     </section>
 
+    {welcomeVideoId && (
+      <section class="border-t border-line bg-paper">
+        <div class="mx-auto max-w-3xl px-6 py-14 lg:py-16">
+          <div class="max-w-xl" data-reveal>
+            <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Watch this first</p>
+            <h2 class="mt-2 font-serif text-2xl font-medium leading-tight tracking-tight text-navy sm:text-3xl">A welcome from Levi, and how it all works</h2>
+          </div>
+          <div class="mt-7 overflow-hidden rounded-xl bg-navy-deep shadow-lg ring-1 ring-line" style="aspect-ratio:16/9" data-reveal>
+            <iframe src={embed(welcomeVideoId)} loading="lazy" title="Welcome to Remote SDR Training" class="h-full w-full" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+          </div>
+        </div>
+      </section>
+    )}
+
     <!-- Join the WhatsApp group: prominent + on-screen (our most reliable channel for this audience) -->
     <section class="border-t border-line bg-paper">
       <div class="mx-auto max-w-3xl px-6 py-12 lg:py-14">
@@ -83,20 +97,6 @@ const steps: [string, string][] = [
         </div>
       </div>
     </section>
-
-    {welcomeVideoId && (
-      <section class="border-t border-line bg-paper">
-        <div class="mx-auto max-w-3xl px-6 py-14 lg:py-16">
-          <div class="max-w-xl" data-reveal>
-            <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Watch this first</p>
-            <h2 class="mt-2 font-serif text-2xl font-medium leading-tight tracking-tight text-navy sm:text-3xl">A 3-minute tour of how everything works</h2>
-          </div>
-          <div class="mt-7 overflow-hidden rounded-xl bg-navy-deep shadow-lg ring-1 ring-line" style="aspect-ratio:16/9" data-reveal>
-            <iframe src={embed(welcomeVideoId)} loading="lazy" title="Welcome to LHG Academy" class="h-full w-full" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
-          </div>
-        </div>
-      </section>
-    )}
 
     <!-- What happens next -->
     <section class="border-t border-line">
