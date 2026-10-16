@@ -49,6 +49,14 @@ const studentVideos = [
   { name: 'Indira', id: 'bd0c704c-14e5-46fa-aec2-7bade8d18cc9', vertical: false, label: 'First cohort', quote: 'I have never heard discovery calls explained the way you explained them. Everything we learned, prospecting, calling, doing the discoveries, I am using right now to build a new line of products at my company. And now I\'ve taught my own team how to speak to clients and write emails.' },
 ];
 
+const leaderVideos = [
+  'c525f291-30fd-41e5-9035-1903f1e6e9e1',
+  '9a429b45-2ce0-4679-b4c0-50333361d8ff',
+  '95068b68-6e59-4300-b4d9-5840a221aa77',
+  '7b99b831-3c5d-41b9-afe5-dd57740ee2b4',
+  '292659c0-753b-4a78-93b2-2d805bc3fdd2',
+];
+
 const results = [
   { name: 'Joy', text: 'I finally landed a role. Your lessons paid off.', img: 'joy-landed-role' },
   { name: 'Indira', text: 'A gig with a UK-based digital marketing agency, and through to the video-interview stage for an SDR role at Casefuel.', img: 'indira-uk-agency-casefuel' },
@@ -259,6 +267,20 @@ const prose = 'mx-auto max-w-4xl px-6';
         <p data-reveal>Over that time I've led different groups of reps as people came and went, and taken teams from no results to strong results. It only happened after I'd produced those results myself first. That's the order this course follows: you do the reps, you get the results, then it compounds.</p>
         <p data-reveal>From a recording studio with no sales experience, to the top-performing rep, to leading the team, without leaving Nigeria. Everything in this course is what I actually did. I built Remote SDR Training to hand you that path, step by step, without the years of guessing.</p>
         <p class="font-serif text-xl text-navy" data-reveal>Talent is common. The systems that turn talent into income are rare. This course is the system.</p>
+      </div>
+
+      <div class="mx-auto mt-12 max-w-7xl 2xl:max-w-[100rem] px-6">
+        <div class="max-w-2xl" data-reveal>
+          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Working with US tech company leaders</p>
+          <p class="mt-2 text-ink-soft">I don't just teach this. Here's some of my work alongside leaders at US technology companies.</p>
+        </div>
+        <div class="mt-7 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-5">
+          {leaderVideos.map((id, i) => (
+            <div class="relative overflow-hidden rounded-xl bg-navy-deep shadow-lg ring-1 ring-line" style="aspect-ratio:9/16" data-reveal>
+              <iframe src={embed(id)} loading="lazy" title={`Levi working with US tech company leaders, clip ${i + 1}`} class="absolute inset-0 h-full w-full" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div class="mx-auto mt-12 max-w-4xl px-6" data-reveal>
