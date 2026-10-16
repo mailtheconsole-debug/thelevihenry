@@ -13,8 +13,9 @@ interface Props {
   usd?: number | null; // dollars, once Paystack approves USD
   label?: string;
   align?: 'start' | 'center';
+  hidePrice?: boolean; // hide the inline price block + launch caption (e.g. before the price reveal)
 }
-const { course, title, ngn, listNgn, usd = null, label = 'Enroll now', align = 'start' } = Astro.props;
+const { course, title, ngn, listNgn, usd = null, label = 'Enroll now', align = 'start', hidePrice = false } = Astro.props;
 const PAYSTACK_PUBLIC_KEY = 'pk_live_4efc16f853a87c00c9bb482d5ddc25b27f96d0be'; // LHG Academy public key: safe in the browser
 const id = `enroll-${course}`;
 const naira = (n: number) => '₦' + n.toLocaleString('en-NG');
@@ -23,6 +24,8 @@ const promo = !!(listNgn && listNgn > ngn);
 ---
 
 <div class="enroll" data-enroll data-course={course} data-title={title} data-key={PAYSTACK_PUBLIC_KEY} data-ngn={ngn} data-usd={usd ?? ''}>
+  {!hidePrice && (
+  <Fragment>
   <div class:list={['flex flex-wrap items-baseline gap-x-3 gap-y-1', justify]}>
     {usd ? (
       <div class="mb-1 inline-flex rounded-sm border border-line p-0.5 font-sans text-xs font-semibold" role="group" aria-label="Currency">
@@ -37,6 +40,8 @@ const promo = !!(listNgn && listNgn > ngn);
   </div>
   <p data-launch-note class:list={['mt-1.5 font-sans text-xs font-medium text-ink-soft', align === 'center' ? 'text-center' : '']} hidden></p>
   <p data-launch-count class:list={['mt-1 font-sans text-xs font-semibold text-navy-600', align === 'center' ? 'text-center' : '']} hidden></p>
+  </Fragment>
+  )}
 
   <div class:list={['mt-5 flex flex-wrap items-center gap-4', justify]}>
     <button type="button" data-open class="btn-primary inline-flex items-center gap-2 rounded-sm px-7 py-3.5 font-sans text-sm font-semibold text-white">
