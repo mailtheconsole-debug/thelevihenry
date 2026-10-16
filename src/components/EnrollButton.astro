@@ -88,6 +88,7 @@ const promo = !!(listNgn && listNgn > ngn);
   declare global {
     interface Window {
       PaystackPop?: new () => { newTransaction: (o: Record<string, unknown>) => void };
+      fbq?: (...args: unknown[]) => void;
     }
   }
 
@@ -197,6 +198,7 @@ const promo = !!(listNgn && listNgn > ngn);
       dialog.showModal();
       loadPaystack().catch(() => {});
       fetchOffer(); // refresh the amount right before payment
+      window.fbq?.('track', 'InitiateCheckout', { content_name: title, content_ids: [course], content_type: 'product', value: currentNgn, currency: 'NGN' });
     });
     root.querySelector('[data-close]')?.addEventListener('click', () => dialog.close());
 
@@ -233,10 +235,10 @@ const promo = !!(listNgn && listNgn > ngn);
             { display_name: 'Full name', variable_name: 'full_name', value: name },
           ],
         },
-        onSuccess: () => {
-          // Hand off to the post-purchase page. Pass the email via sessionStorage
-          // (never the URL) so /welcome can personalise the confirmation.
-          try { sessionStorage.setItem('lhg_enrolled', JSON.stringify({ email, course, title })); } catch {}
+        onSuccess: (trx: { reference?: string }) => {
+          // Hand off to the post-purchase page. Pass the details via sessionStorage
+          // (never the URL) so /welcome can personalise + fire a deduped Purchase.
+          try { sessionStorage.setItem('lhg_enrolled', JSON.stringify({ email, course, title, value: amount / 100, currency, reference: trx?.reference })); } catch {}
           window.location.assign('/welcome');
           // Fallback: if navigation is somehow blocked, show the inline confirmation.
           setTimeout(() => {

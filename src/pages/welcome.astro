@@ -142,8 +142,9 @@ const steps: [string, string][] = [
   </footer>
 
   <script is:inline>
-    // Personalise the confirmation with the buyer's email, passed via
-    // sessionStorage (never the URL). textContent only — no injection.
+    // Personalise the confirmation + fire the Meta Purchase event, from the
+    // handoff stashed in sessionStorage by the Enroll button (never the URL).
+    // textContent only — no injection. Fires only on a real purchase handoff.
     try {
       var raw = sessionStorage.getItem('lhg_enrolled');
       if (raw) {
@@ -151,6 +152,15 @@ const steps: [string, string][] = [
         if (d && d.email) {
           var el = document.querySelector('[data-enrolled-email]');
           if (el) el.textContent = 'your login link is on its way to ' + d.email;
+        }
+        if (window.fbq && d && d.value) {
+          window.fbq('track', 'Purchase', {
+            value: d.value,
+            currency: d.currency || 'NGN',
+            content_name: d.title || 'Remote SDR Training',
+            content_ids: [d.course || 'remote-sdr-training'],
+            content_type: 'product'
+          }, d.reference ? { eventID: d.reference } : undefined);
         }
         sessionStorage.removeItem('lhg_enrolled');
       }
