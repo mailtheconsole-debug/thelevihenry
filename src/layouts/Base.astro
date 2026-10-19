@@ -17,6 +17,8 @@ const {
 
 // Meta Pixel (Nigeria-only audience, so the pixel fires without a consent gate).
 // Empty string disables it everywhere. Events on specific pages call window.fbq.
+// Only loads on the live production host (see SITE below) so dev/preview
+// (localhost, Netlify deploy previews) never pollutes the ad dataset.
 const META_PIXEL_ID = '1622252485686924';
 
 const SITE = Astro.site ?? new URL('https://thelevihenry.com');
@@ -95,14 +97,16 @@ const structured = [orgLd, siteLd, ...(jsonld ? (Array.isArray(jsonld) ? jsonld 
     {META_PIXEL_ID && (
       <Fragment>
         <!-- Meta Pixel -->
-        <script is:inline define:vars={{ pixelId: META_PIXEL_ID }}>
-          !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-          n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-          n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-          t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
-          document,'script','https://connect.facebook.net/en_US/fbevents.js');
-          fbq('init', pixelId);
-          fbq('track', 'PageView');
+        <script is:inline define:vars={{ pixelId: META_PIXEL_ID, siteHost: SITE.host }}>
+          if (location.hostname === siteHost) {
+            !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+            n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+            document,'script','https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', pixelId);
+            fbq('track', 'PageView');
+          }
         </script>
         <noscript><img height="1" width="1" style="display:none" src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`} alt="" /></noscript>
       </Fragment>
