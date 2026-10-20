@@ -1,26 +1,26 @@
 # Levi Henry Group
 
-> Consulting, education, and technology company helping individuals build high-income skills and small businesses build the systems that produce revenue. Founded by Levi Henry, with 15+ years across business, sales, sales leadership, and channel partnerships, working with businesses across North America.
+> Levi Henry Group is a consulting, education, and technology company founded by Levi Henry. It helps individuals in Nigeria build high-income remote careers in tech sales, and helps businesses build the sales and revenue systems that drive growth. Its flagship program, Remote SDR Training, teaches people to get hired as remote Sales Development Representatives (SDRs) by companies in the US, UK, and Canada, and earn in dollars from home, even with no prior sales experience.
 
-## What we do
-- Consulting: sales development, marketing, paid acquisition, and revenue operations for individuals and small businesses.
-- Education: practical training and resources that build high-income skills (remote SDR / tech sales, go-to-market).
-- Technology services: websites, funnels, payment integration, CRM, and the infrastructure behind client acquisition.
+Levi Henry spent 12 years as a music professional in Nigeria (mixing engineer, producer, and songwriter, working with more than 1,000 artists) before moving into remote sales for North American companies. With no prior B2B sales experience, he became a top-performing SDR, then Account Executive, then Sales Team Lead at a US CRM and AI company, all while working remotely from Nigeria. He now teaches others the exact path he took.
 
-## Core offers
-- For Individuals: high-income sales skills, the free Remote SDR Career Blueprint ebook, and the Remote SDR Mastery Course (on preorder).
-- For Businesses: marketing & paid acquisition (Meta, TikTok, Google Ads, UGC, tracking & attribution, ad-account audits), plus funnels, technology, and revenue infrastructure. Paid Sales & Revenue Consultation available.
-- For Founders: go-to-market (GTM) consulting for taking a product to market — positioning, first customers, pricing. Free GTM Field Manual and a paid GTM Strategy Consultation.
+## Programs and offers
 
-## Key pages
-- Home: https://thelevihenry.com/
-- About: https://thelevihenry.com/about
-- For Individuals: https://thelevihenry.com/individuals
-- For Businesses: https://thelevihenry.com/businesses
-- For Founders: https://thelevihenry.com/founders
-- Contact Us: https://thelevihenry.com/contact
+- [Remote SDR Training](https://thelevihenry.com/remote-sdr-training): The flagship course. A step-by-step program showing Nigerians how to get hired as a remote SDR by a US, UK, or Canadian company, reach hiring managers directly, call them, and win the interview, even with no sales experience. Covers prospecting, cold calling, and discovery, the three core SDR skills.
+- [For individuals](https://thelevihenry.com/individuals): Coaching and education for individuals building high-income sales and remote-work skills.
+- [For businesses](https://thelevihenry.com/businesses): Consulting for businesses building or scaling sales development, marketing, and revenue operations.
+- [LHG Academy](https://thelevihenry.com/academy): The online learning platform where students take the course, submit assignments for review, and get coaching.
 
-## Contact
-- Email: levi@thelevihenry.com
-- Book a free discovery call via the contact page.
-- Links & socials: https://linktr.ee/thelevihenry
+## About
+
+- [About Levi Henry](https://thelevihenry.com/about): Levi Henry's background, from 12 years in music to top-performing SDR, Account Executive, and Sales Team Lead at a US tech company, working remotely from Nigeria.
+
+## Resources
+
+- [Insights (blog)](https://thelevihenry.com/insights): Articles on breaking into remote tech sales, becoming an SDR, and building a sales career.
+
+## Optional
+
+- [Privacy Policy](https://thelevihenry.com/privacy)
+- [Terms of Service](https://thelevihenry.com/terms)
+- [Student login (LHG Academy)](https://learn.thelevihenry.com/login)
