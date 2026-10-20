@@ -144,6 +144,9 @@ const prose = 'mx-auto max-w-4xl px-6';
   title="Remote SDR Training | Get hired as a remote SDR from Nigeria"
   description="A step-by-step course that shows Nigerians how to get hired as a remote Sales Development Rep by a US, UK, or Canadian company, even with no sales experience. ₦60,000 for the first 100 students."
 >
+  <!-- Preload the hero background (the LCP element) so it starts loading immediately -->
+  <link slot="head" rel="preload" as="image" href="/assets/brand/bg-hero-light.webp" fetchpriority="high" />
+
   <!-- Minimal header: logo + Student login only (no main nav) -->
   <header class="sticky top-0 z-40 border-b border-line bg-ivory/90 backdrop-blur-md">
     <div class="mx-auto flex max-w-7xl 2xl:max-w-[100rem] items-center justify-between gap-4 px-6 py-3.5">
@@ -164,7 +167,7 @@ const prose = 'mx-auto max-w-4xl px-6';
 
     <!-- Step 2: headline + sub-headline -->
     <section class="hero-band relative overflow-hidden border-b border-line">
-      <img src="/assets/brand/bg-hero-light.webp" alt="" aria-hidden="true" class="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-70" style="object-position:right center" />
+      <img src="/assets/brand/bg-hero-light.webp" alt="" aria-hidden="true" width="2200" height="1228" fetchpriority="high" class="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-70" style="object-position:right center" />
       <div class="pointer-events-none absolute inset-0" style="background:radial-gradient(70% 80% at 50% 40%, rgba(251,249,244,0.86), rgba(251,249,244,0.4) 55%, rgba(251,249,244,0.08) 100%)"></div>
       <div class="relative z-[1] mx-auto max-w-4xl px-6 py-14 text-center lg:py-20">
         <h1 class="font-serif text-[2.1rem] font-medium leading-[1.08] tracking-tight text-navy sm:text-4xl lg:text-5xl" data-reveal>
