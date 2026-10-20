@@ -12,6 +12,13 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000"
 
+# Hashed build bundles (Astro JS/CSS in /_astro/). The filename changes
+# whenever the content changes, so these are safe to cache immutably.
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
 # Security headers
 [[headers]]
   for = "/*"
