@@ -68,6 +68,11 @@ const promo = !!(listNgn && listNgn > ngn);
         <span class="mb-1 block font-sans text-sm font-semibold text-navy">Email</span>
         <input name="email" type="email" required autocomplete="email" maxlength="200" class="w-full rounded-sm border border-line px-3 py-2.5 text-base outline-none focus:border-navy" />
       </label>
+      <label class="block">
+        <span class="mb-1 block font-sans text-sm font-semibold text-navy">WhatsApp number</span>
+        <input name="whatsapp" type="tel" required autocomplete="tel" inputmode="tel" maxlength="20" placeholder="080XXXXXXXX" class="w-full rounded-sm border border-line px-3 py-2.5 text-base outline-none focus:border-navy" />
+        <span class="mt-1 block text-xs text-ink-faint">For your login details and help if your payment runs into trouble.</span>
+      </label>
       <p data-error class="hidden text-sm font-medium text-red-700" role="alert"></p>
       <button type="submit" data-pay class="btn-primary w-full rounded-sm px-6 py-3.5 font-sans text-sm font-semibold text-white disabled:opacity-60">
         Pay <span data-pay-amount>{naira(ngn)}</span> securely
@@ -212,9 +217,22 @@ const promo = !!(listNgn && listNgn > ngn);
       const fd = new FormData(form);
       const name = String(fd.get('name') ?? '').trim();
       const email = String(fd.get('email') ?? '').trim().toLowerCase();
+      const whatsapp = String(fd.get('whatsapp') ?? '').trim();
       if (name.length < 2) return showError('Add your full name. It goes on your certificate.');
       if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return showError('Check your email address.');
+      if (whatsapp.replace(/\D/g, '').length < 10) return showError('Add a valid WhatsApp number so we can reach you.');
       showError('');
+
+      // Capture the lead now — before Paystack — so an abandoned checkout can still be
+      // followed up on WhatsApp. Best-effort; never blocks the purchase.
+      try {
+        fetch('/.netlify/functions/enroll-lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({ name, email, whatsapp, course, title }).toString(),
+          keepalive: true,
+        }).catch(() => {});
+      } catch {}
       pay.disabled = true;
       try {
         await loadPaystack();
@@ -232,18 +250,21 @@ const promo = !!(listNgn && listNgn > ngn);
         email,
         amount,
         currency,
+        phone: whatsapp,
         metadata: {
           course,
           full_name: name,
+          whatsapp,
           custom_fields: [
             { display_name: 'Program', variable_name: 'program', value: title },
             { display_name: 'Full name', variable_name: 'full_name', value: name },
+            { display_name: 'WhatsApp', variable_name: 'whatsapp', value: whatsapp },
           ],
         },
         onSuccess: (trx: { reference?: string }) => {
           // Hand off to the post-purchase page. Pass the details via sessionStorage
           // (never the URL) so /welcome can personalise + fire a deduped Purchase.
-          try { sessionStorage.setItem('lhg_enrolled', JSON.stringify({ email, course, title, value: amount / 100, currency, reference: trx?.reference })); } catch {}
+          try { sessionStorage.setItem('lhg_enrolled', JSON.stringify({ email, whatsapp, course, title, value: amount / 100, currency, reference: trx?.reference })); } catch {}
           window.location.assign('/welcome');
           // Fallback: if navigation is somehow blocked, show the inline confirmation.
           setTimeout(() => {
