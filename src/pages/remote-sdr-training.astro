@@ -185,17 +185,23 @@ const prose = 'mx-auto max-w-4xl px-6';
         <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft" data-reveal>
           A step-by-step course that shows you exactly how to find the jobs, reach the hiring manager directly, call them, and win the interview you created. Built by an operator who went from no sales experience to top-performing SDR, Account Executive, and Sales Team Lead at a US CRM and AI company, working from Nigeria.
         </p>
-        <div class="mx-auto mt-9 max-w-3xl" data-reveal>
-          <div class="relative overflow-hidden rounded-2xl bg-navy-deep shadow-xl shadow-navy/25 ring-1 ring-navy/10" style="aspect-ratio:16/9">
+        <p class="mt-8 flex items-center justify-center gap-2 font-sans text-sm font-extrabold uppercase tracking-[0.18em] text-[#a66a12]" data-reveal>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+          Watch this first
+        </p>
+        <div class="mx-auto mt-3 max-w-3xl" data-reveal>
+          <div class="relative overflow-hidden rounded-2xl bg-navy-deep shadow-xl shadow-navy/25 ring-2 ring-beacon/40" style="aspect-ratio:16/9">
             <button type="button" id="vsl-play" data-vsl-id={vslId} aria-label="Play the video" class="group absolute inset-0 h-full w-full cursor-pointer">
               <span class="absolute inset-0" style="background:radial-gradient(120% 120% at 50% 30%, #1b3a5c 0%, var(--color-navy-deep) 70%)"></span>
-              <span class="absolute left-1/2 top-1/2 flex h-[72px] w-[72px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-beacon shadow-lg transition-transform duration-200 group-hover:scale-105">
-                <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" class="ml-1 text-navy-deep" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              <span class="pointer-events-none absolute left-1/2 top-1/2 h-[76px] w-[76px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-beacon/40 motion-safe:animate-ping"></span>
+              <span class="absolute left-1/2 top-1/2 flex h-[76px] w-[76px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-beacon shadow-xl shadow-beacon/30 transition-transform duration-200 group-hover:scale-110">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" class="ml-1 text-navy-deep" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
               </span>
-              <span class="absolute bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap font-sans text-sm font-semibold text-white/85">Watch how it works (a few minutes)</span>
+              <span class="absolute bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap font-sans text-sm font-bold text-white">Press play to begin &rarr;</span>
             </button>
           </div>
         </div>
+        <p class="mx-auto mt-4 max-w-xl text-base font-semibold text-navy" data-reveal>Watch the video before you scroll &mdash; it walks you through exactly how this works.</p>
         <div class="mt-7" data-reveal>
           <EnrollButton course="remote-sdr-training" title="Remote SDR Training" ngn={60000} listNgn={100000} align="center" hidePrice />
         </div>
