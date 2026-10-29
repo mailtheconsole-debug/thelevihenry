@@ -114,7 +114,7 @@ const bonuses = [
 ];
 
 const stack = [
-  ['Remote SDR Training: 8 modules, 116 lessons, 18 hours, lifetime access', '₦80,000'],
+  ['Remote SDR Training: 8 modules, 116 lessons, 18 hours, lifetime access', '₦100,000'],
   ['RepActs Log daily tracker, RepActs CRM job-hunt pipeline, CV and LinkedIn builder, quizzes, leaderboard', '₦150,000'],
   ['Bonus: The Swipe Pack: 48 proven openers, objection handlers, and closes', '₦40,000'],
   ['Bonus: a real 84-minute one-on-one coaching session, recorded', '₦50,000'],
@@ -137,6 +137,8 @@ const skills = [
 ];
 
 const embed = (id: string) => `https://iframe.mediadelivery.net/embed/776834/${id}?preload=false`;
+// VSL hero video — Bunny Stream GUID (library 776834).
+const vslId = 'e45322f1-e033-45f0-b3b8-49e712c69bd1';
 const prose = 'mx-auto max-w-4xl px-6';
 ---
 
@@ -153,9 +155,16 @@ const prose = 'mx-auto max-w-4xl px-6';
       <a href="/" aria-label="Levi Henry Group home">
         <img src="/assets/brand/logo-horizontal.png" alt="Levi Henry Group" width="2232" height="955" class="h-8 w-auto sm:h-9" />
       </a>
-      <a href="https://learn.thelevihenry.com/login" class="font-sans text-sm font-semibold text-navy underline-offset-4 hover:underline">Student login</a>
+      <button type="button" data-hero-enroll class="btn-primary inline-flex items-center gap-2 rounded-sm px-5 py-2.5 font-sans text-sm font-semibold text-white">
+        Enroll now <span aria-hidden="true">&rarr;</span>
+      </button>
     </div>
   </header>
+  <script>
+    document.querySelector('[data-hero-enroll]')?.addEventListener('click', () => {
+      (document.querySelector('[data-enroll] [data-open]') as HTMLElement | null)?.click();
+    });
+  </script>
 
   <main id="main">
     <!-- Step 1: audience callout -->
@@ -176,6 +185,34 @@ const prose = 'mx-auto max-w-4xl px-6';
         <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft" data-reveal>
           A step-by-step course that shows you exactly how to find the jobs, reach the hiring manager directly, call them, and win the interview you created. Built by an operator who went from no sales experience to top-performing SDR, Account Executive, and Sales Team Lead at a US CRM and AI company, working from Nigeria.
         </p>
+        <div class="mx-auto mt-9 max-w-3xl" data-reveal>
+          <div class="relative overflow-hidden rounded-2xl bg-navy-deep shadow-xl shadow-navy/25 ring-1 ring-navy/10" style="aspect-ratio:16/9">
+            <button type="button" id="vsl-play" data-vsl-id={vslId} aria-label="Play the video" class="group absolute inset-0 h-full w-full cursor-pointer">
+              <span class="absolute inset-0" style="background:radial-gradient(120% 120% at 50% 30%, #1b3a5c 0%, var(--color-navy-deep) 70%)"></span>
+              <span class="absolute left-1/2 top-1/2 flex h-[72px] w-[72px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-beacon shadow-lg transition-transform duration-200 group-hover:scale-105">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" class="ml-1 text-navy-deep" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              </span>
+              <span class="absolute bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap font-sans text-sm font-semibold text-white/85">Watch how it works (a few minutes)</span>
+            </button>
+          </div>
+        </div>
+        <div class="mt-7" data-reveal>
+          <EnrollButton course="remote-sdr-training" title="Remote SDR Training" ngn={60000} listNgn={100000} align="center" hidePrice />
+        </div>
+        <script>
+          const vslBtn = document.getElementById('vsl-play');
+          vslBtn?.addEventListener('click', () => {
+            const id = vslBtn.getAttribute('data-vsl-id');
+            if (!id) return;
+            const f = document.createElement('iframe');
+            f.src = `https://iframe.mediadelivery.net/embed/776834/${id}?autoplay=true&preload=true`;
+            f.className = 'absolute inset-0 h-full w-full';
+            f.title = 'Remote SDR Training';
+            f.setAttribute('allow', 'accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen');
+            f.setAttribute('allowfullscreen', '');
+            vslBtn.replaceWith(f);
+          });
+        </script>
       </div>
     </section>
 
@@ -247,7 +284,7 @@ const prose = 'mx-auto max-w-4xl px-6';
           </ul>
         </div>
         <div class="mt-10 px-6" data-reveal>
-          <EnrollButton course="remote-sdr-training" title="Remote SDR Training" ngn={60000} listNgn={80000} align="center" hidePrice />
+          <EnrollButton course="remote-sdr-training" title="Remote SDR Training" ngn={60000} listNgn={100000} align="center" hidePrice />
         </div>
       </div>
     </section>
@@ -270,7 +307,7 @@ const prose = 'mx-auto max-w-4xl px-6';
           ))}
         </ol>
         <div class="mt-10 px-6" data-reveal>
-          <EnrollButton course="remote-sdr-training" title="Remote SDR Training" ngn={60000} listNgn={80000} align="center" hidePrice />
+          <EnrollButton course="remote-sdr-training" title="Remote SDR Training" ngn={60000} listNgn={100000} align="center" hidePrice />
         </div>
       </div>
     </section>
@@ -467,7 +504,7 @@ const prose = 'mx-auto max-w-4xl px-6';
           </ul>
         </div>
         <div class="mt-10 px-6" data-reveal>
-          <EnrollButton course="remote-sdr-training" title="Remote SDR Training" ngn={60000} listNgn={80000} align="center" hidePrice />
+          <EnrollButton course="remote-sdr-training" title="Remote SDR Training" ngn={60000} listNgn={100000} align="center" hidePrice />
         </div>
       </div>
     </section>
@@ -543,7 +580,7 @@ const prose = 'mx-auto max-w-4xl px-6';
         <p class="text-lg text-white/75" data-reveal>That's <strong class="font-serif text-xl font-semibold text-beacon-soft">₦340,000</strong> of training, tools, and bonuses.</p>
         <div class="mt-7" data-reveal>
           <span class="block font-sans text-xs font-bold uppercase tracking-[0.2em] text-white/45">Regular price</span>
-          <span class="mt-1 inline-block font-serif text-4xl font-medium leading-none text-white/80 line-through decoration-white/50 decoration-[3px] sm:text-5xl">₦80,000</span>
+          <span class="mt-1 inline-block font-serif text-4xl font-medium leading-none text-white/80 line-through decoration-white/50 decoration-[3px] sm:text-5xl">₦100,000</span>
         </div>
         <div class="mt-7" data-reveal>
           <span class="block font-sans text-xs font-bold uppercase tracking-[0.2em] text-beacon">For the first 100 students</span>
@@ -552,7 +589,7 @@ const prose = 'mx-auto max-w-4xl px-6';
         </div>
         <p class="mx-auto mt-5 max-w-xl text-white/75" data-reveal>That's the price of a few weeks of transport and data spent applying for jobs that never reply, in exchange for a skill that can pay you in dollars every month.</p>
         <div class="mt-9 flex justify-center rounded-2xl bg-white/95 p-6 shadow-xl shadow-black/20 sm:p-8" data-reveal>
-          <EnrollButton course="remote-sdr-training" title="Remote SDR Training" ngn={60000} listNgn={80000} align="center" />
+          <EnrollButton course="remote-sdr-training" title="Remote SDR Training" ngn={60000} listNgn={100000} align="center" />
         </div>
       </div>
     </section>
@@ -560,7 +597,7 @@ const prose = 'mx-auto max-w-4xl px-6';
     <!-- Step 13: scarcity -->
     <section class="border-t border-line bg-paper">
       <div class={`${prose} py-12 text-lg leading-relaxed text-ink-soft lg:py-14`}>
-        <p data-reveal><strong class="font-semibold text-navy">The <span class="font-bold text-[#a66a12]">₦60,000</span> price is for the first 100 students only.</strong> When the 100th spot goes, the price moves to ₦80,000 automatically, and it doesn't come back down.</p>
+        <p data-reveal><strong class="font-semibold text-navy">The <span class="font-bold text-[#a66a12]">₦60,000</span> price is for the first 100 students only.</strong> When the 100th spot goes, the price moves to ₦100,000 automatically, and it doesn't come back down.</p>
       </div>
     </section>
 
@@ -592,7 +629,7 @@ const prose = 'mx-auto max-w-4xl px-6';
         <h2 class="font-serif text-2xl font-medium leading-tight tracking-tight text-navy sm:text-3xl" data-reveal>Enroll now for <span class="text-[#a66a12]">₦60,000</span></h2>
         <p class="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-ink-soft" data-reveal>Click the button, enter your name and email, and pay securely with Paystack (card, bank transfer, or USSD). Your login link arrives by email within minutes, and you can start Module 1 today.</p>
         <div class="mt-8 flex justify-center" data-reveal>
-          <EnrollButton course="remote-sdr-training" title="Remote SDR Training" ngn={60000} listNgn={80000} align="center" />
+          <EnrollButton course="remote-sdr-training" title="Remote SDR Training" ngn={60000} listNgn={100000} align="center" />
         </div>
       </div>
     </section>
@@ -609,7 +646,7 @@ const prose = 'mx-auto max-w-4xl px-6';
     <!-- Step 17: P.S. -->
     <section class="border-t border-line bg-paper">
       <div class={`${prose} py-14 text-lg leading-relaxed text-ink-soft lg:py-16`}>
-        <p data-reveal><strong class="font-semibold text-navy">P.S.</strong> If you've scrolled straight here: Remote SDR Training gives you the exact system to get hired as a remote SDR by a US, UK, or Canadian company, even with no sales experience. That's 8 modules, 116 lessons, 31 coach-reviewed assignments, every tool you need, a verifiable certificate, and lifetime access, for ₦60,000 instead of ₦80,000, for the first 100 students only.</p>
+        <p data-reveal><strong class="font-semibold text-navy">P.S.</strong> If you've scrolled straight here: Remote SDR Training gives you the exact system to get hired as a remote SDR by a US, UK, or Canadian company, even with no sales experience. That's 8 modules, 116 lessons, 31 coach-reviewed assignments, every tool you need, a verifiable certificate, and lifetime access, for ₦60,000 instead of ₦100,000, for the first 100 students only.</p>
         <p class="mt-4" data-reveal>Click <a href="#enroll" class="font-semibold text-navy underline underline-offset-2">Enroll now</a>, pay securely with Paystack, and start Module 1 today.</p>
       </div>
     </section>
