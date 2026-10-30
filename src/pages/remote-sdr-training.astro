@@ -148,6 +148,8 @@ const prose = 'mx-auto max-w-4xl px-6';
 >
   <!-- Preload the hero background (the LCP element) so it starts loading immediately -->
   <link slot="head" rel="preload" as="image" href="/assets/brand/bg-hero-light.webp" fetchpriority="high" />
+  <!-- Preload the VSL cover so the facade shows instantly -->
+  <link slot="head" rel="preload" as="image" href="/assets/video/vsl-cover.webp" fetchpriority="high" />
 
   <!-- Minimal header: logo + Student login only (no main nav) -->
   <header class="sticky top-0 z-40 border-b border-line bg-ivory/90 backdrop-blur-md">
@@ -192,7 +194,8 @@ const prose = 'mx-auto max-w-4xl px-6';
         <div class="mx-auto mt-3 max-w-3xl" data-reveal>
           <div class="relative overflow-hidden rounded-2xl bg-navy-deep shadow-xl shadow-navy/25 ring-2 ring-beacon/40" style="aspect-ratio:16/9">
             <button type="button" id="vsl-play" data-vsl-id={vslId} aria-label="Play the video" class="group absolute inset-0 h-full w-full cursor-pointer">
-              <span class="absolute inset-0" style="background:radial-gradient(120% 120% at 50% 30%, #1b3a5c 0%, var(--color-navy-deep) 70%)"></span>
+              <img src="/assets/video/vsl-cover.webp" alt="" aria-hidden="true" width="1600" height="900" fetchpriority="high" class="absolute inset-0 h-full w-full object-cover" />
+              <span class="absolute inset-0" style="background:radial-gradient(120% 90% at 50% 42%, rgba(8,21,36,0.28) 0%, rgba(8,21,36,0.52) 70%, rgba(8,21,36,0.78) 100%)"></span>
               <span class="pointer-events-none absolute left-1/2 top-1/2 h-[76px] w-[76px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-beacon/40 motion-safe:animate-ping"></span>
               <span class="absolute left-1/2 top-1/2 flex h-[76px] w-[76px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-beacon shadow-xl shadow-beacon/30 transition-transform duration-200 group-hover:scale-110">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" class="ml-1 text-navy-deep" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
