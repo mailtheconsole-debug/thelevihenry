@@ -210,9 +210,48 @@ const prose = 'mx-auto max-w-4xl px-6';
         </div>
         <script>
           const vslBtn = document.getElementById('vsl-play');
+
+          // Fire a Meta Pixel event only where the pixel is loaded (production host).
+          const vslTrack = (name) => {
+            if (typeof window.fbq === 'function') {
+              window.fbq('trackCustom', name, { content_name: 'Remote SDR Training VSL' });
+            }
+          };
+
+          // Report watch-progress milestones from the Bunny player via player.js.
+          const trackWatch = (iframe) => {
+            const fired = new Set();
+            const mark = (pct) => {
+              if (fired.has(pct)) return;
+              fired.add(pct);
+              vslTrack('VSLWatched' + pct);
+            };
+            const init = () => {
+              if (!window.playerjs) return;
+              const player = new window.playerjs.Player(iframe);
+              player.on('ready', () => {
+                player.on('timeupdate', (d) => {
+                  if (!d || !d.duration) return;
+                  const pct = (d.seconds / d.duration) * 100;
+                  if (pct >= 25) mark(25);
+                  if (pct >= 50) mark(50);
+                  if (pct >= 75) mark(75);
+                });
+                player.on('ended', () => mark(100));
+              });
+            };
+            if (window.playerjs) { init(); return; }
+            const s = document.createElement('script');
+            s.src = 'https://assets.mediadelivery.net/playerjs/player-0.1.0.min.js';
+            s.onload = init;
+            s.onerror = () => {}; // tracking is best-effort; never block playback
+            document.head.appendChild(s);
+          };
+
           vslBtn?.addEventListener('click', () => {
             const id = vslBtn.getAttribute('data-vsl-id');
             if (!id) return;
+            vslTrack('VSLPlay');
             const f = document.createElement('iframe');
             f.src = `https://iframe.mediadelivery.net/embed/776834/${id}?autoplay=true&preload=true`;
             f.className = 'absolute inset-0 h-full w-full';
@@ -220,6 +259,7 @@ const prose = 'mx-auto max-w-4xl px-6';
             f.setAttribute('allow', 'accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen');
             f.setAttribute('allowfullscreen', '');
             vslBtn.replaceWith(f);
+            trackWatch(f);
           });
         </script>
       </div>
