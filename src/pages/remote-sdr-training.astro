@@ -137,8 +137,9 @@ const skills = [
 ];
 
 const embed = (id: string) => `https://iframe.mediadelivery.net/embed/776834/${id}?preload=false`;
-// VSL hero video — Bunny Stream GUID (library 776834).
-const vslId = '3e45f8cc-5310-43e6-a85c-1c21af0de4ed';
+// VSL hero video. Its own Bunny Stream library (795716) with the player
+// controls stripped, so it stays separate from the course library player.
+const vslId = '3eb4eefc-9364-4fc8-9231-f9fb36febcc5';
 const prose = 'mx-auto max-w-4xl px-6';
 ---
 
@@ -195,8 +196,6 @@ const prose = 'mx-auto max-w-4xl px-6';
           <div class="relative overflow-hidden rounded-2xl bg-navy-deep shadow-xl shadow-navy/25 ring-2 ring-beacon/40" style="aspect-ratio:16/9">
             <img src="/assets/video/vsl-cover.webp" alt="" aria-hidden="true" width="1600" height="900" fetchpriority="high" class="absolute inset-0 h-full w-full object-cover" />
             <div id="vsl-frame" data-vsl-id={vslId} class="absolute inset-0 z-10"></div>
-            <!-- Masks the Bunny control bar (seek, elapsed/total time, skip) so the runtime never shows and the video can't be scrubbed. The course library's own player is untouched. -->
-            <div aria-hidden="true" class="absolute inset-x-0 bottom-0 z-30 h-[16%] min-h-[56px]" style="background:linear-gradient(to top, #081524 68%, rgba(8,21,36,0))"></div>
             <button type="button" id="vsl-sound" aria-label="Tap for sound" class="group absolute inset-0 z-20 flex cursor-pointer flex-col items-center justify-center transition-opacity duration-300">
               <span class="absolute inset-0" style="background:radial-gradient(120% 90% at 50% 42%, rgba(8,21,36,0.22) 0%, rgba(8,21,36,0.46) 70%, rgba(8,21,36,0.70) 100%)"></span>
               <span class="pointer-events-none absolute left-1/2 top-1/2 h-[84px] w-[84px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-beacon/40 motion-safe:animate-ping"></span>
@@ -220,6 +219,7 @@ const prose = 'mx-auto max-w-4xl px-6';
           const vslFrame = document.getElementById('vsl-frame');
           const vslSound = document.getElementById('vsl-sound');
           const vslId = vslFrame?.getAttribute('data-vsl-id');
+          const VSL_LIBRARY = '795716';
 
           // Fire a Meta Pixel event only where the pixel is loaded (production host).
           const vslTrack = (name) => {
@@ -228,38 +228,27 @@ const prose = 'mx-auto max-w-4xl px-6';
             }
           };
 
-          // Load player.js on demand, then hand back a Player for the iframe.
-          const withPlayer = (iframe, cb) => {
-            const run = () => { if (window.playerjs) cb(new window.playerjs.Player(iframe)); };
-            if (window.playerjs) { run(); return; }
-            const s = document.createElement('script');
-            s.src = 'https://assets.mediadelivery.net/playerjs/player-0.1.0.min.js';
-            s.onload = run;
-            s.onerror = () => {}; // tracking is best-effort; never block playback
-            document.head.appendChild(s);
-          };
-
-          // The video autoplays muted on load. "engaged" flips true only when the
-          // viewer turns the sound on, so watch milestones count real listeners.
-          let engaged = false;
-
-          if (vslFrame && vslId) {
+          // Build the Bunny embed. muted=true autoplays silently on load;
+          // muted=false plays with sound after the viewer's tap (a user gesture).
+          const makeFrame = (muted) => {
             const f = document.createElement('iframe');
-            f.src = `https://iframe.mediadelivery.net/embed/776834/${vslId}?autoplay=true&muted=true&preload=true`;
+            f.src = `https://iframe.mediadelivery.net/embed/${VSL_LIBRARY}/${vslId}?autoplay=true&muted=${muted}&preload=true`;
             f.className = 'absolute inset-0 h-full w-full';
             f.title = 'Remote SDR Training';
             f.setAttribute('allow', 'accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen');
             f.setAttribute('allowfullscreen', '');
-            vslFrame.appendChild(f);
+            return f;
+          };
 
-            withPlayer(f, (player) => {
+          // Best-effort watch milestones via player.js. Silently does nothing on
+          // players that don't speak the protocol; Bunny's own stats cover watch time.
+          const trackWatch = (iframe) => {
+            const init = () => {
+              if (!window.playerjs || !iframe) return;
+              const player = new window.playerjs.Player(iframe);
               player.on('ready', () => {
                 const fired = new Set();
-                const mark = (pct) => {
-                  if (!engaged || fired.has(pct)) return;
-                  fired.add(pct);
-                  vslTrack('VSLWatched' + pct);
-                };
+                const mark = (pct) => { if (fired.has(pct)) return; fired.add(pct); vslTrack('VSLWatched' + pct); };
                 player.on('timeupdate', (d) => {
                   if (!d || !d.duration) return;
                   const pct = (d.seconds / d.duration) * 100;
@@ -268,21 +257,36 @@ const prose = 'mx-auto max-w-4xl px-6';
                   if (pct >= 75) mark(75);
                 });
                 player.on('ended', () => mark(100));
-
-                const turnOnSound = () => {
-                  if (engaged) return;
-                  engaged = true;
-                  vslTrack('VSLPlay');
-                  try { player.unmute(); player.setVolume(100); player.play(); } catch (e) {}
-                  if (vslSound) {
-                    vslSound.style.opacity = '0';
-                    vslSound.style.pointerEvents = 'none';
-                    setTimeout(() => vslSound.remove(), 320);
-                  }
-                };
-                vslSound?.addEventListener('click', turnOnSound);
               });
-            });
+            };
+            if (window.playerjs) { init(); return; }
+            const s = document.createElement('script');
+            s.src = 'https://assets.mediadelivery.net/playerjs/player-0.1.0.min.js';
+            s.onload = init;
+            s.onerror = () => {}; // tracking is best-effort; never block playback
+            document.head.appendChild(s);
+          };
+
+          if (vslFrame && vslId) {
+            // Autoplay muted on load. This needs no player API, just the URL params.
+            vslFrame.appendChild(makeFrame('true'));
+
+            let engaged = false;
+            const turnOnSound = () => {
+              if (engaged) return;
+              engaged = true;
+              vslTrack('VSLPlay');
+              // Swap in an unmuted frame on the tap gesture so sound works
+              // regardless of whether the player answers the JS API.
+              vslFrame.replaceChildren(makeFrame('false'));
+              trackWatch(vslFrame.querySelector('iframe'));
+              if (vslSound) {
+                vslSound.style.opacity = '0';
+                vslSound.style.pointerEvents = 'none';
+                setTimeout(() => vslSound.remove(), 320);
+              }
+            };
+            vslSound?.addEventListener('click', turnOnSound);
           }
         </script>
       </div>
