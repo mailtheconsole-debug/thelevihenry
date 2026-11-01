@@ -1,0 +1,228 @@
+---
+// Free-training opt-in. Cold ad traffic lands here, trades name/email/WhatsApp for
+// instant access to the pre-recorded training, then is redirected to /free-training/watch.
+// The opt-in captures the lead (training-optin function + Meta "Lead" event) so the
+// front end fills a list we own and warms people before the ₦60k offer.
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const inputClass =
+  'w-full rounded-sm border border-line bg-white px-3.5 py-2.5 text-base text-navy outline-none transition focus:border-navy focus:ring-2 focus:ring-navy/15';
+
+const points = [
+  'Why foreign companies are hiring Nigerians for these roles right now, and the kind of person they pick.',
+  'The skill that gets you the interview, even if you have never worked in sales before.',
+  'What the work actually pays, and the honest effort it takes to get there. No fantasy.',
+];
+---
+
+<Base
+  title="Free Training: Remote Sales Roles That Pay in Foreign Currency | Levi Henry"
+  description="A free training on how Nigerians are landing remote sales (SDR) roles with companies abroad and getting paid in dollars, pounds and euros."
+  noindex={true}
+>
+  <Header />
+
+  <main id="main">
+    <section class="relative overflow-hidden border-b border-line">
+      <img
+        src="/assets/brand/bg-hero-light.webp"
+        alt=""
+        aria-hidden="true"
+        width="2200"
+        height="1228"
+        fetchpriority="high"
+        class="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-60"
+        style="object-position:right center"
+      />
+      <div
+        class="pointer-events-none absolute inset-0"
+        style="background:radial-gradient(80% 90% at 40% 30%, rgba(251,249,244,0.9), rgba(251,249,244,0.55) 55%, rgba(251,249,244,0.15) 100%)"
+      >
+      </div>
+
+      <div class="relative z-[1] mx-auto max-w-6xl px-6 py-14 lg:py-20">
+        <div class="grid items-start gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16">
+          <!-- Left: the promise -->
+          <div>
+            <p
+              data-reveal
+              class="inline-flex items-center gap-2 rounded-full border border-line bg-white/70 px-3 py-1 font-sans text-xs font-bold uppercase tracking-[0.18em] text-navy-600"
+            >
+              <span class="h-1.5 w-1.5 rounded-full bg-beacon"></span>
+              Free training
+            </p>
+            <h1
+              data-reveal
+              class="mt-5 font-serif text-[2.2rem] font-medium leading-[1.06] tracking-tight text-navy sm:text-5xl"
+            >
+              How Nigerians are landing remote sales roles that pay in dollars, pounds and euros
+            </h1>
+            <p data-reveal class="mt-5 max-w-xl text-lg leading-relaxed text-ink-soft">
+              You already know you are worth more than what the naira pays you. This training walks
+              through the exact path people are using to get hired as remote SDRs by companies in the
+              US, UK and Canada, and get paid in their currency. Watch it free.
+            </p>
+
+            <p
+              data-reveal
+              class="mt-8 font-sans text-xs font-bold uppercase tracking-[0.18em] text-navy-600"
+            >
+              In this training
+            </p>
+            <ul data-reveal class="mt-4 space-y-3.5">
+              {points.map((p) => (
+                <li class="flex gap-3">
+                  <span
+                    class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-navy text-white"
+                    aria-hidden="true"
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                  </span>
+                  <span class="text-ink">{p}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div
+              data-reveal
+              class="mt-9 flex items-center gap-4 border-t border-line pt-6"
+            >
+              <img
+                src="/assets/photos/headshot-square.jpg"
+                alt="Levi Henry"
+                width="96"
+                height="96"
+                loading="lazy"
+                class="h-14 w-14 shrink-0 rounded-full object-cover ring-1 ring-line"
+              />
+              <p class="text-sm leading-relaxed text-ink-soft">
+                Taught by <strong class="font-semibold text-navy">Levi Henry</strong>, who went from
+                no sales experience to a top-performing SDR and sales lead at a US company, working
+                from Nigeria.
+              </p>
+            </div>
+          </div>
+
+          <!-- Right: the form -->
+          <div class="lg:sticky lg:top-8">
+            <div class="rounded-2xl border border-line bg-paper-raised p-6 shadow-xl shadow-navy/10 sm:p-8">
+              <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">
+                Free instant access
+              </p>
+              <h2 class="mt-2 font-serif text-2xl font-medium leading-tight text-navy">
+                Watch the training now
+              </h2>
+              <p class="mt-1.5 text-sm text-ink-soft">
+                Enter your details and it opens on the next page.
+              </p>
+
+              <form data-optin class="mt-6 space-y-4" novalidate>
+                <label class="block">
+                  <span class="mb-1 block font-sans text-sm font-semibold text-navy">Full name</span>
+                  <input name="name" required autocomplete="name" maxlength="120" class={inputClass} />
+                </label>
+                <label class="block">
+                  <span class="mb-1 block font-sans text-sm font-semibold text-navy">Email</span>
+                  <input
+                    name="email"
+                    type="email"
+                    required
+                    autocomplete="email"
+                    maxlength="200"
+                    class={inputClass}
+                  />
+                </label>
+                <label class="block">
+                  <span class="mb-1 block font-sans text-sm font-semibold text-navy"
+                    >WhatsApp number</span
+                  >
+                  <input
+                    name="whatsapp"
+                    type="tel"
+                    required
+                    autocomplete="tel"
+                    inputmode="tel"
+                    maxlength="20"
+                    placeholder="080XXXXXXXX"
+                    class={inputClass}
+                  />
+                  <span class="mt-1 block text-xs text-ink-faint"
+                    >So we can send the training link and check in.</span
+                  >
+                </label>
+                <p data-error class="hidden text-sm font-medium text-red-700" role="alert"></p>
+                <button
+                  type="submit"
+                  data-submit
+                  class="btn-primary flex w-full items-center justify-center gap-2 rounded-sm px-6 py-3.5 font-sans text-sm font-semibold text-white disabled:opacity-60"
+                >
+                  Watch the free training <span aria-hidden="true">&rarr;</span>
+                </button>
+              </form>
+
+              <div class="mt-4 flex items-center justify-center gap-1.5 text-xs text-ink-faint">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                Your details stay private. No spam, unsubscribe any time.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<script is:inline>
+  (function () {
+    var form = document.querySelector('[data-optin]');
+    if (!form) return;
+    var err = form.querySelector('[data-error]');
+    var submit = form.querySelector('[data-submit]');
+
+    function showError(m) {
+      if (!err) return;
+      err.textContent = m;
+      err.classList.toggle('hidden', !m);
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var fd = new FormData(form);
+      var name = String(fd.get('name') || '').trim();
+      var email = String(fd.get('email') || '').trim().toLowerCase();
+      var whatsapp = String(fd.get('whatsapp') || '').trim();
+
+      if (name.length < 2) return showError('Add your full name.');
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return showError('Check your email address.');
+      if (whatsapp.replace(/\D/g, '').length < 10)
+        return showError('Add a valid WhatsApp number so we can reach you.');
+      showError('');
+      submit.disabled = true;
+
+      // Capture the lead (best effort). Never block access to the free training on it.
+      try {
+        fetch('/.netlify/functions/training-optin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({ name: name, email: email, whatsapp: whatsapp }).toString(),
+          keepalive: true,
+        }).catch(function () {});
+      } catch (e2) {}
+
+      // Tell Meta this was a Lead, the event a traffic/Lead-objective campaign optimizes on.
+      try {
+        if (window.fbq) window.fbq('track', 'Lead', { content_name: 'Remote SDR free training' });
+      } catch (e3) {}
+
+      // Remember they opted in, then send them to the training.
+      try {
+        sessionStorage.setItem('lhg_training_optin', '1');
+      } catch (e4) {}
+      window.location.assign('/free-training/watch');
+    });
+  })();
+</script>
