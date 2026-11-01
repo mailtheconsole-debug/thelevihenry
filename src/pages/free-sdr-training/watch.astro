@@ -15,6 +15,20 @@ const trainingId = ''; // <-- paste the trimmed training's Bunny GUID here
 const trainingSrc = trainingId
   ? `https://iframe.mediadelivery.net/embed/${TRAINING_LIBRARY}/${trainingId}?preload=true&responsive=true`
   : '';
+
+// The free-vs-course comparison shown under the video.
+const freePoints = [
+  'See what is possible',
+  'How the work pays',
+  'The path, start to finish',
+  'Watch once, no cost',
+];
+const coursePoints = [
+  'Master the real skills',
+  'Scripts, system and coaching',
+  'Get hired, step by step',
+  'Support the whole way',
+];
 ---
 
 <Base
@@ -46,6 +60,7 @@ const trainingSrc = trainingId
         {trainingSrc ? (
           <div style="position:relative;padding-top:56.25%;">
             <iframe
+              data-training-iframe
               src={trainingSrc}
               loading="lazy"
               style="position:absolute;inset:0;width:100%;height:100%;border:0;"
@@ -69,27 +84,64 @@ const trainingSrc = trainingId
         )}
       </div>
 
-      <div
-        data-reveal
-        class="mx-auto mt-12 max-w-2xl rounded-lg border border-line bg-paper p-8 text-center"
-      >
-        <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">
-          Ready to go further
-        </p>
-        <h2 class="mt-3 font-serif text-2xl font-medium leading-tight text-navy sm:text-3xl">
-          The full Remote SDR Training takes you from watching to hired
-        </h2>
-        <p class="mx-auto mt-4 max-w-xl text-ink-soft">
-          The training showed you the path. The course walks you down it, step by step, with the
-          scripts, the system and the coaching to get you into a remote role and paid in foreign
-          currency. Founding price for the first 100 students.
-        </p>
-        <div class="mt-6 flex flex-wrap justify-center gap-4">
+      <div data-course-cta class="course-cta mx-auto mt-14 max-w-3xl">
+        <div class="text-center">
+          <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">
+            If you want more than the training
+          </p>
+          <h2 class="mt-3 font-serif text-2xl font-medium leading-tight text-navy sm:text-3xl">
+            Where the free training ends, the course begins
+          </h2>
+        </div>
+
+        <div class="mt-8 grid items-stretch gap-4 sm:grid-cols-[1fr_auto_1fr] sm:gap-3">
+          <!-- Free training -->
+          <div class="rounded-xl border border-line bg-paper-raised p-6 shadow-sm shadow-navy/5">
+            <p class="font-sans text-xs font-bold uppercase tracking-[0.16em] text-navy-600">
+              Free · about 1 hour
+            </p>
+            <h3 class="mt-1.5 font-serif text-xl font-medium text-navy">Free SDR training</h3>
+            <p class="mt-1.5 text-sm text-ink-soft">What you just watched. See the opportunity for yourself.</p>
+            <ul class="mt-4 space-y-2.5">
+              {freePoints.map((p) => (
+                <li class="flex items-start gap-2.5 text-sm text-ink">
+                  <svg class="mt-0.5 h-4 w-4 shrink-0 text-navy-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
+                  <span>{p}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Progression arrow: points right on desktop, down on mobile -->
+          <div class="flex items-center justify-center py-1 text-navy-600" aria-hidden="true">
+            <svg class="h-6 w-6 rotate-90 sm:rotate-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12" /><polyline points="13 5 20 12 13 19" /></svg>
+          </div>
+
+          <!-- Full course -->
+          <div class="rounded-xl bg-navy p-6 text-white shadow-lg shadow-navy/20">
+            <p class="font-sans text-xs font-bold uppercase tracking-[0.16em] text-white/70">
+              ₦60,000 founding price
+            </p>
+            <h3 class="mt-1.5 font-serif text-xl font-medium text-white">Full Remote SDR Training</h3>
+            <p class="mt-1.5 text-sm text-white/80">Where you go to build the skill and go after the job.</p>
+            <ul class="mt-4 space-y-2.5">
+              {coursePoints.map((p) => (
+                <li class="flex items-start gap-2.5 text-sm text-white/90">
+                  <svg class="mt-0.5 h-4 w-4 shrink-0 text-white/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
+                  <span>{p}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div class="mt-8 text-center">
           <a
             href="/remote-sdr-training"
             class="btn-primary inline-flex items-center gap-2 rounded-sm px-7 py-3.5 font-sans text-sm font-semibold text-white"
             >See the full course <span aria-hidden="true">&rarr;</span></a
           >
+          <p class="mt-3 text-sm text-ink-faint">Founding price while the first 100 seats last.</p>
         </div>
       </div>
     </section>
@@ -97,3 +149,85 @@ const trainingSrc = trainingId
 
   <Footer />
 </Base>
+
+<style>
+  /* The course CTA is visible by default. JS tucks it away with .is-pending and
+     reveals it a bit after the training starts playing. If JS never runs, the CTA
+     simply stays visible (no JS-dependent opacity:0 that could hide it for good). */
+  .course-cta {
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .course-cta.is-pending {
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var cta = document.querySelector('[data-course-cta]');
+    if (!cta) return;
+
+    var revealed = false;
+    function reveal() {
+      if (revealed) return;
+      revealed = true;
+      cta.classList.remove('is-pending');
+    }
+
+    try {
+      // Schedule the guaranteed reveal BEFORE hiding, so the CTA always comes back
+      // even if nothing below runs. Then tuck it away.
+      var fallback = setTimeout(reveal, 90000);
+      cta.classList.add('is-pending');
+
+      // Bunny Stream speaks the player.js protocol over postMessage. Ask it to tell
+      // us when playback starts, then reveal the next step a short while after.
+      var iframe = document.querySelector('[data-training-iframe]');
+      if (iframe && iframe.contentWindow) {
+        var started = false;
+        var subscribe = function () {
+          try {
+            ['play', 'timeupdate'].forEach(function (evt) {
+              iframe.contentWindow.postMessage(
+                JSON.stringify({
+                  context: 'player.js',
+                  version: '0.0.4',
+                  method: 'addEventListener',
+                  value: evt,
+                  listener: evt,
+                }),
+                '*'
+              );
+            });
+          } catch (e) {}
+        };
+
+        window.addEventListener('message', function (e) {
+          var d = e.data;
+          if (typeof d === 'string') {
+            try {
+              d = JSON.parse(d);
+            } catch (x) {
+              return;
+            }
+          }
+          if (!d || d.context !== 'player.js') return;
+          if (d.event === 'ready') subscribe();
+          if ((d.event === 'play' || d.event === 'timeupdate') && !started) {
+            started = true;
+            clearTimeout(fallback);
+            setTimeout(reveal, 30000);
+          }
+        });
+
+        iframe.addEventListener('load', subscribe);
+        subscribe();
+      }
+    } catch (e) {
+      // Any failure: show the CTA rather than risk hiding it.
+      reveal();
+    }
+  })();
+</script>
