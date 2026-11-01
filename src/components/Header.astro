@@ -11,33 +11,55 @@ const links = [
   { href: "/contact", label: "Contact Us" },
 ];
 const isCurrent = (href: string) => path === href;
+
+interface Props {
+  // When true, hide all navigation and show just the brand mark. For focused
+  // landing/funnel pages (e.g. the free SDR training opt-in) where we do not
+  // want people clicking away before they act.
+  minimal?: boolean;
+}
+const { minimal = false } = Astro.props;
 ---
 
 <header class="sticky top-0 z-50 border-b border-line bg-ivory/90 backdrop-blur-md">
   <div class="mx-auto flex max-w-7xl 2xl:max-w-[100rem] items-center justify-between gap-4 px-6 py-4">
-    <a href="/" class="flex items-center" aria-label="Levi Henry Group home">
-      <img
-        src="/assets/brand/logo-horizontal.png"
-        alt="Levi Henry Group"
-        width="2232"
-        height="955"
-        class="h-9 w-auto sm:h-10"
-        fetchpriority="high"
-      />
-    </a>
+    {minimal ? (
+      <span class="flex items-center">
+        <img
+          src="/assets/brand/logo-horizontal.png"
+          alt="Levi Henry Group"
+          width="2232"
+          height="955"
+          class="h-9 w-auto sm:h-10"
+          fetchpriority="high"
+        />
+      </span>
+    ) : (
+      <a href="/" class="flex items-center" aria-label="Levi Henry Group home">
+        <img
+          src="/assets/brand/logo-horizontal.png"
+          alt="Levi Henry Group"
+          width="2232"
+          height="955"
+          class="h-9 w-auto sm:h-10"
+          fetchpriority="high"
+        />
+      </a>
+    )}
 
-    <!-- Mobile toggle -->
-    <button
-      data-nav-toggle
-      aria-expanded="false"
-      class="rounded-sm border border-line-strong px-4 py-3 font-sans text-xs font-semibold uppercase tracking-wider text-navy md:hidden"
-      >Menu</button
-    >
+    {!minimal && (
+      <button
+        data-nav-toggle
+        aria-expanded="false"
+        class="rounded-sm border border-line-strong px-4 py-3 font-sans text-xs font-semibold uppercase tracking-wider text-navy md:hidden"
+      >
+        Menu
+      </button>
+    )}
 
-    <!-- Desktop nav -->
-    <nav class="hidden items-center gap-3.5 md:flex lg:gap-7" aria-label="Primary">
-      {
-        links.map((l) => (
+    {!minimal && (
+      <nav class="hidden items-center gap-3.5 md:flex lg:gap-7" aria-label="Primary">
+        {links.map((l) => (
           <a
             href={l.href}
             aria-current={isCurrent(l.href) ? "page" : undefined}
@@ -48,21 +70,21 @@ const isCurrent = (href: string) => path === href;
           >
             {l.label}
           </a>
-        ))
-      }
-      <a
-        href="/contact"
-        class="btn-primary whitespace-nowrap rounded-sm px-3.5 py-2.5 font-sans text-xs font-bold text-white lg:px-5 lg:text-sm"
-        >Work With Us</a
-      >
-    </nav>
+        ))}
+        <a
+          href="/contact"
+          class="btn-primary whitespace-nowrap rounded-sm px-3.5 py-2.5 font-sans text-xs font-bold text-white lg:px-5 lg:text-sm"
+        >
+          Work With Us
+        </a>
+      </nav>
+    )}
   </div>
 
-  <!-- Mobile panel -->
-  <div data-nav-panel hidden class="border-t border-line bg-paper md:hidden">
-    <nav class="mx-auto flex max-w-7xl 2xl:max-w-[100rem] flex-col px-6 py-3" aria-label="Mobile">
-      {
-        links.map((l) => (
+  {!minimal && (
+    <div data-nav-panel hidden class="border-t border-line bg-paper md:hidden">
+      <nav class="mx-auto flex max-w-7xl 2xl:max-w-[100rem] flex-col px-6 py-3" aria-label="Mobile">
+        {links.map((l) => (
           <a
             href={l.href}
             aria-current={isCurrent(l.href) ? "page" : undefined}
@@ -73,9 +95,9 @@ const isCurrent = (href: string) => path === href;
           >
             {l.label}
           </a>
-        ))
-      }
-      <a href="/contact" class="py-3.5 font-sans text-sm font-bold text-navy">Work With Us &rarr;</a>
-    </nav>
-  </div>
+        ))}
+        <a href="/contact" class="py-3.5 font-sans text-sm font-bold text-navy">Work With Us &rarr;</a>
+      </nav>
+    </div>
+  )}
 </header>
