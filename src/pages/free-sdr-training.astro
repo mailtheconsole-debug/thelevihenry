@@ -1,8 +1,9 @@
 ---
-// Free-training opt-in. Cold ad traffic lands here, trades name/email/WhatsApp for
-// instant access to the pre-recorded training, then is redirected to /free-training/watch.
-// The opt-in captures the lead (training-optin function + Meta "Lead" event) so the
-// front end fills a list we own and warms people before the ₦60k offer.
+// Free SDR training opt-in. Cold ad traffic lands here, trades name/email/WhatsApp for
+// instant access to the pre-recorded training, then is redirected to
+// /free-sdr-training/watch. The opt-in captures the lead (training-optin function +
+// Meta "Lead" event) so the front end fills a list we own and warms people before the
+// ₦60k course. Named per topic (SDR) so future free trainings get their own slug.
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -18,7 +19,7 @@ const points = [
 ---
 
 <Base
-  title="Free Training: Remote Sales Roles That Pay in Foreign Currency | Levi Henry"
+  title="Free SDR Training: Remote Sales Roles That Pay in Foreign Currency | Levi Henry"
   description="A free training on how Nigerians are landing remote sales (SDR) roles with companies abroad and getting paid in dollars, pounds and euros."
   noindex={true}
 >
@@ -51,7 +52,7 @@ const points = [
               class="inline-flex items-center gap-2 rounded-full border border-line bg-white/70 px-3 py-1 font-sans text-xs font-bold uppercase tracking-[0.18em] text-navy-600"
             >
               <span class="h-1.5 w-1.5 rounded-full bg-beacon"></span>
-              Free training
+              Free SDR training
             </p>
             <h1
               data-reveal
@@ -208,7 +209,12 @@ const points = [
         fetch('/.netlify/functions/training-optin', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams({ name: name, email: email, whatsapp: whatsapp }).toString(),
+          body: new URLSearchParams({
+            name: name,
+            email: email,
+            whatsapp: whatsapp,
+            training: 'Remote SDR',
+          }).toString(),
           keepalive: true,
         }).catch(function () {});
       } catch (e2) {}
@@ -220,9 +226,9 @@ const points = [
 
       // Remember they opted in, then send them to the training.
       try {
-        sessionStorage.setItem('lhg_training_optin', '1');
+        sessionStorage.setItem('lhg_sdr_training_optin', '1');
       } catch (e4) {}
-      window.location.assign('/free-training/watch');
+      window.location.assign('/free-sdr-training/watch');
     });
   })();
 </script>

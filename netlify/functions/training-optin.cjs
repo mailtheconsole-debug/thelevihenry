@@ -60,6 +60,7 @@ exports.handler = async (event) => {
     const name = (p.get("name") || "").trim();
     const email = (p.get("email") || "").trim();
     const whatsapp = (p.get("whatsapp") || "").trim();
+    const training = (p.get("training") || "Remote SDR").trim();
 
     if (!email && !whatsapp) return { statusCode: 204, body: "" };
 
