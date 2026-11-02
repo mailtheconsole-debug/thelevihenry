@@ -63,6 +63,7 @@ exports.handler = async (event) => {
 
     const email = (params.get("email") || "").trim();
     const name = (params.get("name") || "").trim();
+    const whatsapp = (params.get("whatsapp") || "").trim();
     const honeypot = (params.get("bot-field") || "").trim();
 
     if (honeypot) return redirect("/ebook-thanks");
@@ -100,7 +101,8 @@ exports.handler = async (event) => {
         html: `<div style="font-family:-apple-system,Segoe UI,Arial,sans-serif;font-size:15px;color:#212c38;">
           <p>New free-ebook signup:</p>
           <p><strong>Name:</strong> ${name || "(not given)"}<br/>
-          <strong>Email:</strong> ${email}</p>
+          <strong>Email:</strong> ${email}<br/>
+          <strong>WhatsApp:</strong> ${whatsapp || "(not given)"}</p>
           ${EBOOK_URL ? "" : "<p><em>EBOOK_URL is not set — send the PDF to this subscriber.</em></p>"}
           </div>`,
       });
@@ -112,6 +114,7 @@ exports.handler = async (event) => {
     await addToAirtable({
       Name: name,
       Email: email,
+      WhatsApp: whatsapp,
       Source: "SDR Blueprint ebook",
       Status: "New",
     });

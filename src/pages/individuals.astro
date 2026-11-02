@@ -116,10 +116,12 @@ const ebookLd = {
           <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Free ebook</p>
           <h2 class="mt-3 font-serif text-3xl font-medium leading-tight tracking-tight text-navy sm:text-4xl">The Remote SDR Career Blueprint</h2>
           <p class="mt-4 text-ink-soft">Our complete beginner's ebook for breaking into remote tech sales: the exact path from no experience to a paid Sales Development role. It's the foundation the coaching builds on — and it's yours free.</p>
-          <form method="POST" action="/.netlify/functions/ebook" class="mx-auto mt-6 flex max-w-md flex-col gap-3 sm:flex-row">
+          <form method="POST" action="/.netlify/functions/ebook" class="mx-auto mt-6 flex max-w-md flex-col gap-3">
             <p hidden><label>Leave this empty: <input name="bot-field" /></label></p>
+            <input type="text" name="name" required autocomplete="name" placeholder="Your name" class="w-full rounded-sm border border-line-strong bg-white px-4 py-3 text-ink transition focus:border-brass focus:outline-none focus:ring-2 focus:ring-brass/20" />
             <input type="email" name="email" required autocomplete="email" placeholder="Enter your email" class="w-full rounded-sm border border-line-strong bg-white px-4 py-3 text-ink transition focus:border-brass focus:outline-none focus:ring-2 focus:ring-brass/20" />
-            <button type="submit" class="btn-primary shrink-0 rounded-sm px-6 py-3 font-sans text-sm font-semibold text-white">Get the free ebook</button>
+            <input type="tel" name="whatsapp" required autocomplete="tel" inputmode="tel" maxlength="20" placeholder="WhatsApp number" class="w-full rounded-sm border border-line-strong bg-white px-4 py-3 text-ink transition focus:border-brass focus:outline-none focus:ring-2 focus:ring-brass/20" />
+            <button type="submit" class="btn-primary rounded-sm px-6 py-3 font-sans text-sm font-semibold text-white">Get the free ebook</button>
           </form>
           <p class="mt-3 text-sm text-ink-faint">Sent straight to your inbox, free. <a href="/contact" class="underline decoration-navy/30 underline-offset-2 hover:text-navy">Ask about coaching &rarr;</a></p>
         </div>
