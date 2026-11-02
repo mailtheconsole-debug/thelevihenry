@@ -10,6 +10,7 @@
 const { upsertOptin, putLead } = require("./lib/leadstore.cjs");
 const { EMAIL_STEPS, renderEmail, SITE } = require("./lib/followup-content.cjs");
 const { sendEmail } = require("./lib/mailer.cjs");
+const { sendEvent, requestContext } = require("./lib/meta-capi.cjs");
 
 const NOTIFY_TO = "levi@thelevihenry.com";
 const FROM_GROUP = "Levi Henry Group <levi@thelevihenry.com>";
@@ -28,6 +29,9 @@ exports.handler = async (event) => {
     const name = (p.get("name") || "").trim();
     const email = (p.get("email") || "").trim();
     const whatsapp = (p.get("whatsapp") || "").trim();
+    const eventId = (p.get("event_id") || "").trim();
+    const fbp = (p.get("fbp") || "").trim();
+    const fbc = (p.get("fbc") || "").trim();
 
     // The sequence is keyed off email, so we need one to enrol a lead.
     if (!email) {
@@ -84,6 +88,26 @@ exports.handler = async (event) => {
         <strong>WhatsApp:</strong> ${esc(whatsapp) || "(not given)"}</p>
       </div>`,
     });
+
+    // 4. Mirror the Lead to Meta server-side (Conversions API), deduped with the browser
+    // pixel via the shared event_id. Best effort; never blocks the opt-in.
+    try {
+      const { clientIp, userAgent } = requestContext(event);
+      await sendEvent({
+        eventName: "Lead",
+        eventId: eventId || undefined,
+        eventSourceUrl: `${SITE}/free-sdr-training`,
+        email,
+        phone: whatsapp,
+        fbp,
+        fbc,
+        clientIp,
+        userAgent,
+        customData: { content_name: "Remote SDR free training" },
+      });
+    } catch (e) {
+      console.error("training-optin: CAPI Lead failed", e);
+    }
 
     return { statusCode: 204, body: "" };
   } catch (err) {

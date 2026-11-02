@@ -203,6 +203,29 @@ const points = [
       showError('');
       submit.disabled = true;
 
+      // One shared event id so the browser pixel and the server (Conversions API) Lead
+      // events de-duplicate into a single event in Meta. Also grab the Meta cookies so
+      // the server event matches this browser as closely as possible.
+      var eventId;
+      try {
+        eventId =
+          window.crypto && crypto.randomUUID
+            ? crypto.randomUUID()
+            : 'lead-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+      } catch (eId) {
+        eventId = 'lead-' + Date.now();
+      }
+      function lhgCookie(n) {
+        try {
+          var m = document.cookie.match('(^|;)\\s*' + n + '\\s*=\\s*([^;]+)');
+          return m ? m.pop() : '';
+        } catch (e) {
+          return '';
+        }
+      }
+      var fbp = lhgCookie('_fbp');
+      var fbc = lhgCookie('_fbc');
+
       // Capture the lead (best effort). Never block access to the free training on it.
       try {
         fetch('/.netlify/functions/training-optin', {
@@ -213,6 +236,9 @@ const points = [
             email: email,
             whatsapp: whatsapp,
             training: 'Remote SDR',
+            event_id: eventId,
+            fbp: fbp,
+            fbc: fbc,
           }).toString(),
           keepalive: true,
         }).catch(function () {});
@@ -220,7 +246,13 @@ const points = [
 
       // Tell Meta this was a Lead, the event a traffic/Lead-objective campaign optimizes on.
       try {
-        if (window.fbq) window.fbq('track', 'Lead', { content_name: 'Remote SDR free training' });
+        if (window.fbq)
+          window.fbq(
+            'track',
+            'Lead',
+            { content_name: 'Remote SDR free training' },
+            { eventID: eventId }
+          );
       } catch (e3) {}
 
       // Remember they opted in, then send them to the training.
