@@ -63,6 +63,7 @@ exports.handler = async (event) => {
 
     const email = (params.get("email") || "").trim();
     const name = (params.get("name") || "").trim();
+    const whatsapp = (params.get("whatsapp") || "").trim();
     const honeypot = (params.get("bot-field") || "").trim();
 
     // Spam bot filled the hidden field: pretend success, send nothing.
@@ -99,7 +100,8 @@ exports.handler = async (event) => {
         html: `<div style="font-family:-apple-system,Segoe UI,Arial,sans-serif;font-size:15px;color:#212c38;">
           <p>New GTM Field Manual download:</p>
           <p><strong>Name:</strong> ${name || "(not given)"}<br/>
-          <strong>Email:</strong> ${email}</p></div>`,
+          <strong>Email:</strong> ${email}<br/>
+          <strong>WhatsApp:</strong> ${whatsapp || "(not given)"}</p></div>`,
       });
     } catch (e) {
       console.error("lead notification failed:", e);
@@ -109,6 +111,7 @@ exports.handler = async (event) => {
     await addToAirtable({
       Name: name,
       Email: email,
+      WhatsApp: whatsapp,
       Source: "GTM Manual",
       Status: "New",
     });

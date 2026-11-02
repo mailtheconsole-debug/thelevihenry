@@ -190,11 +190,15 @@ const serviceLd = {
             <p hidden><label>Leave this empty: <input name="bot-field" /></label></p>
             <div class="mb-4">
               <label class={label} for="lm-name">Name</label>
-              <input class={input} id="lm-name" name="name" type="text" autocomplete="name" />
+              <input class={input} id="lm-name" name="name" type="text" autocomplete="name" required />
             </div>
             <div class="mb-4">
               <label class={label} for="lm-email">Email</label>
               <input class={input} id="lm-email" name="email" type="email" autocomplete="email" required />
+            </div>
+            <div class="mb-4">
+              <label class={label} for="lm-whatsapp">WhatsApp number</label>
+              <input class={input} id="lm-whatsapp" name="whatsapp" type="tel" inputmode="tel" maxlength="20" autocomplete="tel" required />
             </div>
             <button type="submit" class="group inline-flex items-center gap-2 btn-primary rounded-sm px-7 py-3.5 font-sans text-sm font-semibold text-white">
               Send me the manual <span class="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
