@@ -42,30 +42,43 @@ exports.handler = async (event) => {
       return { statusCode: 204, body: "" };
     }
 
-    // 1. Save / refresh the lead in the store.
-    let lead;
+    // Diagnostics carried into Levi's notify email so failures are visible without logs.
+    const diag = { store: "skipped", email1: "skipped" };
+
+    // 1. Save / refresh the lead in the store (capture any error, never block).
+    let lead = null;
     try {
       const r = await upsertOptin({ name, email, whatsapp });
       lead = r.lead;
+      diag.store = r.isNew ? "ok (new)" : "ok (existing)";
     } catch (e) {
+      diag.store = "ERROR: " + ((e && e.message) || String(e));
       console.error("training-optin: store write failed", e);
     }
 
-    // 2. Send Email 1 instantly (unless this lead already had it on a repeat opt-in).
-    if (lead && !(lead.emailsSent || []).includes(1)) {
+    // 2. Send Email 1 (the training link). This runs even if the store write failed, so
+    // the lead always gets their link. We only skip it when we know it already went out.
+    const alreadySent = lead && (lead.emailsSent || []).includes(1);
+    if (!alreadySent) {
       const step1 = EMAIL_STEPS.find((s) => s.step === 1);
-      const unsubUrl = `${SITE}/.netlify/functions/followup-unsub?token=${lead.unsubToken}`;
-      const { subject, html } = renderEmail(step1, lead, unsubUrl);
-      const ok = await sendEmail({ to: lead.email, subject, html });
-      if (ok) {
+      const unsubUrl = lead
+        ? `${SITE}/.netlify/functions/followup-unsub?token=${lead.unsubToken}`
+        : "";
+      const { subject, html } = renderEmail(step1, { name, email }, unsubUrl);
+      const ok = await sendEmail({ to: email, subject, html });
+      diag.email1 = ok ? "sent" : "ERROR: resend returned false";
+      if (ok && lead) {
         lead.emailsSent = [...new Set([...(lead.emailsSent || []), 1])];
         lead.updatedAt = new Date().toISOString();
         try {
           await putLead(lead);
         } catch (e) {
+          diag.store += " | stamp failed: " + ((e && e.message) || String(e));
           console.error("training-optin: could not stamp email 1", e);
         }
       }
+    } else {
+      diag.email1 = "skipped (already sent)";
     }
 
     // 3. Heads-up to Levi so the first WhatsApp can go out now (worklist shows it as due).
@@ -79,6 +92,7 @@ exports.handler = async (event) => {
         <p><strong>Name:</strong> ${esc(name) || "(not given)"}<br/>
         <strong>Email:</strong> ${esc(email)}<br/>
         <strong>WhatsApp:</strong> ${esc(whatsapp) || "(not given)"}</p>
+        <p style="font-size:12px;color:#8a8a84;">diag &middot; store: ${esc(diag.store)} &middot; email 1: ${esc(diag.email1)}</p>
       </div>`,
     });
 
