@@ -163,6 +163,34 @@ const steps: [string, string][] = [
             content_type: 'product'
           }, d.reference ? { eventID: d.reference } : undefined);
         }
+
+        // Fire the Purchase server-side too (Conversions API), so it lands even if
+        // the browser pixel is blocked. We send only the reference; the function
+        // verifies it against Paystack and reads the real amount there. The shared
+        // reference (used as the event_id) de-duplicates it with the pixel above.
+        if (d && d.reference) {
+          function lhgCookie(n) {
+            try {
+              var m = document.cookie.match('(^|;)\\s*' + n + '\\s*=\\s*([^;]+)');
+              return m ? m.pop() : '';
+            } catch (c) {
+              return '';
+            }
+          }
+          try {
+            fetch('/.netlify/functions/capi-purchase', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              body: new URLSearchParams({
+                reference: d.reference,
+                fbp: lhgCookie('_fbp'),
+                fbc: lhgCookie('_fbc')
+              }).toString(),
+              keepalive: true
+            }).catch(function () {});
+          } catch (f) {}
+        }
+
         sessionStorage.removeItem('lhg_enrolled');
       }
     } catch (e) {}
