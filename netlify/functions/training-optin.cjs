@@ -1,53 +1,20 @@
-// Captures a free-training opt-in (name, email, WhatsApp) the moment someone submits the
-// /free-training form. Emails Levi so the lead can be worked on WhatsApp, and logs to
-// Airtable (best effort). This is the front-end lead engine: cheap opt-ins we own and
-// warm toward the ₦60k course, separate from the checkout-abandoner alert (enroll-lead).
-// Requires RESEND_API_KEY. Airtable optional (AIRTABLE_TOKEN + AIRTABLE_BASE_ID,
-// table from AIRTABLE_LEADS_TABLE or AIRTABLE_TABLE, default "CRM").
+// Captures a free SDR training opt-in (name, email, WhatsApp) the moment someone submits
+// the /free-sdr-training form. Three things happen:
+//   1. The lead is saved to the Netlify Blobs store so the follow-up sequence can work it.
+//   2. Email 1 (the training link) goes out instantly via Resend.
+//   3. Levi gets a heads-up email so he can send the first WhatsApp straight away.
+// The daily cron (followup-cron) takes over emails 2-5; the worklist page drives WhatsApp.
+// Requires RESEND_API_KEY. Never hard-fails: a storage or email hiccup still returns 204.
 
-const FROM = "Levi Henry Group <levi@thelevihenry.com>";
+const { upsertOptin, putLead } = require("./lib/leadstore.cjs");
+const { EMAIL_STEPS, renderEmail, SITE } = require("./lib/followup-content.cjs");
+const { sendEmail } = require("./lib/mailer.cjs");
+
 const NOTIFY_TO = "levi@thelevihenry.com";
+const FROM_GROUP = "Levi Henry Group <levi@thelevihenry.com>";
 
 const esc = (s) =>
   String(s || "").replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
-
-async function sendEmail(payload) {
-  if (!process.env.RESEND_API_KEY) return;
-  try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) console.error("training-optin email failed:", res.status, await res.text());
-  } catch (e) {
-    console.error("training-optin email error:", e);
-  }
-}
-
-// Best-effort CRM log. Silently skips if not configured or if the table/fields don't exist.
-async function addToAirtable(fields) {
-  const token = process.env.AIRTABLE_TOKEN;
-  const baseId = process.env.AIRTABLE_BASE_ID;
-  const table = process.env.AIRTABLE_LEADS_TABLE || process.env.AIRTABLE_TABLE || "CRM";
-  if (!token || !baseId) return;
-  try {
-    const res = await fetch(
-      `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(table)}`,
-      {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ fields, typecast: true }),
-      }
-    );
-    if (!res.ok) console.error("training-optin Airtable write failed:", res.status, await res.text());
-  } catch (e) {
-    console.error("training-optin Airtable error:", e);
-  }
-}
 
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") return { statusCode: 405, body: "Method not allowed" };
@@ -60,31 +27,59 @@ exports.handler = async (event) => {
     const name = (p.get("name") || "").trim();
     const email = (p.get("email") || "").trim();
     const whatsapp = (p.get("whatsapp") || "").trim();
-    const training = (p.get("training") || "Remote SDR").trim();
 
-    if (!email && !whatsapp) return { statusCode: 204, body: "" };
+    // The sequence is keyed off email, so we need one to enrol a lead.
+    if (!email) {
+      // No email: at least let Levi know someone tried, then stop.
+      if (whatsapp) {
+        await sendEmail({
+          to: NOTIFY_TO,
+          from: FROM_GROUP,
+          subject: `Free SDR training lead (WhatsApp only): ${name || whatsapp}`,
+          html: `<p>Opt-in with no email. Name: ${esc(name) || "(none)"} · WhatsApp: ${esc(whatsapp)}</p>`,
+        });
+      }
+      return { statusCode: 204, body: "" };
+    }
 
-    // Notify Levi so the opt-in can be followed up on WhatsApp toward the course.
+    // 1. Save / refresh the lead in the store.
+    let lead;
+    try {
+      const r = await upsertOptin({ name, email, whatsapp });
+      lead = r.lead;
+    } catch (e) {
+      console.error("training-optin: store write failed", e);
+    }
+
+    // 2. Send Email 1 instantly (unless this lead already had it on a repeat opt-in).
+    if (lead && !(lead.emailsSent || []).includes(1)) {
+      const step1 = EMAIL_STEPS.find((s) => s.step === 1);
+      const unsubUrl = `${SITE}/.netlify/functions/followup-unsub?token=${lead.unsubToken}`;
+      const { subject, html } = renderEmail(step1, lead, unsubUrl);
+      const ok = await sendEmail({ to: lead.email, subject, html });
+      if (ok) {
+        lead.emailsSent = [...new Set([...(lead.emailsSent || []), 1])];
+        lead.updatedAt = new Date().toISOString();
+        try {
+          await putLead(lead);
+        } catch (e) {
+          console.error("training-optin: could not stamp email 1", e);
+        }
+      }
+    }
+
+    // 3. Heads-up to Levi so the first WhatsApp can go out now (worklist shows it as due).
     await sendEmail({
-      from: FROM,
-      to: [NOTIFY_TO],
-      reply_to: email || undefined,
-      subject: `New free-training lead: ${name || email}`,
+      to: NOTIFY_TO,
+      from: FROM_GROUP,
+      replyTo: email,
+      subject: `New free SDR training lead: ${name || email}`,
       html: `<div style="font-family:-apple-system,Segoe UI,Arial,sans-serif;font-size:15px;color:#212c38;line-height:1.6;">
-        <p>Someone just opted in for the <strong>Remote SDR free training</strong>. New lead to warm toward the course.</p>
+        <p>Someone just opted in for the <strong>free SDR training</strong>. Email 1 is on its way to them; the WhatsApp worklist now shows them as due.</p>
         <p><strong>Name:</strong> ${esc(name) || "(not given)"}<br/>
-        <strong>Email:</strong> ${esc(email) || "(not given)"}<br/>
+        <strong>Email:</strong> ${esc(email)}<br/>
         <strong>WhatsApp:</strong> ${esc(whatsapp) || "(not given)"}</p>
       </div>`,
-    });
-
-    // Best-effort CRM log (no-ops gracefully if the table/fields aren't set up).
-    await addToAirtable({
-      Name: name,
-      Email: email,
-      WhatsApp: whatsapp,
-      Source: "Free training opt-in",
-      Status: "Opted in",
     });
 
     return { statusCode: 204, body: "" };

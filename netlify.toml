@@ -6,6 +6,10 @@
 [functions]
   directory = "netlify/functions"
 
+# Daily follow-up email job. 07:00 UTC is 08:00 Lagos (WAT).
+[functions."followup-cron"]
+  schedule = "0 7 * * *"
+
 # Long-cache static assets
 [[headers]]
   for = "/assets/*"
