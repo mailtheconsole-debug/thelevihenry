@@ -9,6 +9,15 @@ const STORE_NAME = "training-leads";
 async function store() {
   // @netlify/blobs is ESM; load it dynamically from these CJS functions.
   const { getStore } = await import("@netlify/blobs");
+  // On most Netlify deploys the Blobs context is injected automatically and
+  // getStore(name) just works. Older sites do not get that context, so fall back
+  // to explicit credentials when NETLIFY_SITE_ID and a token are set in the env.
+  const siteID = process.env.NETLIFY_SITE_ID || process.env.NETLIFY_BLOBS_SITE_ID;
+  const token =
+    process.env.NETLIFY_API_TOKEN ||
+    process.env.NETLIFY_BLOBS_TOKEN ||
+    process.env.NETLIFY_AUTH_TOKEN;
+  if (siteID && token) return getStore({ name: STORE_NAME, siteID, token });
   return getStore(STORE_NAME);
 }
 
@@ -98,6 +107,7 @@ async function findByUnsubToken(tok) {
 }
 
 module.exports = {
+  store,
   normalizePhone,
   keyFor,
   token,
