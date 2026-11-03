@@ -17,6 +17,16 @@ const esc = (s) =>
     (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c])
   );
 
+// Numbers are stored international for wa.me (2348031234567). The iPhone dialer needs
+// the local form, so drop the 234 country code and put a 0 in front: 08031234567.
+function localDial(raw) {
+  const d = String(raw || "").replace(/\D/g, "");
+  if (d.startsWith("234")) return "0" + d.slice(3);
+  if (d.startsWith("0")) return d;
+  if (d.length === 10) return "0" + d;
+  return d;
+}
+
 function authed(event) {
   const key =
     (event.queryStringParameters || {}).key ||
@@ -70,8 +80,9 @@ async function handlePost(event) {
 function card(lead, step) {
   const msg = renderWhatsApp(step, lead);
   const wa = `https://wa.me/${lead.whatsapp}?text=${encodeURIComponent(msg)}`;
-  // tel: link for the iPhone dialer; keep digits and a leading +.
-  const tel = `tel:${String(lead.whatsapp || "").replace(/[^\d+]/g, "")}`;
+  // tel: link for the iPhone dialer, in local format (0803...) so it dials directly.
+  const local = localDial(lead.whatsapp);
+  const tel = `tel:${local}`;
   const age = daysSince(lead.optinAt);
   const ageLabel = age === 0 ? "signed up today" : `signed up ${age} day${age === 1 ? "" : "s"} ago`;
   // How many times this step has been called with no answer, so he does not re-dial blindly.
@@ -81,7 +92,7 @@ function card(lead, step) {
     <div class="top">
       <div>
         <h2>${esc(firstName(lead))}</h2>
-        <p class="meta">+${esc(lead.whatsapp)} &middot; ${ageLabel}</p>
+        <p class="meta">${esc(local)} &middot; ${ageLabel}</p>
       </div>
       <span class="badge">WhatsApp ${step.step}</span>
     </div>
