@@ -30,6 +30,7 @@ const EMAIL_STEPS = [
       `Here is the training you asked for: <a href="${TRAINING_LINK}">watch it here</a>.`,
       "Watch it from start to finish, in one sitting if you can. It runs about an hour and twenty minutes, so set aside the time. Everything you need to understand how Nigerians are getting these remote roles is in it.",
       "One ask: give it your full attention. This is the thing most people skim, and skimming is exactly why most people never move.",
+      `If you already know you want more than the training, the full course with the coaching and the system is here: <a href="${COURSE_LINK}">the Remote SDR Training</a>. Watch the training first either way.`,
       "I will check in tomorrow.",
       "Levi",
     ],
@@ -43,6 +44,7 @@ const EMAIL_STEPS = [
       "Quick one. Did you watch the training yet?",
       "If you did, you already see it. These roles are real, foreign companies are hiring for them, and the thing standing between most people and the interview is one skill. Most people just never learn it.",
       `If you have not watched it, do it now before the day runs away from you: <a href="${TRAINING_LINK}">the training</a>.`,
+      `And if you are already past deciding, the full course with the coaching, the skills and the system is here: <a href="${COURSE_LINK}">the Remote SDR Training</a>.`,
       "Reply and tell me the one thing that stood out. I read these.",
       "Levi",
     ],
@@ -123,6 +125,7 @@ const WHATSAPP_STEPS = [
     lines: [
       `Hi {{first_name}}, Levi here. Just sent your free training, you can also watch it here: ${TRAINING_LINK}`,
       "Watch it all the way through and message me when you are done. I want to hear what you think.",
+      `And when you want more than the training, the full course with the coaching and the system is here: ${COURSE_LINK}`,
     ],
   },
   {
@@ -130,6 +133,7 @@ const WHATSAPP_STEPS = [
     day: 1,
     lines: [
       "{{first_name}}, did you get through the training? Tell me the one thing that hit you. If anything was unclear, ask me here.",
+      `And if you are ready to go deeper than the training, the full course with the coaching and the system is here: ${COURSE_LINK}`,
     ],
   },
   {
