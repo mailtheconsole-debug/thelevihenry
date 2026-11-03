@@ -216,9 +216,16 @@ const prose = 'mx-auto max-w-4xl px-6';
         <div class="mt-7" data-reveal>
           <EnrollButton course="remote-sdr-training" title="Remote SDR Training" ngn={60000} listNgn={100000} align="center" hidePrice />
         </div>
-        <p class="mx-auto mt-5 max-w-xl text-sm text-ink-soft" data-reveal>
-          Came for the free training? <a href="/free-sdr-training/watch" class="font-semibold text-navy underline underline-offset-4 hover:text-navy-600">Watch the full free training here</a>.
-        </p>
+        <div class="mt-6 flex flex-col items-center gap-2" data-reveal>
+          <a
+            href="/free-sdr-training/watch"
+            class="inline-flex items-center gap-2.5 rounded-sm border-2 border-navy bg-paper-raised px-6 py-3 font-sans text-sm font-bold text-navy shadow-sm transition hover:bg-navy hover:text-white"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+            Watch the full free training
+          </a>
+          <span class="font-sans text-xs font-semibold uppercase tracking-[0.12em] text-ink-faint">Free · the complete walk-through, no cost</span>
+        </div>
         <script>
           const vslFrame = document.getElementById('vsl-frame');
           const vslSound = document.getElementById('vsl-sound');
