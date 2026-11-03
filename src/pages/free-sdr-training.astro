@@ -1,7 +1,8 @@
 ---
 // Free SDR training opt-in. Cold ad traffic lands here, trades name/email/WhatsApp for
-// instant access to the pre-recorded training, then is redirected to
-// /free-sdr-training/watch. The opt-in captures the lead (training-optin function +
+// instant access, then is redirected to the course sales page (/remote-sdr-training),
+// which offers the free training as an option; the training link is also emailed
+// instantly. The opt-in captures the lead (training-optin function +
 // Meta "Lead" event) so the front end fills a list we own and warms people before the
 // ₦60k course. Named per topic (SDR) so future free trainings get their own slug.
 import Base from '../layouts/Base.astro';
@@ -112,10 +113,10 @@ const points = [
                 Free instant access
               </p>
               <h2 class="mt-2 font-serif text-2xl font-medium leading-tight text-navy">
-                Watch the training now
+                Get instant access
               </h2>
               <p class="mt-1.5 text-sm text-ink-soft">
-                Enter your details and it opens on the next page.
+                Enter your details. Your free training link is emailed to you right away.
               </p>
 
               <form data-optin class="mt-6 space-y-4" novalidate>
@@ -158,7 +159,7 @@ const points = [
                   data-submit
                   class="btn-primary flex w-full items-center justify-center gap-2 rounded-sm px-6 py-3.5 font-sans text-sm font-semibold text-white disabled:opacity-60"
                 >
-                  Watch the free training <span aria-hidden="true">&rarr;</span>
+                  Get instant access <span aria-hidden="true">&rarr;</span>
                 </button>
               </form>
 
@@ -255,11 +256,13 @@ const points = [
           );
       } catch (e3) {}
 
-      // Remember they opted in, then send them to the training.
+      // Remember they opted in, then send them to the course sales page. Their free
+      // training link is also emailed instantly (training-optin -> Email 1), and the
+      // sales page links to the free training too, so they get it either way.
       try {
         sessionStorage.setItem('lhg_sdr_training_optin', '1');
       } catch (e4) {}
-      window.location.assign('/free-sdr-training/watch');
+      window.location.assign('/remote-sdr-training');
     });
   })();
 </script>
