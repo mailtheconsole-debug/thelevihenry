@@ -45,6 +45,13 @@ async function handlePost(event) {
 
   if (action === "whatsapp-sent") {
     lead.whatsappDone = [...new Set([...(lead.whatsappDone || []), Number(step)])];
+  } else if (action === "call-made") {
+    // Reached them by phone: log the call and treat this step's touch as done.
+    lead.calls = [...(lead.calls || []), { at: new Date().toISOString(), outcome: "called", step: Number(step) }];
+    lead.whatsappDone = [...new Set([...(lead.whatsappDone || []), Number(step)])];
+  } else if (action === "call-noanswer") {
+    // Logged attempt; the lead stays on the worklist to try again.
+    lead.calls = [...(lead.calls || []), { at: new Date().toISOString(), outcome: "no-answer", step: Number(step) }];
   } else if (action === "stop") {
     lead.status = "stopped";
   } else {
@@ -52,18 +59,24 @@ async function handlePost(event) {
   }
   lead.updatedAt = new Date().toISOString();
   await putLead(lead);
+  const noAnswer = (lead.calls || []).filter((c) => c && c.outcome === "no-answer" && c.step === Number(step)).length;
   return {
     statusCode: 200,
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ok: true }),
+    body: JSON.stringify({ ok: true, noAnswer }),
   };
 }
 
 function card(lead, step) {
   const msg = renderWhatsApp(step, lead);
   const wa = `https://wa.me/${lead.whatsapp}?text=${encodeURIComponent(msg)}`;
+  // tel: link for the iPhone dialer; keep digits and a leading +.
+  const tel = `tel:${String(lead.whatsapp || "").replace(/[^\d+]/g, "")}`;
   const age = daysSince(lead.optinAt);
   const ageLabel = age === 0 ? "signed up today" : `signed up ${age} day${age === 1 ? "" : "s"} ago`;
+  // How many times this step has been called with no answer, so he does not re-dial blindly.
+  const noAnswer = (lead.calls || []).filter((c) => c && c.outcome === "no-answer" && c.step === step.step).length;
+  const callNote = `<p class="callnote"${noAnswer ? "" : " hidden"}>Called <span class="na-count">${noAnswer}</span>&times;, no answer</p>`;
   return `<article class="card" data-email="${esc(lead.email)}" data-step="${step.step}">
     <div class="top">
       <div>
@@ -73,9 +86,13 @@ function card(lead, step) {
       <span class="badge">WhatsApp ${step.step}</span>
     </div>
     <pre class="msg">${esc(msg)}</pre>
+    ${callNote}
     <div class="actions">
       <a class="btn btn-wa" href="${esc(wa)}" target="_blank" rel="noopener">Open WhatsApp</a>
+      <a class="btn btn-call" href="${esc(tel)}">Call</a>
       <button class="btn btn-done" data-act="whatsapp-sent">Mark sent</button>
+      <button class="btn btn-called" data-act="call-made">Called</button>
+      <button class="btn btn-noans" data-act="call-noanswer">No answer</button>
       <button class="btn btn-stop" data-act="stop">Stop</button>
     </div>
   </article>`;
@@ -114,9 +131,14 @@ function renderPage(cards, key, emailOnly) {
   .actions{display:flex;flex-wrap:wrap;gap:8px;}
   .btn{flex:1 1 auto;min-width:120px;text-align:center;border:0;border-radius:10px;padding:12px 14px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;}
   .btn-wa{background:#25D366;color:#063e21;}
+  .btn-call{background:#0b7bd6;color:#fff;}
   .btn-done{background:#212c38;color:#fff;}
+  .btn-called{background:#1f6b42;color:#fff;}
+  .btn-noans{background:#fff;color:#8a5a00;border:1px solid #e8d8b0;}
   .btn-stop{background:#fff;color:#99433a;border:1px solid #e3cbc7;flex:0 0 auto;min-width:72px;}
   .btn:active{transform:translateY(1px);}
+  .callnote{margin:-2px 0 12px;font-size:13px;font-weight:600;color:#8a5a00;}
+  .callnote[hidden]{display:none;}
 </style></head>
 <body>
   <div class="wrap">
@@ -152,11 +174,24 @@ function renderPage(cards, key, emailOnly) {
         var step = card.getAttribute('data-step');
         var act = btn.getAttribute('data-act');
         if(act === 'stop' && !confirm('Stop all follow-ups for this person?')) return;
+        // "No answer" logs the attempt but keeps the card on the list to try again.
+        var keep = (act === 'call-noanswer');
         btn.disabled = true;
-        card.classList.add('going');
+        if(!keep) card.classList.add('going');
         post(email, act, step).then(function(res){
-          if(res && res.ok){ card.remove(); refreshCount(); }
-          else { card.classList.remove('going'); btn.disabled = false; alert('Did not save, try again.'); }
+          if(res && res.ok){
+            if(keep){
+              var countEl = card.querySelector('.na-count');
+              var note = card.querySelector('.callnote');
+              if(countEl && typeof res.noAnswer === 'number') countEl.textContent = res.noAnswer;
+              if(note) note.hidden = false;
+              btn.disabled = false;
+            } else {
+              card.remove(); refreshCount();
+            }
+          } else {
+            card.classList.remove('going'); btn.disabled = false; alert('Did not save, try again.');
+          }
         }).catch(function(){ card.classList.remove('going'); btn.disabled = false; alert('Did not save, try again.'); });
       });
     })();
