@@ -28,7 +28,7 @@ const EMAIL_STEPS = [
     paras: [
       "{{first_name}},",
       `Here is the training you asked for: <a href="${TRAINING_LINK}">watch it here</a>.`,
-      "Watch it from start to finish, in one sitting if you can. It is about forty minutes, so set aside the time. Everything you need to understand how Nigerians are getting these remote roles is in it. If you want the full deeper training after, it is right there on the page too.",
+      "Watch it from start to finish, in one sitting if you can. It runs about an hour and twenty minutes, so set aside the time. Everything you need to understand how Nigerians are getting these remote roles is in it.",
       "One ask: give it your full attention. This is the thing most people skim, and skimming is exactly why most people never move.",
       `If you already know you want more than the training, the full course with the coaching and the system is here: <a href="${COURSE_LINK}">the Remote SDR Training</a>. Watch the training first either way.`,
       "I will check in tomorrow.",

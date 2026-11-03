@@ -1,19 +1,34 @@
 ---
-// The VSL hub: the destination after the /free-sdr-training opt-in. Leads with the
-// VSL (the short, proven closer), then a reveal-gated decision block that ranks the
-// three next steps by commitment:
-//   1. Enroll now (primary, buys in place via Paystack)
-//   2. See everything inside the course (the full sales page)
-//   3. Watch the full training first (the quiet soft-exit for the unsure)
-// The full ~1 hr 20 min training lives at /free-sdr-training/full-training.
+// The pre-recorded free SDR training, shown after the /free-sdr-training opt-in. The
+// bootcamp pitch is trimmed off the end of the recording; the pitch for the ₦60k course
+// lives here on the page (and in the follow-up sequence) instead.
+//
+// TODO (Levi): upload the TRIMMED training to Bunny and paste its GUID into `trainingId`.
+// If it goes in a library other than 776834, update TRAINING_LIBRARY too. While trainingId
+// is empty the page shows a placeholder so the layout is previewable.
 import Base from '../../layouts/Base.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import EnrollButton from '../../components/EnrollButton.astro';
 
-// VSL hero video (its own Bunny Stream library, 795716, with controls stripped).
-const VSL_LIBRARY = '795716';
-const vslId = '3eb4eefc-9364-4fc8-9231-f9fb36febcc5';
+const TRAINING_LIBRARY = '795716';
+const trainingId = 'aead0fee-f617-4b67-97e7-a85f274709c3'; // trimmed training (Bunny)
+const trainingSrc = trainingId
+  ? `https://iframe.mediadelivery.net/embed/${TRAINING_LIBRARY}/${trainingId}?preload=true&responsive=true`
+  : '';
+
+// The free-vs-course comparison shown under the video.
+const freePoints = [
+  'See what is possible',
+  'How the work pays',
+  'The path, start to finish',
+  'Watch once, no cost',
+];
+const coursePoints = [
+  'Master the real skills',
+  'Coaching that keeps you moving',
+  'Get hired, step by step',
+  'Support the whole way',
+];
 ---
 
 <Base
@@ -33,95 +48,117 @@ const vslId = '3eb4eefc-9364-4fc8-9231-f9fb36febcc5';
           data-reveal
           class="mt-4 font-serif text-3xl font-medium leading-[1.1] tracking-tight text-navy sm:text-4xl"
         >
-          Start here. Watch this first.
+          Watch this before you do anything else
         </h1>
         <p data-reveal class="mx-auto mt-4 max-w-xl text-ink-soft">
-          A short walk-through of how Nigerians are getting hired for these remote roles. Watch it, then
-          pick your next step below. The full training is there too if you want to go deeper.
+          Give it your full attention, start to finish. Everything you need to understand the
+          opportunity is in here.
         </p>
       </div>
 
-      <!-- The VSL: muted autoplay facade, tap for sound -->
-      <div data-reveal class="mx-auto mt-8 max-w-3xl">
-        <div
-          class="relative overflow-hidden rounded-2xl bg-navy-deep shadow-xl shadow-navy/25 ring-2 ring-beacon/40"
-          style="aspect-ratio:16/9"
-        >
-          <img
-            src="/assets/video/vsl-cover.webp"
-            alt=""
-            aria-hidden="true"
-            width="1600"
-            height="900"
-            fetchpriority="high"
-            class="absolute inset-0 h-full w-full object-cover"
-          />
-          <div id="vsl-frame" data-vsl-id={vslId} class="absolute inset-0 z-10"></div>
-          <button
-            type="button"
-            id="vsl-sound"
-            aria-label="Tap for sound"
-            class="group absolute inset-0 z-20 flex cursor-pointer flex-col items-center justify-center transition-opacity duration-300"
+      <div data-reveal class="mt-8 overflow-hidden rounded-lg border border-line bg-navy shadow-lg">
+        {trainingSrc ? (
+          <div style="position:relative;padding-top:56.25%;">
+            <iframe
+              data-training-iframe
+              src={trainingSrc}
+              loading="lazy"
+              style="position:absolute;inset:0;width:100%;height:100%;border:0;"
+              allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;"
+              allowfullscreen
+              title="Remote SDR free training"></iframe>
+          </div>
+        ) : (
+          <div
+            style="position:relative;padding-top:56.25%;"
+            class="flex items-center justify-center"
           >
-            <span class="absolute inset-0" style="background:radial-gradient(120% 90% at 50% 42%, rgba(8,21,36,0.22) 0%, rgba(8,21,36,0.46) 70%, rgba(8,21,36,0.70) 100%)"></span>
-            <span class="pointer-events-none absolute left-1/2 top-1/2 h-[84px] w-[84px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-beacon/40 motion-safe:animate-ping"></span>
-            <span class="relative flex h-[84px] w-[84px] items-center justify-center rounded-full bg-beacon shadow-xl shadow-beacon/30 transition-transform duration-200 group-hover:scale-110">
-              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-navy-deep" aria-hidden="true">
-                <path d="M11 5 6 9H2v6h4l5 4z" fill="currentColor" stroke="none" />
-                <line x1="23" y1="9" x2="17" y2="15" />
-                <line x1="17" y1="9" x2="23" y2="15" />
-              </svg>
-            </span>
-            <span class="relative mt-5 font-sans text-base font-extrabold uppercase tracking-[0.12em] text-white sm:text-lg">Tap for sound</span>
-            <span class="relative mt-1 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-white/75">Your video has started</span>
-          </button>
-        </div>
+            <p
+              style="position:absolute;inset:0;"
+              class="flex items-center justify-center px-6 text-center font-sans text-sm text-white/70"
+            >
+              Training video loads here. Paste the trimmed recording's Bunny GUID into
+              <code class="mx-1 rounded bg-white/10 px-1">trainingId</code> to go live.
+            </p>
+          </div>
+        )}
       </div>
 
-      <!-- Decision block: reveals a short while after the video starts -->
-      <div data-decision class="decision mx-auto mt-14 max-w-3xl">
+      <div data-course-cta class="course-cta mx-auto mt-14 max-w-3xl">
+        <!-- Express lane: experienced or ready people can go straight to the course -->
+        <div class="mx-auto mb-10 max-w-2xl rounded-xl border border-line bg-paper-raised px-5 py-4 text-center">
+          <p class="text-sm leading-relaxed text-ink-soft">
+            Already have some sales experience, or seen enough and ready to go deeper?
+          </p>
+          <a
+            href="/remote-sdr-training"
+            class="mt-2.5 inline-flex items-center gap-1.5 font-sans text-sm font-semibold text-navy underline underline-offset-4 hover:text-navy-600"
+            >Skip straight to the full course <span aria-hidden="true">&rarr;</span></a
+          >
+        </div>
+
         <div class="text-center">
           <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">
-            Your next step
+            If you want more than the training
           </p>
           <h2 class="mt-3 font-serif text-2xl font-medium leading-tight text-navy sm:text-3xl">
-            Where you go from here
+            Where the free training ends, the course begins
           </h2>
         </div>
 
-        <!-- Primary: enroll in the full course, right here -->
-        <div class="mx-auto mt-8 max-w-xl rounded-2xl border border-line bg-paper-raised p-6 text-center shadow-sm shadow-navy/5 sm:p-8">
-          <p class="text-lg leading-relaxed text-ink-soft">
-            Ready to build the skill and go after the job? Join the full Remote SDR Training.
-          </p>
-          <div class="mt-6 flex justify-center">
-            <EnrollButton course="remote-sdr-training" title="Remote SDR Training" ngn={60000} listNgn={100000} align="center" />
+        <div class="mt-8 grid items-stretch gap-4 sm:grid-cols-[1fr_auto_1fr] sm:gap-3">
+          <!-- Free training -->
+          <div class="rounded-xl border border-line bg-paper-raised p-6 shadow-sm shadow-navy/5">
+            <p class="font-sans text-xs font-bold uppercase tracking-[0.16em] text-navy-600">
+              Free · 1 hr 20 min
+            </p>
+            <h3 class="mt-1.5 font-serif text-xl font-medium text-navy">Free SDR training</h3>
+            <p class="mt-1.5 text-sm text-ink-soft">What you just watched. See the opportunity for yourself.</p>
+            <ul class="mt-4 space-y-2.5">
+              {freePoints.map((p) => (
+                <li class="flex items-start gap-2.5 text-sm text-ink">
+                  <svg class="mt-0.5 h-4 w-4 shrink-0 text-navy-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
+                  <span>{p}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Progression arrow: points right on desktop, down on mobile -->
+          <div class="flex items-center justify-center py-1 text-navy-600" aria-hidden="true">
+            <svg class="h-6 w-6 rotate-90 sm:rotate-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12" /><polyline points="13 5 20 12 13 19" /></svg>
+          </div>
+
+          <!-- Full course -->
+          <div class="rounded-xl bg-navy p-6 text-white shadow-lg shadow-navy/20">
+            <p class="font-sans text-xs font-bold uppercase tracking-[0.16em] text-white/70">
+              ₦60,000 founding price
+            </p>
+            <h3 class="mt-1.5 font-serif text-xl font-medium text-white">Full Remote SDR Training</h3>
+            <p class="mt-1.5 text-sm text-white/80">Where you go to build the skill and go after the job.</p>
+            <ul class="mt-4 space-y-2.5">
+              {coursePoints.map((p) => (
+                <li class="flex items-start gap-2.5 text-sm text-white/90">
+                  <svg class="mt-0.5 h-4 w-4 shrink-0 text-white/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
+                  <span>{p}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
-        <!-- Secondary: read the full sales page first -->
         <div class="mt-8 text-center">
           <a
             href="/remote-sdr-training"
-            data-cta="ClickSeeCourse"
-            class="inline-flex items-center gap-2 rounded-sm border border-navy px-7 py-3.5 font-sans text-sm font-semibold text-navy transition hover:bg-navy hover:text-white"
-            >See everything inside the course <span aria-hidden="true">&rarr;</span></a
+            class="btn-primary inline-flex items-center gap-2 rounded-sm px-7 py-3.5 font-sans text-sm font-semibold text-white"
+            >See the full course <span aria-hidden="true">&rarr;</span></a
           >
-        </div>
-
-        <!-- Soft exit: the quiet option for anyone not ready to decide -->
-        <div class="mt-8 text-center">
-          <a
-            href="/free-sdr-training/full-training"
-            data-cta="ClickFullTraining"
-            class="font-sans text-sm text-ink-soft underline underline-offset-4 hover:text-navy"
-            >Not ready to decide? Watch the full free training first <span aria-hidden="true">&rarr;</span></a
-          >
+          <p class="mt-3 text-sm text-ink-faint">Founding price while the first 100 seats last.</p>
         </div>
 
         <!-- Direct WhatsApp line, made obvious: the personal line people value -->
         <div
-          class="mx-auto mt-12 max-w-2xl rounded-2xl p-6 shadow-lg shadow-navy/10 sm:p-7"
+          class="mx-auto mt-10 max-w-2xl rounded-2xl p-6 shadow-lg shadow-navy/10 sm:p-7"
           style="background-color:#f1fbf5;border:1px solid #cfead9"
         >
           <div class="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-5">
@@ -133,12 +170,12 @@ const vslId = '3eb4eefc-9364-4fc8-9231-f9fb36febcc5';
             </span>
             <div class="flex-1">
               <h2 class="font-serif text-xl font-medium leading-tight text-navy">
-                Not sure yet? Message me directly
+                Have a question? Message me directly
               </h2>
               <p class="mt-1.5 text-[0.95rem] leading-relaxed text-ink-soft">
-                This is my own WhatsApp, and I read every message myself. If you are weighing this up, or
-                you are not sure it fits where you are starting from, tell me and I will be straight with
-                you. Everyone I have spoken with this way has told me the direct line genuinely helped.
+                This is my own WhatsApp, and I read every message myself. Whatever is on your mind, a
+                question, a doubt, or where you are starting from, send it over. Everyone I have spoken
+                with this way has told me the direct line genuinely helped.
               </p>
             </div>
           </div>
@@ -161,13 +198,13 @@ const vslId = '3eb4eefc-9364-4fc8-9231-f9fb36febcc5';
 </Base>
 
 <style>
-  /* The decision block is visible by default. JS tucks it away with .is-pending and
-     reveals it a short while after the video starts. If JS never runs, it simply
-     stays visible (no JS-dependent opacity:0 that could hide it for good). */
-  .decision {
+  /* The course CTA is visible by default. JS tucks it away with .is-pending and
+     reveals it a bit after the training starts playing. If JS never runs, the CTA
+     simply stays visible (no JS-dependent opacity:0 that could hide it for good). */
+  .course-cta {
     transition: opacity 0.5s ease, transform 0.5s ease;
   }
-  .decision.is-pending {
+  .course-cta.is-pending {
     opacity: 0;
     transform: translateY(10px);
     pointer-events: none;
@@ -176,119 +213,68 @@ const vslId = '3eb4eefc-9364-4fc8-9231-f9fb36febcc5';
 
 <script is:inline>
   (function () {
-    var frame = document.getElementById('vsl-frame');
-    var sound = document.getElementById('vsl-sound');
-    var decision = document.querySelector('[data-decision]');
-    var vslId = frame && frame.getAttribute('data-vsl-id');
-    var LIB = '795716';
+    var cta = document.querySelector('[data-course-cta]');
+    if (!cta) return;
 
-    // Fire a Meta Pixel custom event only where the pixel is loaded (production host).
-    function track(name) {
-      try {
-        if (typeof window.fbq === 'function') {
-          window.fbq('trackCustom', name, { content_name: 'Remote SDR Training VSL (hub)' });
-        }
-      } catch (e) {}
-    }
-
-    // Reveal the decision block. Guarded so it only ever runs once.
     var revealed = false;
     function reveal() {
       if (revealed) return;
       revealed = true;
-      if (decision) decision.classList.remove('is-pending');
+      cta.classList.remove('is-pending');
     }
 
     try {
-      // Schedule the guaranteed reveal BEFORE hiding, so the block always comes back
+      // Schedule the guaranteed reveal BEFORE hiding, so the CTA always comes back
       // even if nothing below runs. Then tuck it away.
-      setTimeout(reveal, 75000);
-      if (decision) decision.classList.add('is-pending');
-    } catch (e) {
-      reveal();
-    }
+      var fallback = setTimeout(reveal, 90000);
+      cta.classList.add('is-pending');
 
-    // Watch milestones, shared across the muted autoplay frame and the unmuted frame
-    // so each fires once. Best-effort via player.js; silently does nothing otherwise.
-    var fired = {};
-    function mark(key, evt) {
-      if (fired[key]) return;
-      fired[key] = true;
-      track(evt);
-    }
-    function attachTracking(iframe) {
-      function init() {
-        if (!window.playerjs || !iframe) return;
-        try {
-          var player = new window.playerjs.Player(iframe);
-          player.on('ready', function () {
-            player.on('timeupdate', function (d) {
-              if (!d || !d.duration) return;
-              var s = d.seconds;
-              var pct = (s / d.duration) * 100;
-              if (s >= 60) mark('t1', 'VSLReached1min');
-              if (s >= 180) mark('t3', 'VSLReached3min');
-              if (s >= 360) mark('t6', 'VSLReached6min');
-              if (s >= 900) mark('t15', 'VSLReached15min');
-              if (s >= 1800) mark('t30', 'VSLReached30min');
-              if (pct >= 25) mark('p25', 'VSLWatched25');
-              if (pct >= 50) mark('p50', 'VSLWatched50');
-              if (pct >= 75) mark('p75', 'VSLWatched75');
+      // Bunny Stream speaks the player.js protocol over postMessage. Ask it to tell
+      // us when playback starts, then reveal the next step a short while after.
+      var iframe = document.querySelector('[data-training-iframe]');
+      if (iframe && iframe.contentWindow) {
+        var started = false;
+        var subscribe = function () {
+          try {
+            ['play', 'timeupdate'].forEach(function (evt) {
+              iframe.contentWindow.postMessage(
+                JSON.stringify({
+                  context: 'player.js',
+                  version: '0.0.4',
+                  method: 'addEventListener',
+                  value: evt,
+                  listener: evt,
+                }),
+                '*'
+              );
             });
-            player.on('ended', function () { mark('p100', 'VSLWatched100'); });
-          });
-        } catch (e) {}
+          } catch (e) {}
+        };
+
+        window.addEventListener('message', function (e) {
+          var d = e.data;
+          if (typeof d === 'string') {
+            try {
+              d = JSON.parse(d);
+            } catch (x) {
+              return;
+            }
+          }
+          if (!d || d.context !== 'player.js') return;
+          if (d.event === 'ready') subscribe();
+          if ((d.event === 'play' || d.event === 'timeupdate') && !started) {
+            started = true;
+            clearTimeout(fallback);
+            setTimeout(reveal, 30000);
+          }
+        });
+
+        iframe.addEventListener('load', subscribe);
+        subscribe();
       }
-      if (window.playerjs) { init(); return; }
-      var s = document.createElement('script');
-      s.src = 'https://assets.mediadelivery.net/playerjs/player-0.1.0.min.js';
-      s.onload = init;
-      s.onerror = function () {};
-      document.head.appendChild(s);
-    }
-
-    function makeFrame(muted) {
-      var f = document.createElement('iframe');
-      f.src = 'https://iframe.mediadelivery.net/embed/' + LIB + '/' + vslId + '?autoplay=true&muted=' + muted + '&preload=true';
-      f.className = 'absolute inset-0 h-full w-full';
-      f.title = 'Remote SDR Training';
-      f.setAttribute('allow', 'accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen');
-      f.setAttribute('allowfullscreen', '');
-      return f;
-    }
-
-    if (frame && vslId) {
-      // Autoplay muted on load. Track it so we catch silent watchers too.
-      var muted = makeFrame('true');
-      frame.appendChild(muted);
-      attachTracking(muted);
-
-      var engaged = false;
-      var turnOnSound = function () {
-        if (engaged) return;
-        engaged = true;
-        track('VSLPlay');
-        var unmuted = makeFrame('false');
-        frame.replaceChildren(unmuted);
-        attachTracking(unmuted);
-        // Engaged viewers: reveal the next step a short while after the tap.
-        setTimeout(reveal, 30000);
-        if (sound) {
-          sound.style.opacity = '0';
-          sound.style.pointerEvents = 'none';
-          setTimeout(function () { sound.remove(); }, 320);
-        }
-      };
-      if (sound) sound.addEventListener('click', turnOnSound);
-    } else {
-      // No video id: show the decision block rather than hide it.
+    } catch (e) {
+      // Any failure: show the CTA rather than risk hiding it.
       reveal();
     }
-
-    // CTA click tracking (Enroll opens are already tracked by the button as
-    // InitiateCheckout, so we only tag the two link CTAs here).
-    document.querySelectorAll('[data-cta]').forEach(function (el) {
-      el.addEventListener('click', function () { track(el.getAttribute('data-cta')); });
-    });
   })();
 </script>
