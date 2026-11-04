@@ -6,10 +6,11 @@
 [functions]
   directory = "netlify/functions"
 
-# The daily follow-up email job (followup-cron) is NOT run by a Netlify schedule.
-# A GitHub Action (.github/workflows/followup-emails.yml) calls it over HTTP once a
-# day, which runs on the same path that email 1 and the worklist use and gives us
-# visible runs plus a manual "run now" button. The function is key-gated.
+# The daily follow-up email send runs in followup-send-background.cjs, a BACKGROUND
+# function (15-minute budget, returns 202 at once) so a big batch can never hit the
+# 10-second synchronous timeout. An external scheduler (cron-job.org) calls it once a
+# day over HTTP with the x-followup-key header. followup-cron.cjs is the synchronous
+# sibling for ?report=1 diagnostics and a capped manual catch-up. Both are key-gated.
 
 # Long-cache static assets
 [[headers]]

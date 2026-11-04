@@ -32,7 +32,8 @@ jobs:
           fi
           code=$(curl -s -S -m 60 -o /tmp/followup.out -w "%{http_code}" \
             -H "x-followup-key: $FOLLOWUP_KEY" \
-            "https://thelevihenry.com/.netlify/functions/followup-cron")
+            "https://thelevihenry.com/.netlify/functions/followup-send-background")
           echo "HTTP $code"
           echo "Response: $(cat /tmp/followup.out)"
-          test "$code" = "200"
+          # Background functions answer with 202 (accepted); the send runs after.
+          test "$code" = "202" || test "$code" = "200"
