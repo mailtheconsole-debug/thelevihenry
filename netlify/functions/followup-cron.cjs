@@ -1,10 +1,12 @@
-// Daily follow-up job. Runs once a day on a schedule (see netlify.toml) at 07:00 UTC,
-// which is 08:00 Lagos. For every active lead it sends the next due email in the
-// sequence (one per lead per run, so nobody gets a burst), stamps it, and then emails
-// Levi a short nudge listing how many WhatsApp follow-ups are waiting on the worklist.
+// Daily follow-up job. A GitHub Action (.github/workflows/followup-emails.yml) calls
+// this over HTTP once a day at 07:00 UTC (08:00 Lagos). For every active lead it sends
+// the next due email in the sequence (one per lead per run, so nobody gets a burst),
+// stamps it, and then emails Levi a short nudge listing how many WhatsApp follow-ups
+// are waiting on the worklist.
 //
-// It can also be triggered by hand for testing with GET ?key=<FOLLOWUP_KEY>. Scheduled
-// runs carry no HTTP method and are always allowed; any HTTP call must carry the key.
+// Auth: every HTTP call must carry the key, as ?key=<FOLLOWUP_KEY> or an
+// x-followup-key header. GET/POST with ?report=1 (key required) returns a read-only
+// JSON summary of what WOULD send, without sending anything, for diagnostics.
 
 const { listLeads, putLead } = require("./lib/leadstore.cjs");
 const {
@@ -19,13 +21,14 @@ const NOTIFY_TO = "levi@thelevihenry.com";
 const FROM_GROUP = "Levi Henry Group <levi@thelevihenry.com>";
 
 exports.handler = async (event) => {
-  // Guard HTTP invocations behind the key. Scheduled invocations have no httpMethod.
-  if (event && event.httpMethod) {
-    const key = (event.queryStringParameters || {}).key;
-    if (!process.env.FOLLOWUP_KEY || key !== process.env.FOLLOWUP_KEY) {
-      return { statusCode: 401, body: "nope" };
-    }
+  // Every HTTP call must carry the key, in ?key= or an x-followup-key header.
+  const q = (event && event.queryStringParameters) || {};
+  const h = (event && event.headers) || {};
+  const key = q.key || h["x-followup-key"] || h["X-Followup-Key"];
+  if (!process.env.FOLLOWUP_KEY || key !== process.env.FOLLOWUP_KEY) {
+    return { statusCode: 401, body: "nope" };
   }
+  const reportOnly = q.report === "1" || q.report === "true";
 
   let leads = [];
   try {
@@ -33,6 +36,52 @@ exports.handler = async (event) => {
   } catch (e) {
     console.error("followup-cron: could not list leads", e);
     return { statusCode: 200, body: "no store" };
+  }
+
+  // Read-only diagnostics: how far each lead has progressed and what is owed now,
+  // without sending a single email. Confirms whether the job has been delivering.
+  if (reportOnly) {
+    let active = 0;
+    let withEmail = 0;
+    let owedEmailNow = 0;
+    let progressedPastEmail1 = 0;
+    const nextStepDist = {};
+    const furthestSentDist = {};
+    let whatsappDue = 0;
+    for (const lead of leads) {
+      if (lead.status !== "active") continue;
+      active++;
+      if (lead.email) withEmail++;
+      const sent = lead.emailsSent || [];
+      const furthest = sent.length ? Math.max(...sent) : 0;
+      furthestSentDist[furthest] = (furthestSentDist[furthest] || 0) + 1;
+      if (sent.some((s) => s >= 2)) progressedPastEmail1++;
+      const step = lead.email ? nextDueEmail(lead) : null;
+      if (step) {
+        owedEmailNow++;
+        nextStepDist[step.step] = (nextStepDist[step.step] || 0) + 1;
+      }
+      if (lead.whatsapp && nextDueWhatsApp(lead)) whatsappDue++;
+    }
+    return {
+      statusCode: 200,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(
+        {
+          mode: "report",
+          totalLeads: leads.length,
+          active,
+          withEmail,
+          owedEmailNow,
+          progressedPastEmail1,
+          nextStepDist,
+          furthestSentDist,
+          whatsappDue,
+        },
+        null,
+        2
+      ),
+    };
   }
 
   let emailsSent = 0;

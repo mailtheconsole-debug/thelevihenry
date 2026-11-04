@@ -6,9 +6,10 @@
 [functions]
   directory = "netlify/functions"
 
-# Daily follow-up email job. 07:00 UTC is 08:00 Lagos (WAT).
-[functions."followup-cron"]
-  schedule = "0 7 * * *"
+# The daily follow-up email job (followup-cron) is NOT run by a Netlify schedule.
+# A GitHub Action (.github/workflows/followup-emails.yml) calls it over HTTP once a
+# day, which runs on the same path that email 1 and the worklist use and gives us
+# visible runs plus a manual "run now" button. The function is key-gated.
 
 # Long-cache static assets
 [[headers]]

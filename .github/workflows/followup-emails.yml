@@ -1,0 +1,38 @@
+name: Follow-up emails
+
+# Runs the daily follow-up email job by calling the key-gated Netlify function over
+# HTTP. This replaces the Netlify scheduled function, which was not firing. Every run
+# shows up here with its result, and the "Run workflow" button triggers a catch-up on
+# demand.
+#
+# Setup (one time): add a repository secret named FOLLOWUP_KEY
+#   Settings -> Secrets and variables -> Actions -> New repository secret
+#   value = the same FOLLOWUP_KEY set in Netlify.
+
+on:
+  schedule:
+    - cron: "0 7 * * *" # 07:00 UTC = 08:00 Lagos, daily
+  workflow_dispatch: {} # manual "Run workflow" button
+
+concurrency:
+  group: followup-emails
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger the daily follow-up emails
+        env:
+          FOLLOWUP_KEY: ${{ secrets.FOLLOWUP_KEY }}
+        run: |
+          if [ -z "$FOLLOWUP_KEY" ]; then
+            echo "FOLLOWUP_KEY secret is not set. Add it in repo Settings -> Secrets and variables -> Actions."
+            exit 1
+          fi
+          code=$(curl -s -S -m 60 -o /tmp/followup.out -w "%{http_code}" \
+            -H "x-followup-key: $FOLLOWUP_KEY" \
+            "https://thelevihenry.com/.netlify/functions/followup-cron")
+          echo "HTTP $code"
+          echo "Response: $(cat /tmp/followup.out)"
+          test "$code" = "200"
