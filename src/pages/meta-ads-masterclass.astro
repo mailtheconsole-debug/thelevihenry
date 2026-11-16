@@ -122,7 +122,8 @@ const h2 = 'font-serif text-2xl font-medium leading-tight tracking-tight text-na
           <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-beacon opacity-80"></span>
           <span class="relative inline-flex h-2 w-2 rounded-full bg-beacon"></span>
         </span>
-        <span>Regular and VIP prices both rise on <span class="font-bold text-white" data-price-rise-date>{riseDate}</span>. Lock in today's rate.</span>
+        <span data-bf>Black Friday pricing. Both tiers go back to normal on <span class="font-bold text-white" data-price-rise-date>{riseDate}</span>.</span>
+        <span data-nbf class="hidden">Regular and VIP prices both rise on <span class="font-bold text-white" data-price-rise-date>{riseDate}</span>. Lock in today's rate.</span>
       </div>
     </div>
 
@@ -141,6 +142,17 @@ const h2 = 'font-serif text-2xl font-medium leading-tight tracking-tight text-na
               Live on Google Meet
             </span>
           </div>
+          <div data-bf class="mt-6 inline-flex -rotate-2 items-center gap-3.5 rounded-2xl bg-beacon px-5 py-3 shadow-xl shadow-beacon/40 ring-2 ring-white/70" data-reveal>
+            <div class="flex flex-col items-start leading-tight">
+              <span class="font-sans text-base font-bold uppercase tracking-wide text-navy">Black Friday</span>
+              <span class="font-sans text-[0.68rem] font-bold uppercase tracking-wide text-navy/70">Ends Nov 22</span>
+            </div>
+            <div class="h-10 w-px bg-navy/20"></div>
+            <div class="flex items-baseline gap-2">
+              <span class="font-serif text-base text-navy/55 line-through" data-price-regular-next>₦30,000</span>
+              <span class="font-serif text-[1.9rem] font-semibold leading-none text-navy" data-price-regular>₦15,000</span>
+            </div>
+          </div>
           <h1 class="mt-5 font-serif text-[2.3rem] font-medium leading-[1.05] tracking-tight text-navy sm:text-5xl lg:text-[3.35rem]" data-reveal>In 3 hours, go from boosting posts to running real Meta ads.</h1>
           <p class="mx-auto mt-6 max-w-xl text-base leading-[1.8] text-ink-soft sm:text-lg lg:mx-0" data-reveal>A live, hands-on class for Nigerian business owners.<br />We build your campaigns together, step by step, with AI doing the heavy lifting on the copy and the targeting.</p>
           <p class="mx-auto mt-4 max-w-xl text-base leading-[1.8] text-ink-soft sm:text-lg lg:mx-0" data-reveal>You leave able to launch a real campaign from Ads Manager that same week.</p>
@@ -154,12 +166,12 @@ const h2 = 'font-serif text-2xl font-medium leading-tight tracking-tight text-na
             <button type="button" data-open data-tier="regular" class="btn-primary inline-flex items-center gap-2 rounded-sm px-8 py-4 font-sans text-sm font-semibold text-white">
               Register now <span aria-hidden="true">&rarr;</span>
             </button>
-            <p class="font-sans text-sm text-ink-soft">Early bird <span data-price-regular class="font-semibold text-navy">{naira(regularNgn)}</span> · VIP <span data-price-vip class="font-semibold text-navy">{naira(vipNgn)}</span></p>
+            <p class="font-sans text-sm text-ink-soft"><span data-bf>Black Friday</span><span data-nbf class="hidden">Early bird</span> <span data-price-regular class="font-semibold text-navy">{naira(regularNgn)}</span> · VIP <span data-price-vip class="font-semibold text-navy">{naira(vipNgn)}</span></p>
           </div>
 
           <!-- Big, obvious countdown to the price increase -->
           <div class="mt-9" data-reveal data-countdown>
-            <p class="mb-2.5 text-center font-sans text-xs font-bold uppercase tracking-[0.18em] text-navy-600 lg:text-left"><span data-cd-label>Early bird ends in</span></p>
+            <p class="mb-2.5 text-center font-sans text-xs font-bold uppercase tracking-[0.18em] text-navy-600 lg:text-left"><span data-cd-label>Black Friday price ends in</span></p>
             <div class="flex justify-center gap-2.5 lg:justify-start">
               <div class="card-raised flex min-w-[4.25rem] flex-col items-center rounded-xl border border-line bg-paper-raised px-2 py-3">
                 <span class="font-serif text-[2rem] font-semibold leading-none tabular-nums text-navy sm:text-[2.2rem]" data-cd-days>00</span>
@@ -227,11 +239,22 @@ const h2 = 'font-serif text-2xl font-medium leading-tight tracking-tight text-na
     <!-- The boost problem (dark band for contrast) -->
     <section class="band-dark relative overflow-hidden">
       <div class="relative z-[1] mx-auto max-w-3xl px-6 py-16 lg:py-20">
-        <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-beacon-soft" data-reveal>The real problem</p>
-        <h2 class="mt-3 font-serif text-2xl font-medium leading-tight tracking-tight text-white sm:text-3xl" data-reveal>Most business owners in Nigeria are boosting posts and calling it advertising.</h2>
+        <h2 class="font-serif text-2xl font-medium leading-tight tracking-tight text-white sm:text-3xl" data-reveal>You have been boosting posts and calling it advertising.</h2>
         <p class="mt-5 text-[1.05rem] leading-[1.8] text-white/75" data-reveal>Boosting is the most expensive way to spend money on Meta.<br />A few basic settings, almost no data, and no real way to know what came back.</p>
         <p class="mt-4 text-[1.05rem] leading-[1.8] text-white/75" data-reveal>Ads Manager is where the real results live.<br />Almost nobody has shown you how to use it.</p>
         <p class="mt-6 border-l-2 border-beacon pl-5 text-[1.05rem] font-medium leading-[1.8] text-white" data-reveal>In this class, I show you the whole thing, live, on a real account.<br />You watch me build it.<br />Then you build yours, right alongside me.</p>
+      </div>
+    </section>
+
+    <!-- Why now: sell at scale, spending season -->
+    <section class="border-b border-line bg-paper">
+      <div class="mx-auto max-w-3xl px-6 py-16 lg:py-20">
+        <p class={eyebrow} data-reveal>Why now</p>
+        <h2 class={`mt-2 ${h2}`} data-reveal>Whatever you sell, this is the season to sell it at scale.</h2>
+        <p class="mt-6 text-[1.05rem] leading-[1.8] text-ink-soft" data-reveal>A product, an offer, a service, a skill you have been trying to move. Once you can run real ads, you put it in front of the right people on purpose, as many of them as your budget reaches.</p>
+        <p class="mt-4 text-[1.05rem] leading-[1.8] text-ink-soft" data-reveal>The right prospects seeing your offer can bring you more customers and more sales than you are picturing right now.</p>
+        <p class="mt-4 text-[1.05rem] leading-[1.8] text-ink-soft" data-reveal>And this is the season people spend the most. The money is already moving. This is the time to show them what you sell and channel some of that spending to you.</p>
+        <p class="mt-7 border-l-2 border-beacon pl-5 font-serif text-xl font-medium leading-snug text-navy sm:text-2xl" data-reveal>This is the period to hit your financial goals.</p>
       </div>
     </section>
 
@@ -318,7 +341,7 @@ const h2 = 'font-serif text-2xl font-medium leading-tight tracking-tight text-na
               <p class={eyebrow}>Who's teaching</p>
               <h2 class={`mt-2 ${h2}`}>I run these ads every day.</h2>
               <p class="mt-4 text-[1.02rem] leading-[1.8] text-ink-soft">I am Levi Henry.<br />I run Meta ads for my own business and for my clients, and I built Levi Henry Group on them.</p>
-              <p class="mt-4 text-[1.02rem] leading-[1.8] text-ink-soft">Most people selling an ads class have never spent their own money in Ads Manager.<br />I do, every week.</p>
+              <p class="mt-4 text-[1.02rem] leading-[1.8] text-ink-soft">Plenty of people who sell an ads class have never spent their own money in Ads Manager.<br />I do, every week.</p>
               <p class="mt-4 text-[1.02rem] font-medium leading-[1.8] text-ink">This is the exact setup I use, taught live, with nothing held back.</p>
             </div>
           </div>
@@ -331,24 +354,28 @@ const h2 = 'font-serif text-2xl font-medium leading-tight tracking-tight text-na
       <div class="relative z-[1] mx-auto max-w-5xl px-6 py-16 lg:py-20">
         <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-beacon-soft" data-reveal>Real campaigns</p>
         <h2 class="mt-3 font-serif text-2xl font-medium leading-tight tracking-tight text-white sm:text-3xl" data-reveal>Two campaigns, two goals, both run in Ads Manager.</h2>
-        <p class="mt-5 max-w-2xl text-[1.05rem] leading-[1.8] text-white/75" data-reveal>One sold a high-ticket program.<br />One pulled in leads fast.<br />This is what the setup you build in class can do.</p>
+        <p class="mt-5 max-w-2xl text-[1.05rem] leading-[1.8] text-white/75" data-reveal>One sold a high-ticket program.<br />One pulled in leads fast.</p>
         <!-- Real, anonymized Ads Manager screenshot -->
         <figure class="overflow-hidden rounded-2xl border border-white/10 bg-paper-raised shadow-2xl" data-reveal>
           <img src="/assets/proof/sales-campaign-anon.png" alt="Meta Ads Manager showing 64 website purchases at 7,702 naira per purchase from 492,963 naira in ad spend" width="1806" height="499" class="w-full" loading="lazy" />
           <figcaption class="border-t border-line px-5 py-4 sm:px-6">
-            <p class="font-sans text-sm font-semibold text-navy">A client's fashion bootcamp: 64 sales of a ₦100,000 program.</p>
-            <p class="mt-1 font-sans text-xs leading-relaxed text-ink-soft">₦492,963 in ad spend over 30 days, about ₦6.4M back. Account and campaign names blurred.</p>
+            <p class="font-sans text-sm font-semibold text-navy">A client's fashion bootcamp, a ₦100,000 program.</p>
+            <p class="mt-1 font-sans text-xs leading-relaxed text-ink-soft">Organic marketing brought 36 sales. The ads brought 64 more in 30 days: ₦6.4M from ₦492,963 in spend. Account and campaign names blurred.</p>
           </figcaption>
         </figure>
         <!-- Real, anonymized lead-campaign screenshot -->
         <figure class="mt-5 overflow-hidden rounded-2xl border border-white/10 bg-paper-raised shadow-2xl" data-reveal>
           <img src="/assets/proof/lead-campaign-anon.png" alt="Meta Ads Manager showing 319 website leads at 72.23 naira per lead from 23,042 naira in ad spend" width="1765" height="642" class="w-full" loading="lazy" />
           <figcaption class="border-t border-line px-5 py-4 sm:px-6">
-            <p class="font-sans text-sm font-semibold text-navy">One of my own campaigns: 319 leads in 3 days.</p>
+            <p class="font-sans text-sm font-semibold text-navy">A lead campaign: 319 leads in 3 days.</p>
             <p class="mt-1 font-sans text-xs leading-relaxed text-ink-soft">₦72.23 per lead from ₦23,042 in ad spend. Account and ad set names blurred.</p>
           </figcaption>
         </figure>
-        <p class="mt-6 text-sm leading-relaxed text-white/45" data-reveal>Real campaigns, with account and client names removed. Your numbers depend on your offer, your price, and your market.</p>
+        <div class="mt-9 text-center" data-reveal>
+          <p class="font-serif text-2xl font-medium text-white sm:text-[1.7rem]">Different objectives, same skill.</p>
+          <p class="mt-2 text-[1.05rem] font-medium text-beacon-soft">Now you can learn that skill.</p>
+        </div>
+        <p class="mt-6 text-center text-sm leading-relaxed text-white/45" data-reveal>Real campaigns, with account and client names removed. Your numbers depend on your offer, your price, and your market.</p>
       </div>
     </section>
 
@@ -358,10 +385,10 @@ const h2 = 'font-serif text-2xl font-medium leading-tight tracking-tight text-na
         <div class="text-center">
           <p class={eyebrow} data-reveal>Reserve your seat</p>
           <h2 class={`mt-2 ${h2}`} data-reveal>Pick your seat</h2>
-          <p class="mt-3 leading-relaxed text-ink-soft" data-reveal>Both prices go up as the class gets closer. Lock in today's rate.</p>
+          <p class="mt-3 leading-relaxed text-ink-soft" data-reveal><span data-bf>Black Friday pricing. Lock in today's rate before it goes back to normal.</span><span data-nbf class="hidden">Both prices go up as the class gets closer. Lock in today's rate.</span></p>
           <!-- Big, obvious countdown to the price increase -->
           <div class="mt-7" data-reveal data-countdown>
-            <p class="mb-3 font-sans text-xs font-bold uppercase tracking-[0.18em] text-navy-600"><span data-cd-label>Early bird ends in</span></p>
+            <p class="mb-3 font-sans text-xs font-bold uppercase tracking-[0.18em] text-navy-600"><span data-cd-label>Black Friday price ends in</span></p>
             <div class="flex justify-center gap-2.5">
               <div class="card-raised flex min-w-[4.5rem] flex-col items-center rounded-xl border border-line bg-paper-raised px-2 py-3.5">
                 <span class="font-serif text-[2.1rem] font-semibold leading-none tabular-nums text-navy sm:text-[2.4rem]" data-cd-days>00</span>
@@ -468,7 +495,7 @@ const h2 = 'font-serif text-2xl font-medium leading-tight tracking-tight text-na
             Register now <span aria-hidden="true">&rarr;</span>
           </button>
         </div>
-        <p class="mt-5 font-sans text-xs text-white/55" data-reveal>Early bird <span data-price-regular class="font-semibold text-white">{naira(regularNgn)}</span> · secure checkout by Paystack</p>
+        <p class="mt-5 font-sans text-xs text-white/55" data-reveal><span data-bf>Black Friday</span><span data-nbf class="hidden">Early bird</span> <span data-price-regular class="font-semibold text-white">{naira(regularNgn)}</span> · secure checkout by Paystack</p>
       </div>
     </section>
 
@@ -568,6 +595,10 @@ const h2 = 'font-serif text-2xl font-medium leading-tight tracking-tight text-na
       root.querySelectorAll<HTMLElement>('[data-price-vip-next]').forEach((el) => (el.textContent = hasNext ? naira((offer.nextNgn as number) + up) : ''));
       root.querySelectorAll<HTMLElement>('[data-price-rise-date]').forEach((el) => (el.textContent = hasNext ? (offer.nextStartsWat as string) : ''));
       root.querySelectorAll<HTMLElement>('[data-rise-wrap]').forEach((el) => el.classList.toggle('hidden', !hasNext));
+      // Black Friday framing shows only in the early-bird window; after Nov 22 it reverts.
+      const bf = offer.nextStartsWat === 'Nov 22';
+      root.querySelectorAll<HTMLElement>('[data-bf]').forEach((el) => el.classList.toggle('hidden', !bf));
+      root.querySelectorAll<HTMLElement>('[data-nbf]').forEach((el) => el.classList.toggle('hidden', bf));
       payAmount.textContent = naira(amountFor(selectedTier));
     };
 
@@ -700,7 +731,7 @@ const h2 = 'font-serif text-2xl font-medium leading-tight tracking-tight text-na
     if (!nodes.length) return;
     function pad(n) { return (n < 10 ? '0' : '') + n; }
     function target(now) {
-      if (now < EB) return { t: EB, label: 'Early bird ends in' };
+      if (now < EB) return { t: EB, label: 'Black Friday price ends in' };
       if (now < RG) return { t: RG, label: 'Price rises in' };
       if (now < CLASS) return { t: CLASS, label: 'Class starts in' };
       return null;
