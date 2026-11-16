@@ -16,15 +16,43 @@ const REG_END = Date.UTC(2026, 10, 27, 23, 0, 0);
 const now = Date.now();
 const regularNgn = now < EB_END ? 15000 : now < REG_END ? 30000 : 45000;
 const vipNgn = regularNgn + 40000;
+const nextNgn = now < EB_END ? 30000 : now < REG_END ? 45000 : null;
+const nextVipNgn = nextNgn === null ? null : nextNgn + 40000;
+const riseDate = now < EB_END ? 'Nov 22' : now < REG_END ? 'Nov 28' : '';
 const naira = (n: number) => '₦' + n.toLocaleString('en-NG');
+
+const stats: [string, string][] = [
+  ['3 hours', 'Live and hands-on'],
+  ['3 campaigns', 'Built in the class'],
+  ['Real account', 'Built with you'],
+  ['7-day replay', 'For live attendees'],
+];
 
 const builds = [
   'Your Business Portfolio and ad account, set up right the first time',
   'The Meta pixel on your website, so Meta learns who actually buys',
   'A Click-to-WhatsApp campaign, the format that fits most Nigerian sellers',
-  'A lead campaign and a sales campaign, published live at ₦3,000 a day',
+  'A lead campaign and a sales campaign, built live and ready to publish on your account',
   'The exact Claude and ChatGPT prompts I use for hooks, copy, and audience research',
   'The 4 numbers that tell you what to cut and what to scale',
+];
+
+const agenda = [
+  {
+    time: 'First hour',
+    title: 'Set the foundation',
+    body: 'We set up your Business Portfolio, ad account, and the Meta pixel on your website, so Meta starts learning who actually buys from you.',
+  },
+  {
+    time: 'Second hour',
+    title: 'Build your campaigns',
+    body: 'We build a Click-to-WhatsApp campaign together, the format that fits most Nigerian sellers, plus a lead campaign and a sales campaign, live on your own account.',
+  },
+  {
+    time: 'Final hour',
+    title: 'Launch and scale',
+    body: 'You publish from your own account, get the Claude and ChatGPT prompts I use for hooks and copy, and learn the 4 numbers that tell you what to cut and what to scale.',
+  },
 ];
 
 const forYou = [
@@ -39,15 +67,30 @@ const need = [
   'A card that works for Meta payments',
 ];
 
+const regularFeatures = [
+  'The full 3-hour live class on Google Meet',
+  'Build your campaigns live with Levi',
+  '7-day replay for live attendees',
+  'The Claude and ChatGPT prompt pack',
+];
+
+const vipFeatures = [
+  'Everything in Regular',
+  'A private 45-minute 1:1 with Levi',
+  'Booked after class, held within 7 days',
+  'Bring your own account and we work on it',
+];
+
 const faqs = [
   { q: 'Do I need any experience?', a: 'No. We start from zero and set everything up with you, step by step.' },
   { q: 'Is it live or recorded?', a: 'Live on Google Meet, 3 hours. Only people who attend live get a 7-day replay. Miss it and there is no recording.' },
   { q: 'Will this work for my kind of business?', a: 'If you sell a product or service to people in Nigeria, yes. We build a Click-to-WhatsApp campaign, which fits most sellers here, plus a lead campaign and a sales campaign.' },
-  { q: 'Is my ad budget included?', a: 'No. The ticket covers the class. Your ads run on your own account, and you can start with as little as ₦3,000 a day.' },
+  { q: 'Is my ad budget included?', a: 'No. The ticket covers the class. Your ads run on your own account with your own budget, and I show you how to set it and spend it well.' },
   { q: 'What do I need on the day?', a: 'A laptop, a Facebook account, a business Page, and a card that works for Meta. I send a short checklist before class.' },
   { q: 'Can I pay and watch the replay later?', a: 'The replay is for live attendees only, so plan to be there from 4 to 7 pm on November 28.' },
 ];
 
+const eyebrow = 'font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600';
 const h2 = 'font-serif text-2xl font-medium leading-tight tracking-tight text-navy sm:text-3xl';
 ---
 
@@ -56,8 +99,8 @@ const h2 = 'font-serif text-2xl font-medium leading-tight tracking-tight text-na
   description="A live, 3-hour Meta ads masterclass for Nigerian business owners. On Saturday, November 28, go from boosting posts to running real Meta ads, with AI doing the heavy lifting on copy and targeting."
 >
   <!-- Minimal landing-page header: logo + a single Register CTA, no site nav. -->
-  <header class="sticky top-0 z-40 border-b border-line bg-ivory/90 backdrop-blur-md">
-    <div class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-6 py-3.5">
+  <header class="sticky top-0 z-40 border-b border-line bg-ivory/85 backdrop-blur-md">
+    <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-3.5">
       <a href="/" aria-label="Levi Henry Group home">
         <img src="/assets/brand/logo-horizontal.png" alt="Levi Henry Group" width="2232" height="955" class="h-8 w-auto sm:h-9" />
       </a>
@@ -72,141 +115,316 @@ const h2 = 'font-serif text-2xl font-medium leading-tight tracking-tight text-na
     data-regular={regularNgn}
     data-vip={vipNgn}
   >
-    <!-- Hero -->
-    <section class="relative overflow-hidden border-b border-line">
-      <div class="mx-auto max-w-3xl px-6 py-14 text-center lg:py-20">
-        <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600" data-reveal>Meta Ads Masterclass · Live on Google Meet</p>
-        <h1 class="mt-4 font-serif text-[2.2rem] font-medium leading-[1.07] tracking-tight text-navy sm:text-5xl" data-reveal>In 3 hours, go from boosting posts to running real Meta ads.</h1>
-        <p class="mx-auto mt-6 max-w-xl text-base leading-[1.8] text-ink-soft sm:text-lg" data-reveal>A live, hands-on class for Nigerian business owners.<br />We build your campaigns together, step by step, with AI doing the heavy lifting on the copy and the targeting.</p>
-        <p class="mx-auto mt-4 max-w-xl text-base leading-[1.8] text-ink-soft sm:text-lg" data-reveal>You leave able to launch a real campaign from Ads Manager that same week.</p>
-        <p class="mt-6 font-sans text-sm font-semibold text-navy" data-reveal>Saturday, November 28, 2026 · 4:00 to 7:00 pm WAT · Live on Google Meet</p>
+    <!-- Price-rise banner: both tiers rise on the increase date. -->
+    <div data-rise-wrap class="border-b border-line bg-navy text-white">
+      <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-2 gap-y-1 px-6 py-2.5 text-center text-[0.8rem] font-medium sm:text-sm">
+        <span class="relative mr-1 flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-beacon opacity-80"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-beacon"></span>
+        </span>
+        <span>Regular and VIP prices both rise on <span class="font-bold text-white" data-price-rise-date>{riseDate}</span>. Lock in today's rate.</span>
+      </div>
+    </div>
 
-        <div class="mt-8 flex flex-col items-center gap-3" data-reveal>
-          <button type="button" data-open data-tier="regular" class="btn-primary inline-flex items-center gap-2 rounded-sm px-8 py-4 font-sans text-sm font-semibold text-white">
-            Register now <span aria-hidden="true">&rarr;</span>
-          </button>
-          <p class="font-sans text-sm text-ink-soft">
-            <span data-price-line>Early bird <span data-price-regular class="font-semibold text-navy">{naira(regularNgn)}</span></span>
-            <span data-price-next class="text-ink-faint"></span>
-          </p>
+    <!-- Hero -->
+    <section class="hero-band relative overflow-hidden border-b border-line">
+      <span class="beacon-glow"></span>
+      <div class="relative z-[1] mx-auto grid max-w-6xl items-center gap-12 px-6 py-16 lg:grid-cols-[1.08fr_0.92fr] lg:py-24">
+        <div class="text-center lg:text-left">
+          <div class="flex flex-col items-center gap-2.5 lg:items-start" data-reveal>
+            <span class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-brand">Meta Ads Masterclass</span>
+            <span class="inline-flex items-center gap-2 rounded-full border border-line bg-paper-raised px-3.5 py-1.5 font-sans text-xs font-bold uppercase tracking-[0.18em] text-navy-600 shadow-sm">
+              <span class="relative flex h-2 w-2">
+                <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-70"></span>
+                <span class="relative inline-flex h-2 w-2 rounded-full bg-brand"></span>
+              </span>
+              Live on Google Meet
+            </span>
+          </div>
+          <h1 class="mt-5 font-serif text-[2.3rem] font-medium leading-[1.05] tracking-tight text-navy sm:text-5xl lg:text-[3.35rem]" data-reveal>In 3 hours, go from boosting posts to running real Meta ads.</h1>
+          <p class="mx-auto mt-6 max-w-xl text-base leading-[1.8] text-ink-soft sm:text-lg lg:mx-0" data-reveal>A live, hands-on class for Nigerian business owners.<br />We build your campaigns together, step by step, with AI doing the heavy lifting on the copy and the targeting.</p>
+          <p class="mx-auto mt-4 max-w-xl text-base leading-[1.8] text-ink-soft sm:text-lg lg:mx-0" data-reveal>You leave able to launch a real campaign from Ads Manager that same week.</p>
+
+          <div class="mt-7 inline-flex items-center gap-2.5 rounded-lg border border-line bg-paper-raised px-4 py-2.5 font-sans text-sm font-semibold text-navy shadow-sm" data-reveal>
+            <svg class="h-4 w-4 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
+            Saturday, November 28 · 4:00 to 7:00 pm WAT
+          </div>
+
+          <div class="mt-8 flex flex-col items-center gap-3 lg:items-start" data-reveal>
+            <button type="button" data-open data-tier="regular" class="btn-primary inline-flex items-center gap-2 rounded-sm px-8 py-4 font-sans text-sm font-semibold text-white">
+              Register now <span aria-hidden="true">&rarr;</span>
+            </button>
+            <p class="font-sans text-sm text-ink-soft">Early bird <span data-price-regular class="font-semibold text-navy">{naira(regularNgn)}</span> · VIP <span data-price-vip class="font-semibold text-navy">{naira(vipNgn)}</span></p>
+          </div>
+
+          <!-- Big, obvious countdown to the price increase -->
+          <div class="mt-9" data-reveal data-countdown>
+            <p class="mb-2.5 text-center font-sans text-xs font-bold uppercase tracking-[0.18em] text-navy-600 lg:text-left"><span data-cd-label>Early bird ends in</span></p>
+            <div class="flex justify-center gap-2.5 lg:justify-start">
+              <div class="card-raised flex min-w-[4.25rem] flex-col items-center rounded-xl border border-line bg-paper-raised px-2 py-3">
+                <span class="font-serif text-[2rem] font-semibold leading-none tabular-nums text-navy sm:text-[2.2rem]" data-cd-days>00</span>
+                <span class="mt-1.5 font-sans text-[0.6rem] font-bold uppercase tracking-wider text-ink-faint">Days</span>
+              </div>
+              <div class="card-raised flex min-w-[4.25rem] flex-col items-center rounded-xl border border-line bg-paper-raised px-2 py-3">
+                <span class="font-serif text-[2rem] font-semibold leading-none tabular-nums text-navy sm:text-[2.2rem]" data-cd-hours>00</span>
+                <span class="mt-1.5 font-sans text-[0.6rem] font-bold uppercase tracking-wider text-ink-faint">Hours</span>
+              </div>
+              <div class="card-raised flex min-w-[4.25rem] flex-col items-center rounded-xl border border-line bg-paper-raised px-2 py-3">
+                <span class="font-serif text-[2rem] font-semibold leading-none tabular-nums text-navy sm:text-[2.2rem]" data-cd-mins>00</span>
+                <span class="mt-1.5 font-sans text-[0.6rem] font-bold uppercase tracking-wider text-ink-faint">Mins</span>
+              </div>
+              <div class="card-raised flex min-w-[4.25rem] flex-col items-center rounded-xl border border-line bg-paper-raised px-2 py-3">
+                <span class="font-serif text-[2rem] font-semibold leading-none tabular-nums text-brand sm:text-[2.2rem]" data-cd-secs>00</span>
+                <span class="mt-1.5 font-sans text-[0.6rem] font-bold uppercase tracking-wider text-ink-faint">Secs</span>
+              </div>
+            </div>
+            <p class="mt-3.5 text-center text-sm text-ink-soft lg:text-left" data-rise-wrap>Then Regular <span class="font-semibold text-navy" data-price-regular-next>{nextNgn ? naira(nextNgn) : ''}</span> and VIP <span class="font-semibold text-navy" data-price-vip-next>{nextVipNgn ? naira(nextVipNgn) : ''}</span> on <span class="font-semibold text-navy" data-price-rise-date>{riseDate}</span>.</p>
+          </div>
+        </div>
+
+        <!-- Hero visual: the Click-to-WhatsApp ad they build live. -->
+        <div class="relative mx-auto w-full max-w-sm lg:mr-0" data-reveal>
+          <div class="card-raised relative rounded-2xl border border-line bg-paper-raised p-4">
+            <div class="flex items-center gap-3">
+              <span class="flex h-10 w-10 items-center justify-center rounded-full bg-navy font-serif text-sm font-medium text-white">A</span>
+              <div class="leading-tight">
+                <p class="font-sans text-sm font-semibold text-navy">Ada's Skincare</p>
+                <p class="text-xs text-ink-faint">Sponsored</p>
+              </div>
+              <svg class="ml-auto h-5 w-5 text-ink-faint" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.6" /><circle cx="12" cy="12" r="1.6" /><circle cx="19" cy="12" r="1.6" /></svg>
+            </div>
+            <p class="mt-3 text-sm leading-relaxed text-ink">New stock just landed. Tap below and order on WhatsApp in under a minute.</p>
+            <div class="mt-3 flex aspect-[4/3] items-center justify-center overflow-hidden rounded-lg" style="background:radial-gradient(70% 60% at 30% 20%, rgba(143,184,224,0.5), transparent 60%), linear-gradient(150deg,#24466f 0%, #14273f 60%, #0e1c2e 100%)">
+              <span class="font-sans text-xs uppercase tracking-[0.2em] text-white/55">Your product</span>
+            </div>
+            <div class="mt-3 flex items-center justify-between rounded-lg bg-ivory px-3 py-2.5">
+              <span class="font-sans text-xs font-semibold text-navy">Order now</span>
+              <span class="inline-flex items-center gap-1.5 rounded-sm px-3 py-1.5 font-sans text-xs font-semibold text-white" style="background:#128C7E">
+                <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.33 4.95L2 22l5.3-1.38a9.9 9.9 0 004.74 1.2h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.64-1.03-5.13-2.9-7A9.82 9.82 0 0012.04 2zm5.8 14.04c-.24.68-1.42 1.3-1.95 1.34-.5.05-.96.24-3.23-.67-2.73-1.08-4.45-3.88-4.58-4.06-.13-.18-1.1-1.46-1.1-2.79 0-1.33.7-1.98.94-2.25.25-.27.54-.34.72-.34.18 0 .36 0 .52.01.17.01.39-.06.6.46.24.56.8 1.94.87 2.08.07.14.12.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.27.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.23 1.38.27.14.43.12.6-.07.17-.18.69-.8.87-1.08.18-.27.37-.22.6-.13.24.09 1.5.71 1.76.84.27.14.44.2.5.31.07.11.07.63-.17 1.31z" /></svg>
+                Send message
+              </span>
+            </div>
+          </div>
+          <span class="absolute -right-3 -top-3 rotate-2 rounded-full bg-beacon px-3.5 py-1.5 font-sans text-xs font-bold text-navy shadow-lg">You build this live</span>
         </div>
       </div>
     </section>
 
-    <!-- The boost problem -->
-    <section class="border-b border-line bg-paper">
-      <div class="mx-auto max-w-3xl px-6 py-14 lg:py-16">
-        <h2 class={h2} data-reveal>Most business owners in Nigeria are boosting posts and calling it advertising.</h2>
-        <p class="mt-5 text-[1.05rem] leading-[1.8] text-ink-soft" data-reveal>Boosting is the most expensive way to spend money on Meta.<br />A few basic settings, almost no data, and no real way to know what came back.</p>
-        <p class="mt-4 text-[1.05rem] leading-[1.8] text-ink-soft" data-reveal>Ads Manager is where the real results live.<br />Almost nobody has shown you how to use it.</p>
-        <p class="mt-6 text-[1.05rem] font-medium leading-[1.8] text-ink" data-reveal>In this class, I show you the whole thing, live, on a real account.<br />You watch me build it.<br />Then you build yours, right alongside me.</p>
+    <!-- Stats strip -->
+    <section class="border-b border-line bg-paper-raised">
+      <div class="mx-auto max-w-5xl px-6">
+        <dl class="grid grid-cols-2 sm:grid-cols-4">
+          {stats.map(([k, v], i) => (
+            <div class={`px-3 py-7 text-center sm:py-9 ${i % 2 === 1 ? 'border-l border-line' : ''} ${i >= 2 ? 'border-t border-line sm:border-t-0' : ''} sm:border-l sm:first:border-l-0`} data-reveal>
+              <dt class="font-serif text-2xl font-medium text-navy sm:text-[1.75rem]">{k}</dt>
+              <dd class="mt-1 font-sans text-xs font-semibold uppercase tracking-wider text-ink-faint">{v}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+
+    <!-- The boost problem (dark band for contrast) -->
+    <section class="band-dark relative overflow-hidden">
+      <div class="relative z-[1] mx-auto max-w-3xl px-6 py-16 lg:py-20">
+        <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-beacon-soft" data-reveal>The real problem</p>
+        <h2 class="mt-3 font-serif text-2xl font-medium leading-tight tracking-tight text-white sm:text-3xl" data-reveal>Most business owners in Nigeria are boosting posts and calling it advertising.</h2>
+        <p class="mt-5 text-[1.05rem] leading-[1.8] text-white/75" data-reveal>Boosting is the most expensive way to spend money on Meta.<br />A few basic settings, almost no data, and no real way to know what came back.</p>
+        <p class="mt-4 text-[1.05rem] leading-[1.8] text-white/75" data-reveal>Ads Manager is where the real results live.<br />Almost nobody has shown you how to use it.</p>
+        <p class="mt-6 border-l-2 border-beacon pl-5 text-[1.05rem] font-medium leading-[1.8] text-white" data-reveal>In this class, I show you the whole thing, live, on a real account.<br />You watch me build it.<br />Then you build yours, right alongside me.</p>
       </div>
     </section>
 
     <!-- What you'll build live -->
     <section class="border-b border-line">
-      <div class="mx-auto max-w-3xl px-6 py-14 lg:py-16">
-        <h2 class={h2} data-reveal>What you build live on the day</h2>
-        <ul class="mt-6 grid gap-3">
-          {builds.map((b) => (
-            <li class="flex items-start gap-3 rounded-lg border border-line bg-paper-raised p-4" data-reveal>
-              <svg class="mt-0.5 shrink-0 text-brand" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5" /></svg>
-              <span class="text-[0.97rem] leading-relaxed text-ink">{b}</span>
+      <div class="mx-auto max-w-5xl px-6 py-16 lg:py-20">
+        <p class={eyebrow} data-reveal>What you walk away with</p>
+        <h2 class={`mt-2 ${h2}`} data-reveal>What you build live on the day</h2>
+        <ul class="mt-8 grid gap-4 sm:grid-cols-2">
+          {builds.map((b, i) => (
+            <li class="card-raised flex items-start gap-4 rounded-2xl border border-line bg-paper-raised p-5" data-reveal>
+              <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-navy/[0.04] font-serif text-sm font-semibold text-navy-600 ring-1 ring-line">{String(i + 1).padStart(2, '0')}</span>
+              <span class="pt-1 text-[0.98rem] leading-relaxed text-ink">{b}</span>
             </li>
           ))}
         </ul>
-        <p class="mt-7 text-[0.95rem] leading-[1.75] text-ink-soft" data-reveal>Every attendee leaves with a campaign live or ready to publish.<br />Show up live and you also keep a 7-day replay, plus the Claude and ChatGPT prompt pack.</p>
+        <p class="mt-8 text-[0.95rem] leading-[1.75] text-ink-soft" data-reveal>Every attendee leaves with a campaign live or ready to publish.<br />Show up live and you also keep a 7-day replay, plus the Claude and ChatGPT prompt pack.</p>
+      </div>
+    </section>
+
+    <!-- Agenda / run of show -->
+    <section class="border-b border-line bg-paper">
+      <div class="mx-auto max-w-3xl px-6 py-16 lg:py-20">
+        <p class={eyebrow} data-reveal>How the 3 hours run</p>
+        <h2 class={`mt-2 ${h2}`} data-reveal>A clear plan, start to finish</h2>
+        <ol class="mt-10 grid gap-8">
+          {agenda.map((a, i) => (
+            <li class="grid grid-cols-[auto_1fr] gap-5" data-reveal>
+              <div class="flex flex-col items-center">
+                <span class="flex h-11 w-11 items-center justify-center rounded-full bg-navy font-serif text-base font-medium text-white shadow-md">{i + 1}</span>
+                {i < agenda.length - 1 && <span class="mt-2 w-px flex-1 bg-line-strong"></span>}
+              </div>
+              <div class="pb-1">
+                <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-brand">{a.time}</p>
+                <h3 class="mt-1.5 font-serif text-xl font-medium text-navy">{a.title}</h3>
+                <p class="mt-2 leading-relaxed text-ink-soft">{a.body}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
 
     <!-- Who it's for + what you need -->
-    <section class="border-b border-line bg-paper">
-      <div class="mx-auto max-w-3xl px-6 py-14 lg:py-16">
-        <div class="grid gap-8 sm:grid-cols-2">
-          <div>
-            <h2 class="font-serif text-xl font-medium text-navy sm:text-2xl" data-reveal>This is for you if</h2>
-            <ul class="mt-4 grid list-disc gap-2 pl-5 text-[0.97rem] text-ink-soft">{forYou.map((i) => <li data-reveal>{i}</li>)}</ul>
+    <section class="border-b border-line">
+      <div class="mx-auto max-w-5xl px-6 py-16 lg:py-20">
+        <div class="grid gap-5 sm:grid-cols-2">
+          <div class="card-raised rounded-2xl border border-line bg-paper-raised p-7" data-reveal>
+            <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand/10 text-brand ring-1 ring-brand/20">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4" /><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1" /></svg>
+            </span>
+            <h2 class="mt-4 font-serif text-xl font-medium text-navy">This is for you if</h2>
+            <ul class="mt-4 grid gap-3 text-[0.97rem] leading-relaxed text-ink-soft">
+              {forYou.map((i) => (
+                <li class="flex gap-3" data-reveal><svg class="mt-0.5 h-5 w-5 shrink-0 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5" /></svg>{i}</li>
+              ))}
+            </ul>
           </div>
-          <div>
-            <h2 class="font-serif text-xl font-medium text-navy sm:text-2xl" data-reveal>What you need on the day</h2>
-            <ul class="mt-4 grid list-disc gap-2 pl-5 text-[0.97rem] text-ink-soft">{need.map((i) => <li data-reveal>{i}</li>)}</ul>
+          <div class="card-raised rounded-2xl border border-line bg-paper-raised p-7" data-reveal>
+            <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-navy/[0.05] text-navy-600 ring-1 ring-line">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="14" rx="2" /><path d="M8 21h8M12 18v3" /></svg>
+            </span>
+            <h2 class="mt-4 font-serif text-xl font-medium text-navy">What you need on the day</h2>
+            <ul class="mt-4 grid gap-3 text-[0.97rem] leading-relaxed text-ink-soft">
+              {need.map((i) => (
+                <li class="flex gap-3" data-reveal><span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-navy-600"></span>{i}</li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
     </section>
 
     <!-- About Levi -->
-    <section class="border-b border-line">
-      <div class="mx-auto max-w-3xl px-6 py-14 lg:py-16">
-        <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600" data-reveal>Who's teaching</p>
-        <h2 class={`mt-2 ${h2}`} data-reveal>I run these ads every day.</h2>
-        <p class="mt-4 text-[1.05rem] leading-[1.8] text-ink-soft" data-reveal>I am Levi Henry.<br />I run Meta ads for my own business and for my clients, and I built Levi Henry Group on them.</p>
-        <p class="mt-4 text-[1.05rem] leading-[1.8] text-ink-soft" data-reveal>Most people selling an ads class have never spent their own money in Ads Manager.<br />I do, every week.</p>
-        <p class="mt-4 text-[1.05rem] leading-[1.8] text-ink-soft" data-reveal>This is the exact setup I use, taught live, with nothing held back.</p>
+    <section class="border-b border-line bg-paper">
+      <div class="mx-auto max-w-4xl px-6 py-16 lg:py-20">
+        <div class="card-raised overflow-hidden rounded-2xl border border-line bg-paper-raised" data-reveal>
+          <div class="grid sm:grid-cols-[15rem_1fr]">
+            <div class="relative min-h-[18rem] overflow-hidden bg-navy sm:min-h-full">
+              <img src="/assets/photos/headshot-editorial.webp" alt="Levi Henry" width="1280" height="1600" class="h-full w-full object-cover object-top" />
+              <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(180deg, transparent 55%, rgba(14,28,46,0.3))"></div>
+            </div>
+            <div class="p-7 sm:p-9">
+              <p class={eyebrow}>Who's teaching</p>
+              <h2 class={`mt-2 ${h2}`}>I run these ads every day.</h2>
+              <p class="mt-4 text-[1.02rem] leading-[1.8] text-ink-soft">I am Levi Henry.<br />I run Meta ads for my own business and for my clients, and I built Levi Henry Group on them.</p>
+              <p class="mt-4 text-[1.02rem] leading-[1.8] text-ink-soft">Most people selling an ads class have never spent their own money in Ads Manager.<br />I do, every week.</p>
+              <p class="mt-4 text-[1.02rem] font-medium leading-[1.8] text-ink">This is the exact setup I use, taught live, with nothing held back.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- Pricing -->
     <section id="register" class="border-b border-line bg-paper">
-      <div class="mx-auto max-w-4xl px-6 py-14 lg:py-16">
+      <div class="mx-auto max-w-4xl px-6 py-16 lg:py-20">
         <div class="text-center">
-          <h2 class={h2} data-reveal>Pick your seat</h2>
-          <p class="mt-3 leading-[1.8] text-ink-soft" data-reveal>Price goes up as the class gets closer.<br /><span data-price-next-note class="font-semibold text-navy"></span></p>
+          <p class={eyebrow} data-reveal>Reserve your seat</p>
+          <h2 class={`mt-2 ${h2}`} data-reveal>Pick your seat</h2>
+          <p class="mt-3 leading-relaxed text-ink-soft" data-reveal>Both prices go up as the class gets closer. Lock in today's rate.</p>
+          <!-- Big, obvious countdown to the price increase -->
+          <div class="mt-7" data-reveal data-countdown>
+            <p class="mb-3 font-sans text-xs font-bold uppercase tracking-[0.18em] text-navy-600"><span data-cd-label>Early bird ends in</span></p>
+            <div class="flex justify-center gap-2.5">
+              <div class="card-raised flex min-w-[4.5rem] flex-col items-center rounded-xl border border-line bg-paper-raised px-2 py-3.5">
+                <span class="font-serif text-[2.1rem] font-semibold leading-none tabular-nums text-navy sm:text-[2.4rem]" data-cd-days>00</span>
+                <span class="mt-1.5 font-sans text-[0.6rem] font-bold uppercase tracking-wider text-ink-faint">Days</span>
+              </div>
+              <div class="card-raised flex min-w-[4.5rem] flex-col items-center rounded-xl border border-line bg-paper-raised px-2 py-3.5">
+                <span class="font-serif text-[2.1rem] font-semibold leading-none tabular-nums text-navy sm:text-[2.4rem]" data-cd-hours>00</span>
+                <span class="mt-1.5 font-sans text-[0.6rem] font-bold uppercase tracking-wider text-ink-faint">Hours</span>
+              </div>
+              <div class="card-raised flex min-w-[4.5rem] flex-col items-center rounded-xl border border-line bg-paper-raised px-2 py-3.5">
+                <span class="font-serif text-[2.1rem] font-semibold leading-none tabular-nums text-navy sm:text-[2.4rem]" data-cd-mins>00</span>
+                <span class="mt-1.5 font-sans text-[0.6rem] font-bold uppercase tracking-wider text-ink-faint">Mins</span>
+              </div>
+              <div class="card-raised flex min-w-[4.5rem] flex-col items-center rounded-xl border border-line bg-paper-raised px-2 py-3.5">
+                <span class="font-serif text-[2.1rem] font-semibold leading-none tabular-nums text-brand sm:text-[2.4rem]" data-cd-secs>00</span>
+                <span class="mt-1.5 font-sans text-[0.6rem] font-bold uppercase tracking-wider text-ink-faint">Secs</span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="mt-9 grid gap-5 sm:grid-cols-2">
+        <div class="mt-10 grid items-start gap-5 sm:grid-cols-2">
           <!-- Regular -->
-          <div class="card-raised flex flex-col rounded-2xl border border-line bg-paper-raised p-6 sm:p-7" data-reveal>
-            <h3 class="font-serif text-xl font-medium text-navy">Regular</h3>
-            <p class="mt-3 flex items-baseline gap-2">
-              <span data-price-regular-main class="font-serif text-4xl font-medium text-navy">{naira(regularNgn)}</span>
-            </p>
-            <ul class="mt-5 grid flex-1 gap-2.5 text-[0.95rem] text-ink-soft">
-              <li class="flex gap-2.5"><span class="text-brand">✓</span> The full 3-hour live class on Google Meet</li>
-              <li class="flex gap-2.5"><span class="text-brand">✓</span> Build your campaigns live with Levi</li>
-              <li class="flex gap-2.5"><span class="text-brand">✓</span> 7-day replay for live attendees</li>
-              <li class="flex gap-2.5"><span class="text-brand">✓</span> The Claude and ChatGPT prompt pack</li>
+          <div class="card-raised flex flex-col overflow-hidden rounded-2xl border border-line bg-paper-raised" data-reveal>
+            <div class="border-b border-line px-7 pb-6 pt-7">
+              <h3 class="font-serif text-xl font-medium text-navy">Regular</h3>
+              <p class="mt-2 text-sm text-ink-soft">Everything you need to run your own ads.</p>
+              <p class="mt-5 flex items-baseline gap-1.5">
+                <span data-price-regular-main class="font-serif text-4xl font-medium text-navy">{naira(regularNgn)}</span>
+                <span class="text-sm text-ink-faint">/ seat</span>
+              </p>
+              <p class="mt-2 text-xs font-medium text-ink-faint" data-rise-wrap>Rises to <span class="font-semibold text-navy" data-price-regular-next>{nextNgn ? naira(nextNgn) : ''}</span> on <span class="font-semibold text-navy" data-price-rise-date>{riseDate}</span></p>
+            </div>
+            <ul class="grid flex-1 gap-3 px-7 py-6 text-[0.95rem] leading-relaxed text-ink-soft">
+              {regularFeatures.map((f) => (
+                <li class="flex gap-2.5"><svg class="mt-0.5 h-5 w-5 shrink-0 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5" /></svg>{f}</li>
+              ))}
             </ul>
-            <button type="button" data-open data-tier="regular" class="btn-primary mt-6 rounded-sm px-6 py-3.5 font-sans text-sm font-semibold text-white">
-              Register for <span data-price-regular>{naira(regularNgn)}</span>
-            </button>
+            <div class="px-7 pb-7">
+              <button type="button" data-open data-tier="regular" class="btn-primary w-full rounded-sm px-6 py-3.5 font-sans text-sm font-semibold text-white">
+                Register for <span data-price-regular>{naira(regularNgn)}</span>
+              </button>
+            </div>
           </div>
 
           <!-- VIP -->
-          <div class="card-raised relative flex flex-col rounded-2xl border border-l-[3px] border-line border-l-brand bg-paper-raised p-6 sm:p-7" data-reveal>
-            <span class="absolute right-5 top-5 rounded-sm bg-brand/10 px-2.5 py-1 font-sans text-xs font-bold uppercase tracking-wider text-brand">10 seats</span>
-            <h3 class="font-serif text-xl font-medium text-navy">VIP</h3>
-            <p class="mt-3 flex items-baseline gap-2">
-              <span data-price-vip-main class="font-serif text-4xl font-medium text-navy">{naira(vipNgn)}</span>
-            </p>
-            <ul class="mt-5 grid flex-1 gap-2.5 text-[0.95rem] text-ink-soft">
-              <li class="flex gap-2.5"><span class="text-brand">✓</span> Everything in Regular</li>
-              <li class="flex gap-2.5"><span class="text-brand">✓</span> A private 45-minute 1:1 with Levi</li>
-              <li class="flex gap-2.5"><span class="text-brand">✓</span> Booked after class, held within 7 days</li>
-              <li class="flex gap-2.5"><span class="text-brand">✓</span> Bring your own account and we work on it</li>
+          <div class="card-raised relative flex flex-col overflow-hidden rounded-2xl border-2 border-brand/30 bg-paper-raised" data-reveal>
+            <div class="panel-brand relative px-7 pb-6 pt-7 text-white">
+              <span class="absolute right-5 top-5 rounded-full bg-beacon px-3 py-1 font-sans text-xs font-bold uppercase tracking-wider text-navy">10 seats</span>
+              <h3 class="font-serif text-xl font-medium">VIP</h3>
+              <p class="mt-2 text-sm text-white/75">The class plus a private 1:1 with Levi.</p>
+              <p class="mt-5 flex items-baseline gap-1.5">
+                <span data-price-vip-main class="font-serif text-4xl font-medium text-white">{naira(vipNgn)}</span>
+                <span class="text-sm text-white/60">/ seat</span>
+              </p>
+              <p class="mt-2 text-xs font-medium text-white/60" data-rise-wrap>Rises to <span class="font-semibold text-white" data-price-vip-next>{nextVipNgn ? naira(nextVipNgn) : ''}</span> on <span class="font-semibold text-white" data-price-rise-date>{riseDate}</span></p>
+            </div>
+            <ul class="grid flex-1 gap-3 px-7 py-6 text-[0.95rem] leading-relaxed text-ink-soft">
+              {vipFeatures.map((f) => (
+                <li class="flex gap-2.5"><svg class="mt-0.5 h-5 w-5 shrink-0 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5" /></svg>{f}</li>
+              ))}
             </ul>
-            <button type="button" data-open data-tier="vip" class="btn-primary mt-6 rounded-sm px-6 py-3.5 font-sans text-sm font-semibold text-white">
-              Register for <span data-price-vip>{naira(vipNgn)}</span>
-            </button>
+            <div class="px-7 pb-7">
+              <button type="button" data-open data-tier="vip" class="btn-primary w-full rounded-sm px-6 py-3.5 font-sans text-sm font-semibold text-white">
+                Register for <span data-price-vip>{naira(vipNgn)}</span>
+              </button>
+            </div>
           </div>
         </div>
-        <p class="mt-5 text-center text-xs text-ink-faint" data-reveal>Secure payment by Paystack: card, bank transfer, or USSD. You go straight into the attendee WhatsApp group after you pay.</p>
+        <p class="mt-6 flex items-center justify-center gap-2 text-center text-xs text-ink-faint" data-reveal>
+          <svg class="h-4 w-4 text-ink-faint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+          Secure payment by Paystack: card, bank transfer, or USSD. You go straight into the attendee WhatsApp group after you pay.
+        </p>
       </div>
     </section>
 
     <!-- FAQ -->
     <section class="border-b border-line">
-      <div class="mx-auto max-w-3xl px-6 py-14 lg:py-16">
-        <h2 class={h2} data-reveal>Questions</h2>
-        <div class="mt-6 border-b border-line">
+      <div class="mx-auto max-w-3xl px-6 py-16 lg:py-20">
+        <p class={eyebrow} data-reveal>Before you register</p>
+        <h2 class={`mt-2 ${h2}`} data-reveal>Questions</h2>
+        <div class="mt-8 grid gap-3">
           {faqs.map((f) => (
-            <details class="group border-t border-line py-4">
-              <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 font-semibold text-navy [&::-webkit-details-marker]:hidden">
+            <details class="card-raised group rounded-xl border border-line bg-paper-raised px-5" data-reveal>
+              <summary class="flex min-h-14 cursor-pointer list-none items-center justify-between gap-3 py-4 font-semibold text-navy [&::-webkit-details-marker]:hidden">
                 {f.q}
-                <span aria-hidden="true" class="text-navy-600 group-open:hidden">+</span>
-                <span aria-hidden="true" class="hidden text-navy-600 group-open:inline">&ndash;</span>
+                <span aria-hidden="true" class="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-navy/[0.05] text-navy-600 transition group-open:rotate-45">+</span>
               </summary>
-              <p class="mt-2.5 text-[0.95rem] leading-[1.75] text-ink-soft">{f.a.split(/(?<=[.?]) (?=[A-Z0-9])/).map((s) => <span class="block">{s}</span>)}</p>
+              <p class="pb-5 text-[0.95rem] leading-[1.75] text-ink-soft">{f.a.split(/(?<=[.?]) (?=[A-Z0-9])/).map((s) => <span class="block">{s}</span>)}</p>
             </details>
           ))}
         </div>
@@ -214,20 +432,22 @@ const h2 = 'font-serif text-2xl font-medium leading-tight tracking-tight text-na
     </section>
 
     <!-- Final CTA -->
-    <section class="bg-navy-deep">
-      <div class="mx-auto max-w-2xl px-6 py-16 text-center">
+    <section class="panel-brand relative overflow-hidden">
+      <span class="beacon-glow"></span>
+      <div class="relative z-[1] mx-auto max-w-2xl px-6 py-20 text-center lg:py-24">
         <h2 class="font-serif text-3xl font-medium leading-tight tracking-tight text-white sm:text-4xl" data-reveal>By 7 pm on November 28, you will have run a real Meta ad.</h2>
-        <p class="mt-4 leading-[1.8] text-white/70" data-reveal>Seats are limited and the price goes up as the day gets closer.<br />Lock yours now.</p>
+        <p class="mt-5 text-[1.05rem] leading-[1.8] text-white/75" data-reveal>Seats are limited and the price goes up as the day gets closer.<br />Lock yours now.</p>
         <div class="mt-8 flex justify-center" data-reveal>
-          <button type="button" data-open data-tier="regular" class="inline-flex items-center gap-2 rounded-sm bg-white px-8 py-4 font-sans text-sm font-semibold text-navy transition hover:bg-white/90">
+          <button type="button" data-open data-tier="regular" class="inline-flex items-center gap-2 rounded-sm bg-white px-8 py-4 font-sans text-sm font-semibold text-navy shadow-lg shadow-black/20 transition hover:bg-white/90">
             Register now <span aria-hidden="true">&rarr;</span>
           </button>
         </div>
+        <p class="mt-5 font-sans text-xs text-white/55" data-reveal>Early bird <span data-price-regular class="font-semibold text-white">{naira(regularNgn)}</span> · secure checkout by Paystack</p>
       </div>
     </section>
 
     <!-- Register dialog -->
-    <dialog id="register-dialog" class="w-[min(92vw,440px)] rounded-lg border border-line p-0 shadow-2xl backdrop:bg-black/50">
+    <dialog id="register-dialog" class="w-[min(92vw,440px)] rounded-2xl border border-line p-0 shadow-2xl backdrop:bg-black/50">
       <form data-form class="space-y-4 p-6" novalidate>
         <div class="flex items-start justify-between gap-4">
           <div>
@@ -261,7 +481,7 @@ const h2 = 'font-serif text-2xl font-medium leading-tight tracking-tight text-na
 
   <!-- Minimal landing-page footer: legal only, no site nav. -->
   <footer class="border-t border-white/10 bg-ink-black text-white/60">
-    <div class="mx-auto flex max-w-5xl flex-col items-center gap-3 px-6 py-8 text-center text-xs sm:flex-row sm:justify-between sm:text-left">
+    <div class="mx-auto flex max-w-6xl flex-col items-center gap-3 px-6 py-8 text-center text-xs sm:flex-row sm:justify-between sm:text-left">
       <span>&copy; <span data-year></span> Levi Henry Group. All rights reserved.</span>
       <span class="flex flex-wrap items-center justify-center gap-x-5 gap-y-1">
         <a href="/privacy" class="transition hover:text-white">Privacy</a>
@@ -296,10 +516,11 @@ const h2 = 'font-serif text-2xl font-medium leading-tight tracking-tight text-na
         vipNgn: regularNgn + 40000,
         nextNgn: t < EB ? 30000 : t < RG ? 45000 : null,
         nextStartsWat: t < EB ? 'Nov 22' : t < RG ? 'Nov 28' : null,
+        vipUpcharge: 40000,
       };
     };
 
-    let offer: { regularNgn: number; vipNgn: number; nextNgn: number | null; nextStartsWat: string | null } = clientOffer();
+    let offer: { regularNgn: number; vipNgn: number; nextNgn: number | null; nextStartsWat: string | null; vipUpcharge?: number } = clientOffer();
     let selectedTier: 'regular' | 'vip' = 'regular';
 
     const amountFor = (tier: 'regular' | 'vip') => (tier === 'vip' ? offer.vipNgn : offer.regularNgn);
@@ -315,11 +536,12 @@ const h2 = 'font-serif text-2xl font-medium leading-tight tracking-tight text-na
     const paint = () => {
       root.querySelectorAll<HTMLElement>('[data-price-regular], [data-price-regular-main]').forEach((el) => (el.textContent = naira(offer.regularNgn)));
       root.querySelectorAll<HTMLElement>('[data-price-vip], [data-price-vip-main]').forEach((el) => (el.textContent = naira(offer.vipNgn)));
-      const nextEl = root.querySelector('[data-price-next]') as HTMLElement | null;
-      const noteEl = root.querySelector('[data-price-next-note]') as HTMLElement | null;
-      const nextTxt = offer.nextNgn && offer.nextStartsWat ? `Goes up to ${naira(offer.nextNgn)} on ${offer.nextStartsWat}.` : '';
-      if (nextEl) nextEl.textContent = offer.nextNgn && offer.nextStartsWat ? ` · goes up to ${naira(offer.nextNgn)} on ${offer.nextStartsWat}` : '';
-      if (noteEl) noteEl.textContent = nextTxt;
+      const up = offer.vipUpcharge ?? 40000;
+      const hasNext = !!(offer.nextNgn && offer.nextStartsWat);
+      root.querySelectorAll<HTMLElement>('[data-price-regular-next]').forEach((el) => (el.textContent = hasNext ? naira(offer.nextNgn as number) : ''));
+      root.querySelectorAll<HTMLElement>('[data-price-vip-next]').forEach((el) => (el.textContent = hasNext ? naira((offer.nextNgn as number) + up) : ''));
+      root.querySelectorAll<HTMLElement>('[data-price-rise-date]').forEach((el) => (el.textContent = hasNext ? (offer.nextStartsWat as string) : ''));
+      root.querySelectorAll<HTMLElement>('[data-rise-wrap]').forEach((el) => el.classList.toggle('hidden', !hasNext));
       payAmount.textContent = naira(amountFor(selectedTier));
     };
 
@@ -439,6 +661,43 @@ const h2 = 'font-serif text-2xl font-medium leading-tight tracking-tight text-na
       });
     });
   }
+</script>
+
+<script is:inline>
+  // Live countdown to the next price change (or to class start). Mirrors the WAT
+  // boundaries used by masterclass-offer.cjs and the page's price fallback.
+  (function () {
+    var EB = Date.UTC(2026, 10, 21, 23, 0, 0); // early bird ends: Nov 22 00:00 WAT
+    var RG = Date.UTC(2026, 10, 27, 23, 0, 0); // regular ends: Nov 28 00:00 WAT
+    var CLASS = Date.UTC(2026, 10, 28, 15, 0, 0); // class starts: Nov 28 4:00pm WAT
+    var nodes = document.querySelectorAll('[data-countdown]');
+    if (!nodes.length) return;
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+    function target(now) {
+      if (now < EB) return { t: EB, label: 'Early bird ends in' };
+      if (now < RG) return { t: RG, label: 'Price rises in' };
+      if (now < CLASS) return { t: CLASS, label: 'Class starts in' };
+      return null;
+    }
+    function tick() {
+      var now = Date.now();
+      var tg = target(now);
+      for (var i = 0; i < nodes.length; i++) {
+        var node = nodes[i];
+        if (!tg) { node.style.display = 'none'; continue; }
+        var diff = Math.max(0, tg.t - now);
+        var set = function (sel, val) { var el = node.querySelector(sel); if (el) el.textContent = pad(val); };
+        set('[data-cd-days]', Math.floor(diff / 86400000));
+        set('[data-cd-hours]', Math.floor((diff % 86400000) / 3600000));
+        set('[data-cd-mins]', Math.floor((diff % 3600000) / 60000));
+        set('[data-cd-secs]', Math.floor((diff % 60000) / 1000));
+        var lbl = node.querySelector('[data-cd-label]');
+        if (lbl) lbl.textContent = tg.label;
+      }
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
 </script>
 
 <style>
