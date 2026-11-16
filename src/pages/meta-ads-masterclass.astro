@@ -1,0 +1,442 @@
+---
+import Base from '../layouts/Base.astro';
+
+// Registration + paid checkout for the live Meta Ads Masterclass (Sat Nov 28, 2026).
+// Price switches by date from the server (netlify/functions/masterclass-offer): the
+// frontmatter value below is only the first-paint fallback, and the client fetches the
+// live price so it updates without a redeploy. Checkout is Paystack inline (same public
+// key as the Academy enroll flow); on success we hand off to /masterclass-welcome, which
+// fires the Purchase pixel and shows the Google Meet + WhatsApp links.
+
+const PAYSTACK_PUBLIC_KEY = 'pk_live_4efc16f853a87c00c9bb482d5ddc25b27f96d0be'; // public key: safe in the browser
+
+// First-paint fallback price (the client corrects it from the server on load).
+const EB_END = Date.UTC(2026, 10, 21, 23, 0, 0);
+const REG_END = Date.UTC(2026, 10, 27, 23, 0, 0);
+const now = Date.now();
+const regularNgn = now < EB_END ? 15000 : now < REG_END ? 30000 : 45000;
+const vipNgn = regularNgn + 40000;
+const naira = (n: number) => '₦' + n.toLocaleString('en-NG');
+
+const builds = [
+  'Your Business Portfolio and ad account, set up right the first time',
+  'The Meta pixel on your website, so Meta learns who actually buys',
+  'A Click-to-WhatsApp campaign, the format that fits most Nigerian sellers',
+  'A lead campaign and a sales campaign, published live at ₦3,000 a day',
+  'The exact Claude and ChatGPT prompts I use for hooks, copy, and audience research',
+  'The 4 numbers that tell you what to cut and what to scale',
+];
+
+const forYou = [
+  'You sell a product or service and you boost posts or pay someone to run your ads',
+  'You want to run your own ads and stop guessing',
+  'You can show up live on Google Meet for 3 hours on November 28',
+];
+
+const need = [
+  'A laptop (phones can watch, but you cannot follow along well)',
+  'A Facebook account and a business Page',
+  'A card that works for Meta payments',
+];
+
+const faqs = [
+  { q: 'Do I need any experience?', a: 'No. We start from zero and set everything up with you, step by step.' },
+  { q: 'Is it live or recorded?', a: 'Live on Google Meet, 3 hours. Only people who attend live get a 7-day replay. Miss it and there is no recording.' },
+  { q: 'Will this work for my kind of business?', a: 'If you sell a product or service to people in Nigeria, yes. We build a Click-to-WhatsApp campaign, which fits most sellers here, plus a lead campaign and a sales campaign.' },
+  { q: 'Is my ad budget included?', a: 'No. The ticket covers the class. Your ads run on your own account, and you can start with as little as ₦3,000 a day.' },
+  { q: 'What do I need on the day?', a: 'A laptop, a Facebook account, a business Page, and a card that works for Meta. I send a short checklist before class.' },
+  { q: 'Can I pay and watch the replay later?', a: 'The replay is for live attendees only, so plan to be there from 4 to 7 pm on November 28.' },
+];
+
+const h2 = 'font-serif text-2xl font-medium leading-tight tracking-tight text-navy sm:text-3xl';
+---
+
+<Base
+  title="Meta Ads Masterclass: Run Your Own Ads That Sell | Levi Henry Group"
+  description="A live, 3-hour Meta ads masterclass for Nigerian business owners. On Saturday, November 28, go from boosting posts to running real Meta ads, with AI doing the heavy lifting on copy and targeting."
+>
+  <!-- Minimal landing-page header: logo + a single Register CTA, no site nav. -->
+  <header class="sticky top-0 z-40 border-b border-line bg-ivory/90 backdrop-blur-md">
+    <div class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-6 py-3.5">
+      <a href="/" aria-label="Levi Henry Group home">
+        <img src="/assets/brand/logo-horizontal.png" alt="Levi Henry Group" width="2232" height="955" class="h-8 w-auto sm:h-9" />
+      </a>
+      <a href="#register" class="btn-primary rounded-sm px-5 py-2.5 font-sans text-xs font-semibold text-white">Register</a>
+    </div>
+  </header>
+
+  <main
+    id="main"
+    data-masterclass
+    data-key={PAYSTACK_PUBLIC_KEY}
+    data-regular={regularNgn}
+    data-vip={vipNgn}
+  >
+    <!-- Hero -->
+    <section class="relative overflow-hidden border-b border-line">
+      <div class="mx-auto max-w-3xl px-6 py-14 text-center lg:py-20">
+        <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600" data-reveal>Meta Ads Masterclass · Live on Google Meet</p>
+        <h1 class="mt-4 font-serif text-[2.2rem] font-medium leading-[1.07] tracking-tight text-navy sm:text-5xl" data-reveal>In 3 hours, go from boosting posts to running real Meta ads.</h1>
+        <p class="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-ink-soft sm:text-lg" data-reveal>A live, hands-on class for Nigerian business owners. We build your campaigns together, step by step, with AI doing the heavy lifting on copy and targeting. You leave able to launch a real campaign from Ads Manager that week.</p>
+        <p class="mt-6 font-sans text-sm font-semibold text-navy" data-reveal>Saturday, November 28, 2026 · 4:00 to 7:00 pm WAT · Live on Google Meet</p>
+
+        <div class="mt-8 flex flex-col items-center gap-3" data-reveal>
+          <button type="button" data-open data-tier="regular" class="btn-primary inline-flex items-center gap-2 rounded-sm px-8 py-4 font-sans text-sm font-semibold text-white">
+            Register now <span aria-hidden="true">&rarr;</span>
+          </button>
+          <p class="font-sans text-sm text-ink-soft">
+            <span data-price-line>Early bird <span data-price-regular class="font-semibold text-navy">{naira(regularNgn)}</span></span>
+            <span data-price-next class="text-ink-faint"></span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- The boost problem -->
+    <section class="border-b border-line bg-paper">
+      <div class="mx-auto max-w-3xl px-6 py-14 lg:py-16">
+        <h2 class={h2} data-reveal>Most business owners in Nigeria are boosting posts and calling it advertising.</h2>
+        <p class="mt-4 text-ink-soft" data-reveal>Boosting is the most expensive way to spend money on Meta. It gives you a few basic settings, almost no data, and no real way to know what came back. Ads Manager is where the results are, and almost nobody has shown you how to use it.</p>
+        <p class="mt-3 font-medium text-ink" data-reveal>In this class, I show you the whole thing, live, on a real account. You watch me build it, then you build yours alongside me.</p>
+      </div>
+    </section>
+
+    <!-- What you'll build live -->
+    <section class="border-b border-line">
+      <div class="mx-auto max-w-3xl px-6 py-14 lg:py-16">
+        <h2 class={h2} data-reveal>What you build live on the day</h2>
+        <ul class="mt-6 grid gap-3">
+          {builds.map((b) => (
+            <li class="flex items-start gap-3 rounded-lg border border-line bg-paper-raised p-4" data-reveal>
+              <svg class="mt-0.5 shrink-0 text-brand" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5" /></svg>
+              <span class="text-[0.97rem] leading-relaxed text-ink">{b}</span>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-6 text-sm text-ink-soft" data-reveal>Every attendee leaves with a campaign live or ready to publish. Show up live and you also get a 7-day replay plus the Claude and ChatGPT prompt pack.</p>
+      </div>
+    </section>
+
+    <!-- Who it's for + what you need -->
+    <section class="border-b border-line bg-paper">
+      <div class="mx-auto max-w-3xl px-6 py-14 lg:py-16">
+        <div class="grid gap-8 sm:grid-cols-2">
+          <div>
+            <h2 class="font-serif text-xl font-medium text-navy sm:text-2xl" data-reveal>This is for you if</h2>
+            <ul class="mt-4 grid list-disc gap-2 pl-5 text-[0.97rem] text-ink-soft">{forYou.map((i) => <li data-reveal>{i}</li>)}</ul>
+          </div>
+          <div>
+            <h2 class="font-serif text-xl font-medium text-navy sm:text-2xl" data-reveal>What you need on the day</h2>
+            <ul class="mt-4 grid list-disc gap-2 pl-5 text-[0.97rem] text-ink-soft">{need.map((i) => <li data-reveal>{i}</li>)}</ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Levi -->
+    <section class="border-b border-line">
+      <div class="mx-auto max-w-3xl px-6 py-14 lg:py-16">
+        <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600" data-reveal>Who's teaching</p>
+        <h2 class={`mt-2 ${h2}`} data-reveal>I run these ads every day.</h2>
+        <p class="mt-4 text-ink-soft" data-reveal>I am Levi Henry. I run Meta ads for my own business and for clients, and I built Levi Henry Group on them. Most people selling an ads class have never spent their own money in Ads Manager. I do, every week. This is the exact setup I use, taught live, with nothing held back.</p>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="register" class="border-b border-line bg-paper">
+      <div class="mx-auto max-w-4xl px-6 py-14 lg:py-16">
+        <div class="text-center">
+          <h2 class={h2} data-reveal>Pick your seat</h2>
+          <p class="mt-3 text-ink-soft" data-reveal>Price goes up as the class gets closer. <span data-price-next-note class="font-semibold text-navy"></span></p>
+        </div>
+
+        <div class="mt-9 grid gap-5 sm:grid-cols-2">
+          <!-- Regular -->
+          <div class="card-raised flex flex-col rounded-2xl border border-line bg-paper-raised p-6 sm:p-7" data-reveal>
+            <h3 class="font-serif text-xl font-medium text-navy">Regular</h3>
+            <p class="mt-3 flex items-baseline gap-2">
+              <span data-price-regular-main class="font-serif text-4xl font-medium text-navy">{naira(regularNgn)}</span>
+            </p>
+            <ul class="mt-5 grid flex-1 gap-2.5 text-[0.95rem] text-ink-soft">
+              <li class="flex gap-2.5"><span class="text-brand">✓</span> The full 3-hour live class on Google Meet</li>
+              <li class="flex gap-2.5"><span class="text-brand">✓</span> Build your campaigns live with Levi</li>
+              <li class="flex gap-2.5"><span class="text-brand">✓</span> 7-day replay for live attendees</li>
+              <li class="flex gap-2.5"><span class="text-brand">✓</span> The Claude and ChatGPT prompt pack</li>
+            </ul>
+            <button type="button" data-open data-tier="regular" class="btn-primary mt-6 rounded-sm px-6 py-3.5 font-sans text-sm font-semibold text-white">
+              Register for <span data-price-regular>{naira(regularNgn)}</span>
+            </button>
+          </div>
+
+          <!-- VIP -->
+          <div class="card-raised relative flex flex-col rounded-2xl border border-l-[3px] border-line border-l-brand bg-paper-raised p-6 sm:p-7" data-reveal>
+            <span class="absolute right-5 top-5 rounded-sm bg-brand/10 px-2.5 py-1 font-sans text-xs font-bold uppercase tracking-wider text-brand">10 seats</span>
+            <h3 class="font-serif text-xl font-medium text-navy">VIP</h3>
+            <p class="mt-3 flex items-baseline gap-2">
+              <span data-price-vip-main class="font-serif text-4xl font-medium text-navy">{naira(vipNgn)}</span>
+            </p>
+            <ul class="mt-5 grid flex-1 gap-2.5 text-[0.95rem] text-ink-soft">
+              <li class="flex gap-2.5"><span class="text-brand">✓</span> Everything in Regular</li>
+              <li class="flex gap-2.5"><span class="text-brand">✓</span> A private 45-minute 1:1 with Levi</li>
+              <li class="flex gap-2.5"><span class="text-brand">✓</span> Booked after class, held within 7 days</li>
+              <li class="flex gap-2.5"><span class="text-brand">✓</span> Bring your own account and we work on it</li>
+            </ul>
+            <button type="button" data-open data-tier="vip" class="btn-primary mt-6 rounded-sm px-6 py-3.5 font-sans text-sm font-semibold text-white">
+              Register for <span data-price-vip>{naira(vipNgn)}</span>
+            </button>
+          </div>
+        </div>
+        <p class="mt-5 text-center text-xs text-ink-faint" data-reveal>Secure payment by Paystack: card, bank transfer, or USSD. You go straight into the attendee WhatsApp group after you pay.</p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="border-b border-line">
+      <div class="mx-auto max-w-3xl px-6 py-14 lg:py-16">
+        <h2 class={h2} data-reveal>Questions</h2>
+        <div class="mt-6 border-b border-line">
+          {faqs.map((f) => (
+            <details class="group border-t border-line py-4">
+              <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 font-semibold text-navy [&::-webkit-details-marker]:hidden">
+                {f.q}
+                <span aria-hidden="true" class="text-navy-600 group-open:hidden">+</span>
+                <span aria-hidden="true" class="hidden text-navy-600 group-open:inline">&ndash;</span>
+              </summary>
+              <p class="mt-2.5 text-[0.95rem] text-ink-soft">{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="bg-navy-deep">
+      <div class="mx-auto max-w-2xl px-6 py-16 text-center">
+        <h2 class="font-serif text-3xl font-medium leading-tight tracking-tight text-white sm:text-4xl" data-reveal>By 7 pm on November 28, you will have run a real Meta ad.</h2>
+        <p class="mt-4 text-white/70" data-reveal>Seats are limited and the price goes up as the day gets closer. Lock yours now.</p>
+        <div class="mt-8 flex justify-center" data-reveal>
+          <button type="button" data-open data-tier="regular" class="inline-flex items-center gap-2 rounded-sm bg-white px-8 py-4 font-sans text-sm font-semibold text-navy transition hover:bg-white/90">
+            Register now <span aria-hidden="true">&rarr;</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Register dialog -->
+    <dialog id="register-dialog" class="w-[min(92vw,440px)] rounded-lg border border-line p-0 shadow-2xl backdrop:bg-black/50">
+      <form data-form class="space-y-4 p-6" novalidate>
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="font-sans text-xs font-bold uppercase tracking-[0.2em] text-navy-600">Register · <span data-tier-label>Regular</span></p>
+            <h3 class="mt-1 font-serif text-2xl font-medium leading-tight text-navy">Meta Ads Masterclass</h3>
+          </div>
+          <button type="button" data-close class="-mr-2 rounded-sm p-2 text-ink-faint hover:text-navy" aria-label="Close">&times;</button>
+        </div>
+        <p class="text-sm text-ink-soft">Your Google Meet link and the attendee WhatsApp group are on the next page right after you pay.</p>
+        <label class="block">
+          <span class="mb-1 block font-sans text-sm font-semibold text-navy">Full name</span>
+          <input name="name" required autocomplete="name" maxlength="120" class="w-full rounded-sm border border-line px-3 py-2.5 text-base outline-none focus:border-navy" />
+        </label>
+        <label class="block">
+          <span class="mb-1 block font-sans text-sm font-semibold text-navy">Email</span>
+          <input name="email" type="email" required autocomplete="email" maxlength="200" class="w-full rounded-sm border border-line px-3 py-2.5 text-base outline-none focus:border-navy" />
+        </label>
+        <label class="block">
+          <span class="mb-1 block font-sans text-sm font-semibold text-navy">WhatsApp number</span>
+          <input name="whatsapp" type="tel" required autocomplete="tel" inputmode="tel" maxlength="20" placeholder="080XXXXXXXX" class="w-full rounded-sm border border-line px-3 py-2.5 text-base outline-none focus:border-navy" />
+          <span class="mt-1 block text-xs text-ink-faint">We add you to the attendee group and reach you here if your payment runs into trouble.</span>
+        </label>
+        <p data-error class="hidden text-sm font-medium text-red-700" role="alert"></p>
+        <button type="submit" data-pay class="btn-primary w-full rounded-sm px-6 py-3.5 font-sans text-sm font-semibold text-white disabled:opacity-60">
+          Pay <span data-pay-amount>{naira(regularNgn)}</span> securely
+        </button>
+        <p class="text-center text-xs text-ink-faint">Secure payment by Paystack.</p>
+      </form>
+    </dialog>
+  </main>
+
+  <!-- Minimal landing-page footer: legal only, no site nav. -->
+  <footer class="border-t border-white/10 bg-ink-black text-white/60">
+    <div class="mx-auto flex max-w-5xl flex-col items-center gap-3 px-6 py-8 text-center text-xs sm:flex-row sm:justify-between sm:text-left">
+      <span>&copy; <span data-year></span> Levi Henry Group. All rights reserved.</span>
+      <span class="flex flex-wrap items-center justify-center gap-x-5 gap-y-1">
+        <a href="/privacy" class="transition hover:text-white">Privacy</a>
+        <a href="/terms" class="transition hover:text-white">Terms</a>
+      </span>
+    </div>
+  </footer>
+</Base>
+
+<script>
+  declare global {
+    interface Window {
+      PaystackPop?: new () => { newTransaction: (o: Record<string, unknown>) => void };
+      fbq?: (...args: unknown[]) => void;
+    }
+  }
+
+  const root = document.querySelector('[data-masterclass]') as HTMLElement | null;
+  if (root) {
+    const key = root.dataset.key || '';
+    const naira = (n: number) => '₦' + n.toLocaleString('en-NG');
+
+    // Date-based price fallback, used until the server offer loads (or if it fails).
+    // Mirrors netlify/functions/masterclass-offer.cjs so the two never disagree.
+    const clientOffer = () => {
+      const t = Date.now();
+      const EB = Date.UTC(2026, 10, 21, 23, 0, 0);
+      const RG = Date.UTC(2026, 10, 27, 23, 0, 0);
+      const regularNgn = t < EB ? 15000 : t < RG ? 30000 : 45000;
+      return {
+        regularNgn,
+        vipNgn: regularNgn + 40000,
+        nextNgn: t < EB ? 30000 : t < RG ? 45000 : null,
+        nextStartsWat: t < EB ? 'Nov 22' : t < RG ? 'Nov 28' : null,
+      };
+    };
+
+    let offer: { regularNgn: number; vipNgn: number; nextNgn: number | null; nextStartsWat: string | null } = clientOffer();
+    let selectedTier: 'regular' | 'vip' = 'regular';
+
+    const amountFor = (tier: 'regular' | 'vip') => (tier === 'vip' ? offer.vipNgn : offer.regularNgn);
+
+    const dialog = document.getElementById('register-dialog') as HTMLDialogElement;
+    const form = root.querySelector('[data-form]') as HTMLFormElement;
+    const err = root.querySelector('[data-error]') as HTMLElement;
+    const pay = root.querySelector('[data-pay]') as HTMLButtonElement;
+    const payAmount = root.querySelector('[data-pay-amount]') as HTMLElement;
+    const tierLabel = root.querySelector('[data-tier-label]') as HTMLElement;
+
+    // Reflect the current price everywhere on the page.
+    const paint = () => {
+      root.querySelectorAll<HTMLElement>('[data-price-regular], [data-price-regular-main]').forEach((el) => (el.textContent = naira(offer.regularNgn)));
+      root.querySelectorAll<HTMLElement>('[data-price-vip], [data-price-vip-main]').forEach((el) => (el.textContent = naira(offer.vipNgn)));
+      const nextEl = root.querySelector('[data-price-next]') as HTMLElement | null;
+      const noteEl = root.querySelector('[data-price-next-note]') as HTMLElement | null;
+      const nextTxt = offer.nextNgn && offer.nextStartsWat ? `Goes up to ${naira(offer.nextNgn)} on ${offer.nextStartsWat}.` : '';
+      if (nextEl) nextEl.textContent = offer.nextNgn && offer.nextStartsWat ? ` · goes up to ${naira(offer.nextNgn)} on ${offer.nextStartsWat}` : '';
+      if (noteEl) noteEl.textContent = nextTxt;
+      payAmount.textContent = naira(amountFor(selectedTier));
+    };
+
+    const fetchOffer = async () => {
+      try {
+        const res = await fetch('/.netlify/functions/masterclass-offer', { cache: 'no-store' });
+        if (!res.ok) return;
+        const o = await res.json();
+        if (o && typeof o.regularNgn === 'number' && typeof o.vipNgn === 'number') {
+          offer = o;
+          paint();
+        }
+      } catch {
+        /* keep the client-side fallback */
+      }
+    };
+
+    // Paystack inline, loaded once, only when someone opens the form.
+    let paystackLoading: Promise<void> | null = null;
+    const loadPaystack = () => {
+      if (window.PaystackPop) return Promise.resolve();
+      paystackLoading ??= new Promise<void>((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = 'https://js.paystack.co/v2/inline.js';
+        s.async = true;
+        s.onload = () => resolve();
+        s.onerror = () => { paystackLoading = null; reject(new Error('Paystack failed to load')); };
+        document.head.appendChild(s);
+      });
+      return paystackLoading;
+    };
+
+    const showError = (m: string) => { err.textContent = m; err.classList.toggle('hidden', !m); };
+
+    paint();
+    fetchOffer(); // authoritative price on load
+    window.fbq?.('track', 'ViewContent', { content_name: 'Meta Ads Masterclass', content_ids: ['meta-ads-masterclass'], content_type: 'product', value: offer.regularNgn, currency: 'NGN' });
+
+    root.querySelectorAll<HTMLButtonElement>('[data-open]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        selectedTier = btn.dataset.tier === 'vip' ? 'vip' : 'regular';
+        tierLabel.textContent = selectedTier === 'vip' ? 'VIP' : 'Regular';
+        showError('');
+        payAmount.textContent = naira(amountFor(selectedTier));
+        dialog.showModal();
+        loadPaystack().catch(() => {});
+        fetchOffer(); // refresh the amount right before payment
+        window.fbq?.('track', 'InitiateCheckout', { content_name: 'Meta Ads Masterclass', content_ids: [`meta-ads-masterclass-${selectedTier}`], content_type: 'product', value: amountFor(selectedTier), currency: 'NGN' });
+      });
+    });
+    root.querySelector('[data-close]')?.addEventListener('click', () => dialog.close());
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const name = String(fd.get('name') ?? '').trim();
+      const email = String(fd.get('email') ?? '').trim().toLowerCase();
+      const whatsapp = String(fd.get('whatsapp') ?? '').trim();
+      if (name.length < 2) return showError('Add your full name.');
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return showError('Check your email address.');
+      if (whatsapp.replace(/\D/g, '').length < 10) return showError('Add a valid WhatsApp number so we can reach you.');
+      showError('');
+
+      const tierName = selectedTier === 'vip' ? 'VIP' : 'Regular';
+      // Capture the lead before Paystack so an abandoned checkout can be followed up.
+      try {
+        fetch('/.netlify/functions/enroll-lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({ name, email, whatsapp, course: 'meta-ads-masterclass', title: `Meta Ads Masterclass (${tierName})` }).toString(),
+          keepalive: true,
+        }).catch(() => {});
+      } catch {}
+
+      pay.disabled = true;
+      try {
+        await loadPaystack();
+      } catch {
+        pay.disabled = false;
+        return showError("Payment couldn't load. Check your connection and try again.");
+      }
+
+      const ngn = amountFor(selectedTier);
+      const amount = Math.round(ngn * 100); // kobo
+      dialog.close();
+      const reopen = () => { pay.disabled = false; if (!dialog.open) dialog.showModal(); };
+      const popup = new window.PaystackPop!();
+      popup.newTransaction({
+        key,
+        email,
+        amount,
+        currency: 'NGN',
+        phone: whatsapp,
+        metadata: {
+          course: 'meta-ads-masterclass',
+          tier: selectedTier,
+          full_name: name,
+          whatsapp,
+          custom_fields: [
+            { display_name: 'Event', variable_name: 'event', value: `Meta Ads Masterclass (${tierName})` },
+            { display_name: 'Full name', variable_name: 'full_name', value: name },
+            { display_name: 'WhatsApp', variable_name: 'whatsapp', value: whatsapp },
+          ],
+        },
+        onSuccess: (trx: { reference?: string }) => {
+          try {
+            sessionStorage.setItem('lhg_masterclass', JSON.stringify({ email, whatsapp, tier: selectedTier, value: amount / 100, currency: 'NGN', reference: trx?.reference }));
+          } catch {}
+          window.location.assign('/masterclass-welcome');
+          setTimeout(() => { pay.disabled = false; if (!dialog.open) dialog.showModal(); }, 1200);
+        },
+        onCancel: () => reopen(),
+        onError: () => {
+          reopen();
+          showError("Payment didn't go through. Nothing was charged. Try again or use another method.");
+        },
+      });
+    });
+  }
+</script>
+
+<style>
+  #register-dialog::backdrop { background: rgb(0 0 0 / 0.5); }
+</style>
