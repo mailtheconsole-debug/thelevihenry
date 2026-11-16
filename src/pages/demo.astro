@@ -1,0 +1,211 @@
+---
+// Teaching sandbox for the Meta Ads Masterclass. A deliberately simple "store" page
+// where Levi installs a fresh DEMO pixel live and fires standard events so students see
+// them land in Events Manager. It is standalone on purpose: it does NOT use Base.astro,
+// so the real site pixel (1622...) never loads here and the demo never touches the real
+// dataset. The active pixel comes only from the ?pixel=<ID> query string.
+//
+// Meant to be served at demo.thelevihenry.com (point the subdomain at this page) or used
+// directly at /demo. Usage in class: create the demo pixel, then open
+//   https://demo.thelevihenry.com/?pixel=YOUR_PIXEL_ID
+// and click the buttons while the Events Manager "Test events" tab is open.
+const PRODUCT = { name: 'The Demo Tote', price: 25000, id: 'demo-tote' };
+const naira = (n: number) => '₦' + n.toLocaleString('en-NG');
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Demo Store · Meta Ads Masterclass sandbox</title>
+    <meta name="robots" content="noindex" />
+    <meta name="description" content="A teaching sandbox for the Meta Ads Masterclass. Install a pixel with ?pixel=ID and watch events fire." />
+    <style>
+      :root {
+        --navy: #14273f; --ink: #212c38; --soft: #556070; --faint: #8a94a2;
+        --line: #e4e0d8; --paper: #fbf9f4; --raised: #fffdf9; --brand: #c6903f;
+        --green: #138a5e; --greenbg: #eaf7f0; --amber: #9a6a12; --amberbg: #fdf3e0;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0; background: var(--paper); color: var(--ink);
+        font-family: -apple-system, 'Segoe UI', Roboto, Arial, sans-serif; line-height: 1.6;
+      }
+      a { color: var(--navy); }
+      .wrap { max-width: 920px; margin: 0 auto; padding: 0 20px; }
+      .topbar { background: var(--navy); color: #fff; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; }
+      .topbar .wrap { padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+      .topbar .tag { background: rgba(255,255,255,.15); padding: 3px 9px; border-radius: 4px; font-size: 11px; }
+      .status { font-size: 14px; font-weight: 600; }
+      .status .wrap { padding: 12px 20px; display: flex; align-items: center; gap: 10px; }
+      .status.on { background: var(--greenbg); color: var(--green); }
+      .status.off { background: var(--amberbg); color: var(--amber); }
+      .status code { background: rgba(0,0,0,.06); padding: 1px 6px; border-radius: 4px; font-size: 13px; }
+      .grid { display: grid; gap: 28px; padding: 32px 0 48px; }
+      @media (min-width: 760px) { .grid { grid-template-columns: 1fr 1fr; align-items: start; } }
+      .shot { aspect-ratio: 4/3; border-radius: 14px; border: 1px solid var(--line); background:
+        radial-gradient(120% 120% at 30% 20%, #fff, var(--raised)); display: flex; align-items: center; justify-content: center; }
+      h1 { font-size: 28px; margin: 4px 0 2px; color: var(--navy); }
+      .price { font-size: 26px; font-weight: 700; color: var(--navy); margin: 8px 0 14px; }
+      .muted { color: var(--soft); font-size: 15px; }
+      .btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+      button, .btn { font: inherit; cursor: pointer; border-radius: 8px; padding: 12px 18px; font-weight: 600; font-size: 15px; border: 1px solid var(--navy); }
+      .primary { background: var(--navy); color: #fff; }
+      .ghost { background: #fff; color: var(--navy); }
+      .wa { background: #128C7E; border-color: #128C7E; color: #fff; }
+      .card { border: 1px solid var(--line); background: var(--raised); border-radius: 14px; padding: 20px; }
+      .card h2 { font-size: 15px; text-transform: uppercase; letter-spacing: .12em; color: var(--navy); margin: 0 0 12px; }
+      .field { display: flex; gap: 8px; flex-wrap: wrap; }
+      .field input { flex: 1; min-width: 180px; border: 1px solid var(--line); border-radius: 8px; padding: 11px 12px; font: inherit; }
+      .log { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 13px; background: #0f1823; color: #d7e2ee; border-radius: 12px; padding: 14px 16px; min-height: 120px; max-height: 320px; overflow: auto; }
+      .log .row { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+      .log .ev { color: #6ee7a8; font-weight: 700; }
+      .log .skip { color: #f0b86e; }
+      .log .meta { color: #8aa0b8; }
+      .log .empty { color: #6b7a8a; }
+      pre.code { background: #0f1823; color: #d7e2ee; border-radius: 12px; padding: 14px 16px; overflow: auto; font-size: 12.5px; line-height: 1.5; }
+      .section { padding-bottom: 40px; }
+      .section h2 { color: var(--navy); font-size: 18px; }
+      dialog { border: 1px solid var(--line); border-radius: 14px; padding: 0; max-width: 380px; width: 92vw; box-shadow: 0 20px 60px rgba(0,0,0,.25); }
+      dialog::backdrop { background: rgba(0,0,0,.5); }
+      .dlg { padding: 22px; }
+      .foot { border-top: 1px solid var(--line); color: var(--faint); font-size: 12px; text-align: center; padding: 22px; }
+    </style>
+  </head>
+  <body>
+    <div class="topbar"><div class="wrap"><span>Demo Store</span><span class="tag">Masterclass sandbox</span></div></div>
+
+    <div id="status" class="status off">
+      <div class="wrap">
+        <span data-status-text>No pixel connected. Add <code>?pixel=YOUR_PIXEL_ID</code> to the address bar, then reload.</span>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="grid">
+        <div class="shot">
+          <svg width="128" height="128" viewBox="0 0 24 24" fill="none" stroke="#c6903f" stroke-width="1.4" aria-hidden="true">
+            <path d="M6 7h12l1 13H5L6 7z" /><path d="M9 7a3 3 0 0 1 6 0" />
+          </svg>
+        </div>
+        <div>
+          <p class="muted" style="text-transform:uppercase;letter-spacing:.14em;font-size:12px;font-weight:700;color:var(--brand)">Demo product</p>
+          <h1>{PRODUCT.name}</h1>
+          <div class="price">{naira(PRODUCT.price)}</div>
+          <p class="muted">A pretend product so you can see every pixel event fire. Nothing here charges anyone. Click the buttons and watch the event log below.</p>
+          <div class="btns">
+            <button class="ghost" data-add>Add to cart</button>
+            <button class="primary" data-buy>Buy now</button>
+            <button class="wa" data-wa>Chat on WhatsApp</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" style="display:grid;gap:20px">
+        <div class="card">
+          <h2>Back in stock? Notify me (fires a Lead)</h2>
+          <form class="field" data-lead>
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button class="primary" type="submit">Notify me</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <h2>Event log</h2>
+          <div id="log" class="log"><div class="row empty">Events you fire will appear here, newest at the top.</div></div>
+          <div style="margin-top:12px"><button class="ghost" data-clear>Clear log</button></div>
+        </div>
+
+        <div class="section">
+          <h2>How the pixel gets installed</h2>
+          <p class="muted">This is the base code that goes in the <code>&lt;head&gt;</code> of a real website. Swap <code>YOUR_PIXEL_ID</code> for the ID of the pixel you create in Events Manager. On this sandbox, the ID comes from the <code>?pixel=</code> in the address bar instead, so you can test any pixel without editing code.</p>
+          <pre class="code" data-snippet></pre>
+        </div>
+      </div>
+    </div>
+
+    <dialog id="checkout">
+      <div class="dlg">
+        <h1 style="font-size:20px">Checkout</h1>
+        <p class="muted" data-checkout-line></p>
+        <div class="btns">
+          <button class="primary" data-pay>Pay now (demo)</button>
+          <button class="ghost" data-cancel>Cancel</button>
+        </div>
+        <div data-paid hidden style="margin-top:14px;color:var(--green);font-weight:700">Payment complete. Purchase event fired.</div>
+      </div>
+    </dialog>
+
+    <div class="foot">Demo sandbox for the Meta Ads Masterclass. No real products, no real payments. Levi Henry Group.</div>
+
+    <script is:inline define:vars={{ PRODUCT }}>
+      (function () {
+        var params = new URLSearchParams(location.search);
+        var PIXEL = (params.get('pixel') || '').replace(/\D/g, '');
+        var logEl = document.getElementById('log');
+        var hasEntries = false;
+
+        // Show the real install snippet with the live id (or the placeholder).
+        var snippet =
+          "<script>\n" +
+          "!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?\n" +
+          "n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;\n" +
+          "n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;\n" +
+          "t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,\n" +
+          "document,'script','https://connect.facebook.net/en_US/fbevents.js');\n" +
+          "fbq('init', '" + (PIXEL || 'YOUR_PIXEL_ID') + "');\n" +
+          "fbq('track', 'PageView');\n" +
+          "<\/script>";
+        var snipEl = document.querySelector('[data-snippet]');
+        if (snipEl) snipEl.textContent = snippet;
+
+        function log(ev, meta, sent) {
+          if (!hasEntries) { logEl.innerHTML = ''; hasEntries = true; }
+          var row = document.createElement('div');
+          row.className = 'row';
+          var t = new Date().toLocaleTimeString();
+          var metaStr = meta ? ' ' + JSON.stringify(meta) : '';
+          row.innerHTML = sent
+            ? '<span class="ev">✓ ' + ev + '</span><span class="meta">' + escapeHtml(metaStr) + '</span>'
+            : '<span class="skip">○ ' + ev + ' (no pixel connected)</span><span class="meta">' + escapeHtml(metaStr) + '</span>';
+          logEl.insertBefore(row, logEl.firstChild);
+        }
+        function escapeHtml(s) { return String(s).replace(/[<>&]/g, function (c) { return { '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c]; }); }
+
+        function fire(ev, meta) {
+          if (PIXEL && window.fbq) window.fbq('track', ev, meta || {});
+          log(ev, meta, !!(PIXEL && window.fbq));
+        }
+
+        // Status banner + load the demo pixel if one was supplied.
+        var statusEl = document.getElementById('status');
+        var statusText = document.querySelector('[data-status-text]');
+        if (PIXEL) {
+          !(function (f, b, e, v, n, t, s) { if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); }; if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = []; t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s); })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+          window.fbq('init', PIXEL);
+          window.fbq('track', 'PageView');
+          statusEl.className = 'status on';
+          statusText.innerHTML = 'Pixel <code>' + PIXEL + '</code> is connected. PageView fired on load. Open Events Manager → Test events to watch them land.';
+          log('PageView', null, true);
+          // A product page fires ViewContent on load.
+          fire('ViewContent', { content_name: PRODUCT.name, content_ids: [PRODUCT.id], content_type: 'product', value: PRODUCT.price, currency: 'NGN' });
+        }
+
+        var content = { content_name: PRODUCT.name, content_ids: [PRODUCT.id], content_type: 'product', value: PRODUCT.price, currency: 'NGN' };
+        document.querySelector('[data-add]').addEventListener('click', function () { fire('AddToCart', content); });
+        document.querySelector('[data-wa]').addEventListener('click', function () { fire('Contact', { method: 'whatsapp' }); });
+
+        var dlg = document.getElementById('checkout');
+        var paid = document.querySelector('[data-paid]');
+        document.querySelector('[data-checkout-line]').textContent = PRODUCT.name + ' — ' + '₦' + PRODUCT.price.toLocaleString('en-NG');
+        document.querySelector('[data-buy]').addEventListener('click', function () { fire('InitiateCheckout', content); paid.hidden = true; dlg.showModal(); });
+        document.querySelector('[data-cancel]').addEventListener('click', function () { dlg.close(); });
+        document.querySelector('[data-pay]').addEventListener('click', function () { fire('Purchase', content); paid.hidden = false; });
+
+        document.querySelector('[data-lead]').addEventListener('submit', function (e) { e.preventDefault(); fire('Lead', { content_name: 'Back in stock' }); e.target.reset(); });
+        document.querySelector('[data-clear]').addEventListener('click', function () { logEl.innerHTML = '<div class="row empty">Cleared. Fire an event to see it here.</div>'; hasEntries = false; });
+      })();
+    </script>
+  </body>
+</html>
