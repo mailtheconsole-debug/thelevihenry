@@ -15,6 +15,7 @@
 
 const { listLeads } = require("./lib/leadstore.cjs");
 const { sendDue, nudgeLevi } = require("./lib/followup-run.cjs");
+const { sendDue: sendDueMasterclass } = require("./lib/masterclass-run.cjs");
 
 exports.handler = async (event) => {
   const q = (event && event.queryStringParameters) || {};
@@ -33,13 +34,26 @@ exports.handler = async (event) => {
     return { statusCode: 200, body: "no store" };
   }
 
-  const { emailsSent, whatsappDue } = await sendDue(leads);
+  const { emailsSent, whatsappDue, emailed } = await sendDue(leads);
+
+  // Masterclass sequence (date-based). Gated internally by MASTERCLASS_SEQUENCE_LIVE, so
+  // this is a no-op until that env var is set. Skips anyone already mailed this run.
+  let mc = { live: false, sent: 0, wouldSend: 0 };
+  try {
+    mc = await sendDueMasterclass(leads, { skip: new Set(emailed) });
+  } catch (e) {
+    console.error("followup-send-background: masterclass pass failed", e);
+  }
+
   await nudgeLevi(whatsappDue, process.env.FOLLOWUP_KEY);
 
   console.log(
-    `followup-send-background: sent ${emailsSent} email${
+    `followup-send-background: sent ${emailsSent} sdr email${
       emailsSent === 1 ? "" : "s"
-    }, ${whatsappDue} whatsapp due`
+    }, masterclass live=${mc.live} sent=${mc.sent} wouldSend=${mc.wouldSend || 0}, ${whatsappDue} whatsapp due`
   );
-  return { statusCode: 200, body: `emails ${emailsSent}, whatsapp due ${whatsappDue}` };
+  return {
+    statusCode: 200,
+    body: `sdr ${emailsSent}, masterclass ${mc.sent} (live ${mc.live}), whatsapp due ${whatsappDue}`,
+  };
 };

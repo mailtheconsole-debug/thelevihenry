@@ -66,6 +66,7 @@ async function sendDue(leads, { cap = Infinity } = {}) {
   let emailsSent = 0;
   let whatsappDue = 0;
   let remaining = 0;
+  const emailed = []; // addresses mailed this run, so another sequence can skip them today
 
   for (const lead of leads) {
     if (lead.status !== "active") continue;
@@ -85,6 +86,7 @@ async function sendDue(leads, { cap = Infinity } = {}) {
           try {
             await putLead(lead);
             emailsSent++;
+            emailed.push(lead.email);
           } catch (e) {
             console.error("followup: could not stamp email", lead.email, e);
           }
@@ -95,7 +97,7 @@ async function sendDue(leads, { cap = Infinity } = {}) {
     if (lead.whatsapp && nextDueWhatsApp(lead)) whatsappDue++;
   }
 
-  return { emailsSent, whatsappDue, remaining };
+  return { emailsSent, whatsappDue, remaining, emailed };
 }
 
 // Nudge Levi to run today's WhatsApp follow-ups, with a direct link to the worklist.
