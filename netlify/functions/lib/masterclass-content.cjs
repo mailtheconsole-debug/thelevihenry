@@ -90,7 +90,7 @@ const MASTERCLASS_STEPS = [
       "Hi {{first_name}},",
       "The Meta Ads Masterclass is tomorrow, Saturday, November 28, 4 to 7 pm WAT, live on Google Meet.",
       "This is the last email I will send you about it. If you want to end this year able to run your own ads, and walk into the December rush with that skill, this is the moment to step in.",
-      "Come in on a laptop, bring something you sell, and you build a real campaign with me during the class. You also keep a 7-day replay when you attend live.",
+      "Come in on a laptop, bring something you sell, and you build a real campaign with me during the class. You also keep the replay when you attend live.",
       `Today it is ₦30,000. Tomorrow, on class day, it is ₦45,000. Grab your seat before tonight: <a href="${CLASS_LINK}">join here</a>.`,
       "See you tomorrow,",
       "Levi",
