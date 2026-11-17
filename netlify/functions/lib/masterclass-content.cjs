@@ -33,7 +33,7 @@ const MASTERCLASS_STEPS = [
     sendOn: "2026-11-17",
     subject: "The season money moves. Here is how to get a share.",
     paras: [
-      "{{first_name}},",
+      "Hi {{first_name}},",
       "You signed up because you wanted a way to make more money. This is the season to do it.",
       "Between Black Friday and January, Nigerians spend more than any other time of the year. Clothes, gifts, food, travel, owambe. The money is already moving.",
       "The question is whether any of it reaches you.",
@@ -48,7 +48,7 @@ const MASTERCLASS_STEPS = [
     sendOn: "2026-11-19",
     subject: "64 sales in 30 days. Here is the skill behind it.",
     paras: [
-      "{{first_name}},",
+      "Hi {{first_name}},",
       "Let me show you what this skill does when it is set up right.",
       "A fashion program I ran the ads for, a ₦100,000 product, made 64 sales in 30 days. About ₦13 back for every ₦1 spent. No boost button. A pixel, Ads Manager, and the right campaign.",
       "Your numbers will depend on your offer and your price. The skill behind it is the same one I teach you on Saturday, November 28, live, on your own ad account.",
@@ -62,7 +62,7 @@ const MASTERCLASS_STEPS = [
     sendOn: "2026-11-21",
     subject: "Last day at ₦15,000",
     paras: [
-      "{{first_name}},",
+      "Hi {{first_name}},",
       "Short and straight. Today is the last day to join the Meta Ads Masterclass at ₦15,000. Tomorrow it goes to ₦30,000, and on class day it is ₦45,000.",
       "Same class either way: 3 hours live on Saturday, November 28, building real campaigns on your own ad account, with the pixel, the targeting, and AI prompts that write your ads for you.",
       `If you have been meaning to grab it, grab it today: <a href="${CLASS_LINK}">join here</a>.`,
@@ -74,7 +74,7 @@ const MASTERCLASS_STEPS = [
     sendOn: "2026-11-25",
     subject: "The December rush is here",
     paras: [
-      "{{first_name}},",
+      "Hi {{first_name}},",
       "The spending has started. Every day between now and January, people are buying, and the businesses in front of them are the ones collecting.",
       "The Meta Ads Masterclass is this Saturday, November 28. In 3 hours you learn to put your own offer in front of those buyers, live, on your own account. You leave able to run it yourself, in time for the busiest shopping stretch of the year.",
       `It is ₦30,000 now and ₦45,000 on the day, so today is the cheaper door: <a href="${CLASS_LINK}">join here</a>.`,
@@ -87,7 +87,7 @@ const MASTERCLASS_STEPS = [
     sendOn: "2026-11-27",
     subject: "Tomorrow. This is the last call.",
     paras: [
-      "{{first_name}},",
+      "Hi {{first_name}},",
       "The Meta Ads Masterclass is tomorrow, Saturday, November 28, 4 to 7 pm WAT, live on Google Meet.",
       "This is the last email I will send you about it. If you want to end this year able to run your own ads, and walk into the December rush with that skill, this is the moment to step in.",
       "Come in on a laptop, bring something you sell, and you build a real campaign with me during the class. You also keep a 7-day replay when you attend live.",
