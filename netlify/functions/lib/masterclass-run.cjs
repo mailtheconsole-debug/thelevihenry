@@ -60,8 +60,10 @@ function buildReport(leads, now = Date.now()) {
 // Send the next due masterclass email to each active lead (one per lead per run). Honors
 // the live switch; with it off, returns what it WOULD send without touching anyone. `skip`
 // is a Set of emails already mailed in this run (so a lead never gets two emails one day).
-async function sendDue(leads, { cap = Infinity, now = Date.now(), skip = new Set() } = {}) {
-  const live = isLive();
+async function sendDue(leads, { cap = Infinity, now = Date.now(), skip = new Set(), force = false } = {}) {
+  // `force` lets a dedicated scheduled sender run at a chosen hour even while the shared
+  // live switch is off, so the daily SDR cron never sends these at its own hour.
+  const live = force || isLive();
   let sent = 0;
   let wouldSend = 0;
   let remaining = 0;
