@@ -28,21 +28,34 @@ async function sendEmail(payload) {
 }
 
 // Best-effort CRM log. Silently skips if not configured or if the table/fields don't exist.
+async function airtableCreate(url, token, fields) {
+  return fetch(url, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ fields, typecast: true }),
+  });
+}
+
 async function addToAirtable(fields) {
   const token = process.env.AIRTABLE_TOKEN;
   const baseId = process.env.AIRTABLE_BASE_ID;
   const table = process.env.AIRTABLE_LEADS_TABLE || process.env.AIRTABLE_TABLE || "CRM";
   if (!token || !baseId) return;
+  const url = `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(table)}`;
   try {
-    const res = await fetch(
-      `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(table)}`,
-      {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ fields, typecast: true }),
+    let res = await airtableCreate(url, token, fields);
+    if (!res.ok) {
+      const text = await res.text();
+      // If the optional Tier column hasn't been added in Airtable yet, Airtable rejects
+      // the whole record. Retry without Tier so the rest of the lead still logs.
+      if (res.status === 422 && "Tier" in fields && /Tier/i.test(text)) {
+        const { Tier, ...rest } = fields;
+        res = await airtableCreate(url, token, rest);
+        if (!res.ok) console.error("enroll-lead Airtable write failed:", res.status, await res.text());
+      } else {
+        console.error("enroll-lead Airtable write failed:", res.status, text);
       }
-    );
-    if (!res.ok) console.error("enroll-lead Airtable write failed:", res.status, await res.text());
+    }
   } catch (e) {
     console.error("enroll-lead Airtable error:", e);
   }
@@ -59,19 +72,21 @@ exports.handler = async (event) => {
     const name = (p.get("name") || "").trim();
     const email = (p.get("email") || "").trim();
     const whatsapp = (p.get("whatsapp") || "").trim();
+    const tier = (p.get("tier") || "").trim();
     const program = (p.get("title") || p.get("course") || "").trim();
 
     if (!email && !whatsapp) return { statusCode: 204, body: "" };
 
-    // Notify Levi so abandoned checkouts can be recovered on WhatsApp.
+    // Notify Levi so abandoned checkouts can be recovered on WhatsApp. The tier leads the
+    // subject so a VIP is obvious the moment the email lands.
     await sendEmail({
       from: FROM,
       to: [NOTIFY_TO],
       reply_to: email || undefined,
-      subject: `Enrollment started: ${name || email} — follow up if no payment`,
+      subject: `${tier ? `[${tier}] ` : ""}Enrollment started: ${name || email} — follow up if no payment`,
       html: `<div style="font-family:-apple-system,Segoe UI,Arial,sans-serif;font-size:15px;color:#212c38;line-height:1.6;">
         <p>Someone just started checkout for <strong>${esc(program) || "a program"}</strong>. If no payment lands in Paystack, follow up on WhatsApp.</p>
-        <p><strong>Name:</strong> ${esc(name) || "(not given)"}<br/>
+        <p>${tier ? `<strong>Tier:</strong> ${esc(tier)}<br/>` : ""}<strong>Name:</strong> ${esc(name) || "(not given)"}<br/>
         <strong>Email:</strong> ${esc(email) || "(not given)"}<br/>
         <strong>WhatsApp:</strong> ${esc(whatsapp) || "(not given)"}</p>
       </div>`,
@@ -82,6 +97,7 @@ exports.handler = async (event) => {
       Name: name,
       Email: email,
       WhatsApp: whatsapp,
+      Tier: tier,
       Source: "Enroll checkout",
       Program: program,
       Status: "Started checkout",
