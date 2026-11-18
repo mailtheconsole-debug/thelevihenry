@@ -1,8 +1,8 @@
 ---
 // Enroll in an LHG Academy program with Paystack checkout, right on this site.
 // On load (and again when the dialog opens) it reads the live offer from the Academy
-// (learn.thelevihenry.com/api/offers/<course>) so the price, the crossed-out regular price
-// and the launch-spots counter are always current. The `ngn`/`listNgn` props are the
+// (learn.thelevihenry.com/api/offers/<course>) so the price, the crossed-out price, a sale's
+// countdown and the launch-spots counter are always current. The `ngn`/`listNgn` props are the
 // server-rendered fallback used if that fetch fails. After payment, Paystack notifies the
 // Academy, which verifies the amount, creates the student's account, and emails a login link.
 interface Props {
@@ -149,28 +149,74 @@ const promo = !!(listNgn && listNgn > ngn);
       payAmount.textContent = currency === 'USD' && usd ? '$' + usd.toLocaleString('en-US') : naira(currentNgn);
     };
 
-    // Reflect the Academy's live offer: price, crossed-out regular, launch tag and spots left.
+    // A sale's end, written the way people say it: "Monday 23 November, 11:59pm".
+    const saleEndText = (iso: string) => {
+      const d = new Date(iso);
+      const day = d.toLocaleDateString('en-GB', { timeZone: 'Africa/Lagos', weekday: 'long', day: 'numeric', month: 'long' });
+      const time = d.toLocaleTimeString('en-US', { timeZone: 'Africa/Lagos', hour: 'numeric', minute: '2-digit' }).replace(' ', '').toLowerCase();
+      return `${day}, ${time}`;
+    };
+    const countdown = (ms: number) => {
+      const s = Math.max(0, Math.floor(ms / 1000));
+      const d = Math.floor(s / 86400), h = Math.floor((s % 86400) / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+      const pad = (n: number) => String(n).padStart(2, '0');
+      return (d ? `${d}d ` : '') + `${pad(h)}h ${pad(m)}m ${pad(sec)}s`;
+    };
+    let saleTimer: number | undefined;
+
+    // Reflect the Academy's live offer: price, crossed-out price, sale or launch tag, countdown or spots left.
     const applyOffer = (o: any) => {
       if (!o || typeof o.priceNgn !== 'number') return;
       currentNgn = o.priceNgn;
       const regular = typeof o.regularNgn === 'number' ? o.regularNgn : 0;
       const launchActive = !!(o.launch && o.launch.active);
-      const showPromo = launchActive && regular > currentNgn;
+      let sale = o.sale && typeof o.sale.priceNgn === 'number' && typeof o.sale.wasNgn === 'number' && o.sale.endsAt ? o.sale : null;
+      // A cached answer can still carry a sale that has just ended: go back to the normal price straight away.
+      if (sale && new Date(sale.endsAt).getTime() <= Date.now()) { currentNgn = sale.wasNgn; sale = null; }
+      const crossed = sale ? sale.wasNgn : regular;
+      const showPromo = sale ? true : launchActive && regular > currentNgn;
       if (priceMain) priceMain.textContent = naira(currentNgn);
       if (currency === 'NGN') payAmount.textContent = naira(currentNgn);
-      if (priceRegular) { priceRegular.textContent = naira(regular); priceRegular.hidden = !showPromo; }
-      if (priceTag) priceTag.hidden = !showPromo;
+      if (priceRegular) { priceRegular.textContent = naira(crossed); priceRegular.hidden = !showPromo; }
+      if (priceTag) {
+        const pct = sale ? Math.round((1 - sale.priceNgn / sale.wasNgn) * 100) : 0;
+        priceTag.textContent = sale ? `${sale.label || 'Sale'}${pct > 0 ? ` · ${pct}% off` : ''}` : 'Launch price';
+        priceTag.hidden = !showPromo;
+      }
       if (launchNote) {
-        // Scarcity line carried on every page: states the launch deal without a live count.
         const cap = o.launch && typeof o.launch.cap === 'number' ? o.launch.cap : null;
-        if (launchActive && cap !== null && regular > currentNgn) {
+        if (sale) {
+          // Sale: when it ends, and what it goes back to.
+          launchNote.textContent = `Sale ends ${saleEndText(sale.endsAt)} (Lagos time). Then ${naira(sale.wasNgn)}.`;
+          launchNote.hidden = false;
+        } else if (launchActive && cap !== null && regular > currentNgn) {
+          // Scarcity line carried on every page: states the launch deal without a live count.
           launchNote.textContent = `Launch price for the first ${cap} students only. Then ${naira(regular)}.`;
           launchNote.hidden = false;
         } else {
           launchNote.hidden = true;
         }
       }
-      if (launchCount) {
+      window.clearInterval(saleTimer);
+      if (sale) {
+        // A live countdown to the end of the sale; when it hits zero, fetch the offer again (the price goes back).
+        const end = new Date(sale.endsAt).getTime();
+        const tick = () => {
+          const left = end - Date.now();
+          if (left <= 0) {
+            window.clearInterval(saleTimer);
+            currentNgn = sale.wasNgn;
+            if (currency === 'NGN') payAmount.textContent = naira(currentNgn);
+            if (launchCount) launchCount.hidden = true;
+            fetchOffer();
+            return;
+          }
+          if (launchCount) { launchCount.textContent = `Ends in ${countdown(left)}`; launchCount.hidden = false; }
+        };
+        tick();
+        saleTimer = window.setInterval(tick, 1000);
+      }
+      if (launchCount && !sale) {
         // Only reveal a spots count once it is genuinely low, so a high count never
         // discourages early buyers. Never show a sold count or an inflated number.
         const remaining = o.launch && typeof o.launch.remaining === 'number' ? o.launch.remaining : null;
@@ -181,6 +227,8 @@ const promo = !!(listNgn && listNgn > ngn);
           launchCount.hidden = true;
         }
       }
+      // Let the page show the same offer elsewhere (sale banner, price mentions in the copy).
+      window.dispatchEvent(new CustomEvent('lhg:offer', { detail: { course, offer: o } }));
     };
 
     const fetchOffer = async () => {
