@@ -1,0 +1,54 @@
+---
+// A slim bar at the top of every page while Remote SDR Training is on sale (e.g. Early Black Friday Sale).
+// It asks the Academy for the live offer and only appears while a sale is running, with a countdown;
+// it hides itself when the sale ends. The course page has its own, bigger sale banner, and the
+// post-purchase page doesn't need one, so the bar stays off those two.
+const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '');
+const skip = ['/remote-sdr-training', '/welcome'].includes(path);
+---
+
+{!skip && (
+  <a data-salebar hidden href="/remote-sdr-training" class="block bg-ink-black text-white transition hover:bg-navy-deep">
+    <span class="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-3 gap-y-1 px-6 py-2.5 text-center font-sans text-xs font-semibold sm:text-sm">
+      <span class="font-extrabold uppercase tracking-[0.1em] text-beacon" data-salebar-label>Early Black Friday Sale</span>
+      <span><span data-salebar-pct>50</span>% off Remote SDR Training: <span class="font-bold text-beacon" data-salebar-price>₦30,000</span> <span class="ml-1.5 text-white/55 line-through" data-salebar-was>₦60,000</span></span>
+      <span class="tabular-nums text-white/75">Ends in <span class="font-bold text-white" data-salebar-countdown></span></span>
+      <span class="font-bold underline underline-offset-4">Get it now &rarr;</span>
+    </span>
+  </a>
+)}
+
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-salebar]');
+  if (bar) {
+    const naira = (n: number) => '₦' + n.toLocaleString('en-NG');
+    const left = (ms: number) => {
+      const s = Math.max(0, Math.floor(ms / 1000));
+      const d = Math.floor(s / 86400), h = Math.floor((s % 86400) / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+      const pad = (n: number) => String(n).padStart(2, '0');
+      return (d ? `${d}d ` : '') + `${pad(h)}h ${pad(m)}m ${pad(sec)}s`;
+    };
+    const set = (sel: string, text: string) => bar.querySelectorAll<HTMLElement>(sel).forEach((el) => (el.textContent = text));
+    fetch('https://learn.thelevihenry.com/api/offers/remote-sdr-training', { cache: 'no-store' })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((o) => {
+        const sale = o && o.sale;
+        if (!sale || typeof sale.priceNgn !== 'number' || typeof sale.wasNgn !== 'number') return;
+        const end = new Date(sale.endsAt).getTime();
+        if (!(end > Date.now())) return;
+        set('[data-salebar-label]', sale.label || 'Sale');
+        set('[data-salebar-pct]', String(Math.round((1 - sale.priceNgn / sale.wasNgn) * 100)));
+        set('[data-salebar-price]', naira(sale.priceNgn));
+        set('[data-salebar-was]', naira(sale.wasNgn));
+        const tick = () => {
+          const ms = end - Date.now();
+          if (ms <= 0) { bar.hidden = true; window.clearInterval(timer); return; }
+          set('[data-salebar-countdown]', left(ms));
+        };
+        const timer = window.setInterval(tick, 1000);
+        tick();
+        bar.hidden = false;
+      })
+      .catch(() => {});
+  }
+</script>

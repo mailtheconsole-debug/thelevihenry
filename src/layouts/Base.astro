@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import SaleBar from '../components/SaleBar.astro';
 interface Props {
   title?: string;
   description?: string;
@@ -134,6 +135,7 @@ const structured = [orgLd, siteLd, ...(jsonld ? (Array.isArray(jsonld) ? jsonld 
       class="sr-only focus:not-sr-only focus:absolute focus:left-0 focus:top-0 focus:z-[200] focus:bg-navy focus:px-5 focus:py-3 focus:text-white"
       >Skip to content</a
     >
+    <SaleBar />
     <slot />
 
     <script is:inline>
