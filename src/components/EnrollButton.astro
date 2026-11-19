@@ -256,7 +256,6 @@ const promo = !!(listNgn && listNgn > ngn);
       dialog.showModal();
       loadPaystack().catch(() => {});
       fetchOffer(); // refresh the amount right before payment
-      window.fbq?.('track', 'InitiateCheckout', { content_name: title, content_ids: [course], content_type: 'product', value: currentNgn, currency: 'NGN' });
     });
     root.querySelector('[data-close]')?.addEventListener('click', () => dialog.close());
 
@@ -270,6 +269,11 @@ const promo = !!(listNgn && listNgn > ngn);
       if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return showError('Check your email address.');
       if (whatsapp.replace(/\D/g, '').length < 10) return showError('Add a valid WhatsApp number so we can reach you.');
       showError('');
+
+      // InitiateCheckout fires here, on a valid form submit, the same moment the enrollment
+      // notification email is triggered below, not on the Enroll button click or the form
+      // opening. So Meta's count matches the people who actually fill and submit the form.
+      window.fbq?.('track', 'InitiateCheckout', { content_name: title, content_ids: [course], content_type: 'product', value: currentNgn, currency: 'NGN' });
 
       // Capture the lead now — before Paystack — so an abandoned checkout can still be
       // followed up on WhatsApp. Best-effort; never blocks the purchase.
