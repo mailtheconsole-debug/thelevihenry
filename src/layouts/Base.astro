@@ -111,6 +111,39 @@ const structured = [orgLd, siteLd, ...(jsonld ? (Array.isArray(jsonld) ? jsonld 
     <!-- Cloudflare Web Analytics (privacy-first, cookieless) -->
     <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "4b6134dc8f9544deab4edb3759a80a73"}'></script>
 
+    <!-- First-party attribution: capture the campaign tags from the link that brought the
+         visitor here and keep them, so every enrollment can report its source (ad / email /
+         WhatsApp) without depending on Meta. A tagged link always wins; a bare referrer is a
+         weak fallback used only when nothing is stored yet. -->
+    <script is:inline>
+      (function () {
+        try {
+          var KEY = 'lhg_attrib';
+          var q = new URLSearchParams(location.search);
+          var data = {};
+          var tagged = false;
+          ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
+            var v = q.get(k);
+            if (v) { data[k] = v.slice(0, 200); tagged = true; }
+          });
+          var fbclid = q.get('fbclid'); if (fbclid) { data.fbclid = fbclid.slice(0, 200); tagged = true; }
+          var gclid = q.get('gclid'); if (gclid) { data.gclid = gclid.slice(0, 200); tagged = true; }
+          var ref = document.referrer || '';
+          var external = ref && ref.indexOf('//' + location.host) === -1;
+          if (tagged) {
+            if (ref) data.referrer = ref.slice(0, 300);
+            data.landing = location.pathname;
+            data.ts = new Date().toISOString();
+            localStorage.setItem(KEY, JSON.stringify(data));
+            return;
+          }
+          if (!localStorage.getItem(KEY) && external) {
+            localStorage.setItem(KEY, JSON.stringify({ referrer: ref.slice(0, 300), landing: location.pathname, ts: new Date().toISOString() }));
+          }
+        } catch (e) {}
+      })();
+    </script>
+
     {META_PIXEL_ID && (
       <Fragment>
         <!-- Meta Pixel -->

@@ -49,11 +49,17 @@ async function addToAirtable(fields) {
     let res = await airtableCreate(url, token, fields);
     if (!res.ok) {
       const text = await res.text();
-      // If the optional Tier column hasn't been added in Airtable yet, Airtable rejects
-      // the whole record. Retry without Tier so the rest of the lead still logs.
-      if (res.status === 422 && "Tier" in fields && /Tier/i.test(text)) {
-        const { Tier, ...rest } = fields;
-        res = await airtableCreate(url, token, rest);
+      // Optional columns (Tier, Channel, the UTM fields) may not exist in this base yet, and
+      // Airtable rejects the whole record when any field is unknown. Retry with just the core
+      // fields so the lead still logs no matter which optional columns are missing.
+      if (res.status === 422) {
+        const core = {
+          Name: fields.Name,
+          Email: fields.Email,
+          WhatsApp: fields.WhatsApp,
+          Status: fields.Status,
+        };
+        res = await airtableCreate(url, token, core);
         if (!res.ok) console.error("enroll-lead Airtable write failed:", res.status, await res.text());
       } else {
         console.error("enroll-lead Airtable write failed:", res.status, text);
@@ -83,6 +89,29 @@ exports.handler = async (event) => {
     const fbc = (p.get("fbc") || "").trim();
     const value = (p.get("value") || "").trim();
     const currency = (p.get("currency") || "NGN").trim();
+    const utmSource = (p.get("utm_source") || "").trim();
+    const utmMedium = (p.get("utm_medium") || "").trim();
+    const utmCampaign = (p.get("utm_campaign") || "").trim();
+    const utmContent = (p.get("utm_content") || "").trim();
+    const utmTerm = (p.get("utm_term") || "").trim();
+    const referrer = (p.get("referrer") || "").trim();
+
+    // Best-guess channel from the tags so the email says "Meta ad" / "WhatsApp" / "Email" at a
+    // glance. Channel is keyed off the source (where the click came from); "paid" only upgrades
+    // the label to "... ad". Word boundaries keep "broadcast" from matching "ad".
+    const channel = (() => {
+      const s = utmSource.toLowerCase();
+      const m = utmMedium.toLowerCase();
+      const both = `${s} ${m}`;
+      const paid = /\bcpc\b|\bppc\b|paid|\bads?\b|display/.test(m);
+      if (/whatsapp|\bwa\b/.test(both)) return "WhatsApp";
+      if (/email|newsletter|mailchimp|klaviyo|broadcast/.test(both)) return "Email";
+      if (/facebook|instagram|\bfb\b|\big\b|meta/.test(s)) return paid ? "Meta ad" : "Meta";
+      if (/google|youtube|\bgoog\b/.test(s)) return paid ? "Google ad" : "Google";
+      if (utmSource) return paid ? `${utmSource} (paid)` : utmSource;
+      if (referrer) return "Referral";
+      return "Direct / untagged";
+    })();
 
     if (!email && !whatsapp) return { statusCode: 204, body: "" };
 
@@ -92,17 +121,23 @@ exports.handler = async (event) => {
       from: FROM,
       to: [NOTIFY_TO],
       reply_to: email || undefined,
-      subject: `${tier ? `[${tier}] ` : ""}Enrollment started: ${name || email} — follow up if no payment`,
+      subject: `${tier ? `[${tier}] ` : ""}New enrollment (${channel}): ${name || email}. Follow up if no payment`,
       html: `<div style="font-family:-apple-system,Segoe UI,Arial,sans-serif;font-size:15px;color:#212c38;line-height:1.6;">
         <p>Someone just started checkout for <strong>${esc(program) || "a program"}</strong>. If no payment lands in Paystack, follow up on WhatsApp.</p>
         <p>${tier ? `<strong>Tier:</strong> ${esc(tier)}<br/>` : ""}<strong>Name:</strong> ${esc(name) || "(not given)"}<br/>
         <strong>Email:</strong> ${esc(email) || "(not given)"}<br/>
         <strong>WhatsApp:</strong> ${esc(whatsapp) || "(not given)"}</p>
+        <p style="margin-top:14px;padding-top:12px;border-top:1px solid #e5e9ef;">
+          <strong>Came from:</strong> ${esc(channel)}<br/>
+          ${utmSource ? `<strong>Source:</strong> ${esc(utmSource)}<br/>` : ""}${utmMedium ? `<strong>Medium:</strong> ${esc(utmMedium)}<br/>` : ""}${utmCampaign ? `<strong>Campaign:</strong> ${esc(utmCampaign)}<br/>` : ""}${utmContent ? `<strong>Ad / content:</strong> ${esc(utmContent)}<br/>` : ""}${utmTerm ? `<strong>Term:</strong> ${esc(utmTerm)}<br/>` : ""}${!utmSource && referrer ? `<strong>Referrer:</strong> ${esc(referrer)}<br/>` : ""}${!utmSource && !referrer ? `<span style="color:#6b7684;">No campaign tags on the visitor's link.</span>` : ""}
+        </p>
       </div>`,
     });
 
-    // Best-effort CRM log (no-ops gracefully if the table/fields aren't set up).
-    await addToAirtable({
+    // Best-effort CRM log (no-ops gracefully if the table/fields aren't set up). The UTM/Channel
+    // columns are optional: if they don't exist in the base, the write retries with the core
+    // fields so the lead still logs (see addToAirtable).
+    const leadFields = {
       Name: name,
       Email: email,
       WhatsApp: whatsapp,
@@ -110,7 +145,14 @@ exports.handler = async (event) => {
       Source: "Enroll checkout",
       Program: program,
       Status: "Started checkout",
-    });
+      Channel: channel,
+    };
+    if (utmCampaign) leadFields.Campaign = utmCampaign;
+    if (utmSource) leadFields["UTM Source"] = utmSource;
+    if (utmMedium) leadFields["UTM Medium"] = utmMedium;
+    if (utmContent) leadFields["UTM Content"] = utmContent;
+    if (!utmSource && referrer) leadFields.Referrer = referrer;
+    await addToAirtable(leadFields);
 
     // Mirror InitiateCheckout to Meta server-side (Conversions API), deduped with the browser
     // pixel via the shared event_id. Best effort; never blocks the checkout.

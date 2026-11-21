@@ -284,6 +284,15 @@ const promo = !!(listNgn && listNgn > ngn);
       const fbp = cookie('_fbp');
       const fbc = cookie('_fbc');
 
+      // First-party attribution captured on landing. Travels with the lead so every enrollment
+      // email and the Paystack record shows where the person came from, without needing Meta.
+      let attribution: Record<string, string> = {};
+      try {
+        const rawAttrib = localStorage.getItem('lhg_attrib');
+        if (rawAttrib) attribution = JSON.parse(rawAttrib) || {};
+      } catch {}
+      const attr = (k: string) => (typeof attribution[k] === 'string' ? attribution[k] : '');
+
       // Capture the lead now — before Paystack — so an abandoned checkout can still be
       // followed up on WhatsApp. The same event_id, value and Meta cookies go to the server
       // so it can mirror InitiateCheckout to the Conversions API. Best-effort; never blocks.
@@ -291,7 +300,7 @@ const promo = !!(listNgn && listNgn > ngn);
         fetch('/.netlify/functions/enroll-lead', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams({ name, email, whatsapp, course, title, event_id: eventId, fbp, fbc, value: String(currentNgn), currency: 'NGN' }).toString(),
+          body: new URLSearchParams({ name, email, whatsapp, course, title, event_id: eventId, fbp, fbc, value: String(currentNgn), currency: 'NGN', utm_source: attr('utm_source'), utm_medium: attr('utm_medium'), utm_campaign: attr('utm_campaign'), utm_content: attr('utm_content'), utm_term: attr('utm_term'), referrer: attr('referrer') }).toString(),
           keepalive: true,
         }).catch(() => {});
       } catch {}
@@ -327,10 +336,17 @@ const promo = !!(listNgn && listNgn > ngn);
           fbp,
           fbc,
           user_agent: navigator.userAgent,
+          // First-party attribution so the sale record in Paystack shows its source too.
+          utm_source: attr('utm_source'),
+          utm_medium: attr('utm_medium'),
+          utm_campaign: attr('utm_campaign'),
+          utm_content: attr('utm_content'),
+          utm_term: attr('utm_term'),
           custom_fields: [
             { display_name: 'Program', variable_name: 'program', value: title },
             { display_name: 'Full name', variable_name: 'full_name', value: name },
             { display_name: 'WhatsApp', variable_name: 'whatsapp', value: whatsapp },
+            { display_name: 'Source', variable_name: 'source', value: [attr('utm_source'), attr('utm_campaign'), attr('utm_content')].filter(Boolean).join(' / ') || 'direct' },
           ],
         },
         onSuccess: (trx: { reference?: string }) => {
