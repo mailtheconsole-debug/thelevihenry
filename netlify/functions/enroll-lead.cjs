@@ -6,6 +6,9 @@
 
 const FROM = "Levi Henry Group <levi@thelevihenry.com>";
 const NOTIFY_TO = "levi@thelevihenry.com";
+const SITE = "https://thelevihenry.com";
+
+const { sendEvent, requestContext } = require("./lib/meta-capi.cjs");
 
 const esc = (s) =>
   String(s || "").replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
@@ -74,6 +77,12 @@ exports.handler = async (event) => {
     const whatsapp = (p.get("whatsapp") || "").trim();
     const tier = (p.get("tier") || "").trim();
     const program = (p.get("title") || p.get("course") || "").trim();
+    const course = (p.get("course") || "").trim();
+    const eventId = (p.get("event_id") || "").trim();
+    const fbp = (p.get("fbp") || "").trim();
+    const fbc = (p.get("fbc") || "").trim();
+    const value = (p.get("value") || "").trim();
+    const currency = (p.get("currency") || "NGN").trim();
 
     if (!email && !whatsapp) return { statusCode: 204, body: "" };
 
@@ -102,6 +111,36 @@ exports.handler = async (event) => {
       Program: program,
       Status: "Started checkout",
     });
+
+    // Mirror InitiateCheckout to Meta server-side (Conversions API), deduped with the browser
+    // pixel via the shared event_id. Best effort; never blocks the checkout.
+    try {
+      const { clientIp, userAgent } = requestContext(event);
+      const parts = name.split(/\s+/).filter(Boolean);
+      const valueNum = Number(value);
+      await sendEvent({
+        eventName: "InitiateCheckout",
+        eventId: eventId || undefined,
+        eventSourceUrl: `${SITE}/remote-sdr-training`,
+        email,
+        phone: whatsapp,
+        firstName: parts[0] || undefined,
+        lastName: parts.length > 1 ? parts.slice(1).join(" ") : undefined,
+        fbp,
+        fbc,
+        clientIp,
+        userAgent,
+        customData: {
+          content_name: program || "Remote SDR Training",
+          content_ids: course ? [course] : undefined,
+          content_type: "product",
+          value: Number.isFinite(valueNum) && valueNum > 0 ? valueNum : undefined,
+          currency: currency || "NGN",
+        },
+      });
+    } catch (e) {
+      console.error("enroll-lead: CAPI InitiateCheckout failed", e);
+    }
 
     return { statusCode: 204, body: "" };
   } catch (err) {

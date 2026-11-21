@@ -270,21 +270,36 @@ const promo = !!(listNgn && listNgn > ngn);
       if (whatsapp.replace(/\D/g, '').length < 10) return showError('Add a valid WhatsApp number so we can reach you.');
       showError('');
 
-      // InitiateCheckout fires here, on a valid form submit, the same moment the enrollment
-      // notification email is triggered below, not on the Enroll button click or the form
-      // opening. So Meta's count matches the people who actually fill and submit the form.
-      window.fbq?.('track', 'InitiateCheckout', { content_name: title, content_ids: [course], content_type: 'product', value: currentNgn, currency: 'NGN' });
+      // One shared event id so the browser InitiateCheckout and the server (Conversions API)
+      // event de-duplicate into one in Meta. Also read the Meta cookies so the server event
+      // matches this browser as closely as possible.
+      let eventId = 'ic-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+      try { if (window.crypto && crypto.randomUUID) eventId = crypto.randomUUID(); } catch {}
+      const cookie = (n: string) => {
+        try {
+          const m = document.cookie.match('(^|;)\\s*' + n + '\\s*=\\s*([^;]+)');
+          return m ? (m.pop() ?? '') : '';
+        } catch { return ''; }
+      };
+      const fbp = cookie('_fbp');
+      const fbc = cookie('_fbc');
 
       // Capture the lead now — before Paystack — so an abandoned checkout can still be
-      // followed up on WhatsApp. Best-effort; never blocks the purchase.
+      // followed up on WhatsApp. The same event_id, value and Meta cookies go to the server
+      // so it can mirror InitiateCheckout to the Conversions API. Best-effort; never blocks.
       try {
         fetch('/.netlify/functions/enroll-lead', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams({ name, email, whatsapp, course, title }).toString(),
+          body: new URLSearchParams({ name, email, whatsapp, course, title, event_id: eventId, fbp, fbc, value: String(currentNgn), currency: 'NGN' }).toString(),
           keepalive: true,
         }).catch(() => {});
       } catch {}
+
+      // InitiateCheckout fires here, on a valid form submit (the same moment the notification
+      // email is triggered), not on the Enroll button click or the form opening. The eventID
+      // matches the server event above so Meta counts the two as one.
+      window.fbq?.('track', 'InitiateCheckout', { content_name: title, content_ids: [course], content_type: 'product', value: currentNgn, currency: 'NGN' }, { eventID: eventId });
       pay.disabled = true;
       try {
         await loadPaystack();

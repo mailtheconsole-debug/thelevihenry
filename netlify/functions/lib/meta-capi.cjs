@@ -33,6 +33,8 @@ async function sendEvent({
   actionSource = "website",
   email,
   phone,
+  firstName,
+  lastName,
   fbp,
   fbc,
   clientIp,
@@ -51,6 +53,8 @@ async function sendEvent({
     const np = normalizePhone(phone);
     if (np) user_data.ph = [sha256(np)];
   }
+  if (firstName) user_data.fn = [sha256(String(firstName).trim().toLowerCase())];
+  if (lastName) user_data.ln = [sha256(String(lastName).trim().toLowerCase())];
   if (fbp) user_data.fbp = fbp;
   if (fbc) user_data.fbc = fbc;
   if (clientIp) user_data.client_ip_address = clientIp;
