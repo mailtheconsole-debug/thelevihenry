@@ -322,6 +322,11 @@ const promo = !!(listNgn && listNgn > ngn);
           course,
           full_name: name,
           whatsapp,
+          // Passed through Paystack so the Academy's charge.success webhook can attach them to
+          // the server-side Purchase Conversions API event (browser cannot see the real IP).
+          fbp,
+          fbc,
+          user_agent: navigator.userAgent,
           custom_fields: [
             { display_name: 'Program', variable_name: 'program', value: title },
             { display_name: 'Full name', variable_name: 'full_name', value: name },
