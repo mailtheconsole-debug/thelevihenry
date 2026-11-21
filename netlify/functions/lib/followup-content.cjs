@@ -225,9 +225,14 @@ function daysSince(iso) {
 function renderEmail(step, lead, unsubUrl) {
   const fn = esc(firstName(lead));
   const subject = step.subject.replace(/\{\{first_name\}\}/g, fn);
+  // Tag the course and training links so a sale traces back to this nurture email, independent
+  // of Meta. Campaign stays "nurture"; utm_content carries the step so you see which email did it.
+  const q = `utm_source=email&utm_medium=email&utm_campaign=nurture&utm_content=email-${step.step}`;
   const body = step.paras
     .map((p) => `<p style="margin:0 0 16px;">${p.replace(/\{\{first_name\}\}/g, fn)}</p>`)
-    .join("");
+    .join("")
+    .split(COURSE_LINK).join(`${COURSE_LINK}?${q}`)
+    .split(TRAINING_LINK).join(`${TRAINING_LINK}?${q}`);
   const html = `<div style="font-family:-apple-system,Segoe UI,Arial,sans-serif;font-size:16px;line-height:1.6;color:#212c38;max-width:560px;margin:0 auto;">
   ${body}
   <hr style="border:none;border-top:1px solid #e5e1d6;margin:28px 0 12px;">
@@ -240,7 +245,13 @@ function renderEmail(step, lead, unsubUrl) {
 
 function renderWhatsApp(step, lead) {
   const fn = firstName(lead);
-  return step.lines.map((l) => l.replace(/\{\{first_name\}\}/g, fn)).join("\n\n");
+  // Tag the links so a sale from a nurture WhatsApp message reports back as WhatsApp.
+  const q = `utm_source=whatsapp&utm_medium=dm&utm_campaign=nurture&utm_content=wa-${step.step}`;
+  return step.lines
+    .map((l) => l.replace(/\{\{first_name\}\}/g, fn))
+    .join("\n\n")
+    .split(COURSE_LINK).join(`${COURSE_LINK}?${q}`)
+    .split(TRAINING_LINK).join(`${TRAINING_LINK}?${q}`);
 }
 
 // The earliest email/WhatsApp step a lead is due for and has not had yet, or null.
