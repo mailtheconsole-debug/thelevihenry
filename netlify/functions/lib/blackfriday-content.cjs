@@ -82,6 +82,20 @@ const STEPS = [
       "Levi",
     ],
   },
+  {
+    step: 5,
+    recDay: "Sat Nov 21 (added mid-sale)",
+    subject: "Two days left: the Remote SDR course is half price",
+    paras: [
+      "Hi {{first_name}},",
+      "It is the weekend, so here is a short one.",
+      "The Remote SDR Training is still ₦30,000. That is half of the normal ₦60,000, and the sale closes Monday at 11:59pm. After that it goes back to ₦60,000 on its own.",
+      "If you have been going back and forth on it, the weekend is the time to settle it. Two days left, then the price doubles.",
+      "You watched the free training because a remote sales role is something you want. This is where you build the skill for it: the outreach, the calls, the tools these companies use, and the coaching to go after the roles the right way.",
+      `If it is a yes, do it now while it is half price: <a href="${COURSE_LINK}">join the Remote SDR Training</a>.`,
+      "Levi",
+    ],
+  },
 ];
 
 function getStep(n) {
