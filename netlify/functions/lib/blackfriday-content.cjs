@@ -91,9 +91,13 @@ function getStep(n) {
 function renderEmail(step, recipient, unsubUrl) {
   const fn = esc(firstName(recipient && recipient.first));
   const subject = step.subject.replace(/\{\{first_name\}\}/g, fn);
+  // Tag every course link so each sale reports back as this email, independent of Meta. Campaign
+  // stays "blackfriday"; utm_content carries the step so you can tell which email closed it.
+  const taggedLink = `${COURSE_LINK}?utm_source=email&utm_medium=email&utm_campaign=blackfriday&utm_content=email-${step.step}`;
   const body = step.paras
     .map((p) => `<p style="margin:0 0 16px;">${p.replace(/\{\{first_name\}\}/g, fn)}</p>`)
-    .join("");
+    .join("")
+    .split(COURSE_LINK).join(taggedLink);
   const html = `<div style="font-family:-apple-system,Segoe UI,Arial,sans-serif;font-size:16px;line-height:1.6;color:#212c38;max-width:560px;margin:0 auto;">
   ${body}
   <hr style="border:none;border-top:1px solid #e5e1d6;margin:28px 0 12px;">
