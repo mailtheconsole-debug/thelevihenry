@@ -71,56 +71,6 @@ exports.handler = async (event) => {
   }
   await saveDoc(doc);
 
-  // Dry buyer-check (?check=1): confirm the live Academy endpoint and the shared key work by
-  // asking it about the full active list, without sending anything. Returns counts only, no
-  // PII. Expect ~10 buyersFound once the Netlify key matches the Vercel one; a 401 means the
-  // two values differ.
-  if (q.check) {
-    const candidates = [];
-    for (const [email, rec] of Object.entries(doc.byEmail)) {
-      if (rec.status !== "active") continue;
-      if (SUPPRESS.has(email)) continue;
-      if (!wantSource(rec.source)) continue;
-      candidates.push(email);
-    }
-    const buyersKey = process.env.BUYERS_CHECK_KEY;
-    const jr = (obj) => ({
-      statusCode: 200,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(Object.assign({ check: true, candidates: candidates.length }, obj)),
-    });
-    if (!buyersKey) return jr({ error: "BUYERS_CHECK_KEY not set in Netlify" });
-    const ACADEMY = "https://learn.thelevihenry.com/api/buyers/check";
-    let buyersFound = 0;
-    for (let i = 0; i < candidates.length; i += 1000) {
-      const batch = candidates.slice(i, i + 1000);
-      let res;
-      try {
-        res = await fetch(ACADEMY, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "x-buyers-key": buyersKey },
-          body: JSON.stringify({ emails: batch, course: "remote-sdr-training" }),
-        });
-      } catch (e) {
-        return jr({ error: "endpoint unreachable" });
-      }
-      if (!res.ok) {
-        return jr({
-          status: res.status,
-          error: res.status === 401 ? "401: Netlify key does not match Vercel" : `HTTP ${res.status}`,
-        });
-      }
-      let data;
-      try {
-        data = await res.json();
-      } catch (e) {
-        return jr({ error: "bad JSON from endpoint" });
-      }
-      buyersFound += ((data && data.bought) || []).length;
-    }
-    return jr({ buyersFound });
-  }
-
   // Exclude anyone who has already bought the course. stop-on-buy marks their training lead
   // "bought"; a buyer should never get another sale email.
   const bought = new Set(

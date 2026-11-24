@@ -66,6 +66,56 @@ exports.handler = async (event) => {
   const map = await mergedMap(doc);
   const entries = Object.entries(map);
 
+  // Live buyer-check verifier (?check=1): ask the Academy endpoint which of the full active
+  // list have bought, and return counts only (no PII). Confirms the endpoint and the shared
+  // key work before a real send. audience defaults to all; buyersFound ~10 expected. A 401
+  // means the Netlify key does not match the Vercel one.
+  if (q.check) {
+    const audience = (q.audience || "all").toLowerCase();
+    const wantSource = (src) =>
+      audience === "all" ? true : audience === "warm" ? src === "lead" : src === "mailchimp";
+    const candidates = [];
+    for (const [email, rec] of entries) {
+      if (rec.status !== "active") continue;
+      if (SUPPRESS.has(email)) continue;
+      if (!wantSource(rec.source)) continue;
+      candidates.push(email);
+    }
+    const buyersKey = process.env.BUYERS_CHECK_KEY;
+    if (!buyersKey) return json({ check: true, candidates: candidates.length, error: "BUYERS_CHECK_KEY not set in Netlify" });
+    const ACADEMY = "https://learn.thelevihenry.com/api/buyers/check";
+    let buyersFound = 0;
+    for (let i = 0; i < candidates.length; i += 1000) {
+      const batch = candidates.slice(i, i + 1000);
+      let res;
+      try {
+        res = await fetch(ACADEMY, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "x-buyers-key": buyersKey },
+          body: JSON.stringify({ emails: batch, course: "remote-sdr-training" }),
+        });
+      } catch (e) {
+        return json({ check: true, candidates: candidates.length, error: "endpoint unreachable" });
+      }
+      if (!res.ok) {
+        return json({
+          check: true,
+          candidates: candidates.length,
+          status: res.status,
+          error: res.status === 401 ? "401: Netlify key does not match Vercel" : `HTTP ${res.status}`,
+        });
+      }
+      let data;
+      try {
+        data = await res.json();
+      } catch (e) {
+        return json({ check: true, candidates: candidates.length, error: "bad JSON from endpoint" });
+      }
+      buyersFound += ((data && data.bought) || []).length;
+    }
+    return json({ check: true, candidates: candidates.length, buyersFound });
+  }
+
   // Dry run: eligible count for a step + audience, sends nothing.
   if (q.dry) {
     const step = getStep(q.step);
