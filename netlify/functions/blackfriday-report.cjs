@@ -28,8 +28,14 @@ async function mergedMap(doc) {
     /* counts just omit leads if the store is unreachable */
   }
   for (const l of leads) {
-    if (!l || l.status !== "active" || !l.email) continue;
+    if (!l || !l.email) continue;
     const email = normEmail(l.email);
+    // Buyers are excluded from sends, so mirror that in the counts: mark them "bought".
+    if (l.status === "bought") {
+      if (map[email]) map[email].status = "bought";
+      continue;
+    }
+    if (l.status !== "active") continue;
     if (map[email]) map[email].source = "lead";
     else map[email] = { first: "", source: "lead", status: "active", bfSent: [] };
   }

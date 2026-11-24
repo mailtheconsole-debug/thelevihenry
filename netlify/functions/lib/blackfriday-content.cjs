@@ -96,6 +96,101 @@ const STEPS = [
       "Levi",
     ],
   },
+  {
+    step: 6,
+    recDay: "Tue Nov 24",
+    subject: "Black Friday sale extended, but only till Nov 30",
+    preview: "If you were waiting for salary, this is for you.",
+    paras: [
+      "Hi {{first_name}},",
+      "Over the weekend, a lot of you told me the same thing: \"Levi, I want in, but salary hasn't landed yet.\"",
+      "So I made a decision. Black Friday pricing on the Remote SDR course is extended to <strong>Monday, Nov 30, 11:59pm</strong>.",
+      "₦30,000 instead of ₦60,000. Same course. Same 8 modules, 116 lessons, and coach reviews on your assignments.",
+      "If you were waiting for payday, you're covered. But the extension ends on the 30th, so don't put it off.",
+      `👉 <a href="${COURSE_LINK}?utm_source=email&utm_medium=email&utm_campaign=blackfriday&utm_content=ext-1">Join the Remote SDR course</a>`,
+      "Levi",
+    ],
+  },
+  {
+    step: 7,
+    recDay: "Wed Nov 25",
+    subject: "What you'll be able to do after the SDR course",
+    preview: "Black Friday pricing still on till Nov 30.",
+    paras: [
+      "Hi {{first_name}},",
+      "Here's what you'll be able to do by the end of the Remote SDR course:",
+      "✅ Find remote SDR roles at US, UK, and Canadian companies, including ones that never get posted widely<br/>✅ Reach the hiring manager and other decision-makers directly, before most applicants do<br/>✅ Write cold emails and LinkedIn messages that get replies<br/>✅ Handle the call when they pick up, from the opener to objections<br/>✅ Answer the interview questions that trip most candidates up<br/>✅ Run discovery calls once you're hired, so you perform from day one",
+      "You'll practice all of it through 31 assignments, and a coach reviews your work. Top students go on the recommendation list I share with companies that ask me for reps.",
+      "I went from zero sales experience to sales team lead at a US tech company, working from Nigeria. This is the process I used.",
+      "Black Friday pricing: ₦30,000 until Monday, Nov 30.",
+      `👉 <a href="${COURSE_LINK}?utm_source=email&utm_medium=email&utm_campaign=blackfriday&utm_content=ext-2">See the full curriculum</a>`,
+      "Levi",
+    ],
+  },
+  {
+    step: 8,
+    recDay: "Thu Nov 26",
+    subject: "How Geoffrey landed a US role after my SDR course",
+    preview: "From my first cohort to a US firm.",
+    paras: [
+      "Hi {{first_name}},",
+      "Geoffrey joined my first cohort because he wanted to break into remote work and needed someone to guide him closely.",
+      "Today he has a role with a US firm.",
+      "He didn't get there by sending more CVs. He learned how to find the right roles, reach the people hiring, and handle the conversation. That's what the Remote SDR course teaches, step by step, with coach reviews on your assignments so you're not guessing.",
+      "You can watch his full story on the course page.",
+      "Black Friday pricing: ₦30,000 until Monday, Nov 30.",
+      `👉 <a href="${COURSE_LINK}?utm_source=email&utm_medium=email&utm_campaign=blackfriday&utm_content=ext-3">Watch Geoffrey's story and join</a>`,
+      "Levi",
+    ],
+  },
+  {
+    step: 9,
+    recDay: "Fri Nov 27",
+    subject: "It's Black Friday: SDR course is ₦30k, 3 days left",
+    preview: "Don't leave it to Monday night.",
+    paras: [
+      "Hi {{first_name}},",
+      "It's officially Black Friday, and you have <strong>3 days left</strong>.",
+      "The Remote SDR course is ₦30,000 (usually ₦60,000) until <strong>Monday, Nov 30, 11:59pm</strong>. After that, Black Friday pricing ends.",
+      "What you get:",
+      "✅ 8 modules, 116 lessons<br/>✅ 31 coach-reviewed assignments<br/>✅ Lifetime access<br/>✅ Top students go on my recommendation list for companies that ask me for reps",
+      "<strong>One tip: don't leave it to Monday night.</strong> One student this week had his bank decline the payment, and sorting it out took time. If you pay early, you have room to fix any card issue, or pay by bank transfer or USSD instead.",
+      `👉 <a href="${COURSE_LINK}?utm_source=email&utm_medium=email&utm_campaign=blackfriday&utm_content=ext-4">Join today</a>`,
+      "Levi",
+    ],
+  },
+  {
+    step: 10,
+    recDay: "Sun Nov 29",
+    subject: "Will the SDR course get me a job? Honest answer",
+    preview: "Black Friday pricing ends tomorrow.",
+    paras: [
+      "Hi {{first_name}},",
+      "The question I get most is: \"Will I get a job after this course?\"",
+      "The honest answer: I can't promise you a job. Nobody honest can.",
+      "What I can promise is that you'll know how to find remote SDR roles, reach hiring managers directly, and handle the call when they pick up. You'll practice with real assignments, and a coach reviews your work. Top students go on the recommendation list I share with companies that ask me for reps.",
+      "If you're willing to put in the work, the course gives you the method.",
+      "Black Friday pricing ends <strong>tomorrow night, Nov 30, at 11:59pm</strong>.",
+      `👉 <a href="${COURSE_LINK}?utm_source=email&utm_medium=email&utm_campaign=blackfriday&utm_content=ext-5">Join the course</a>`,
+      "Levi",
+    ],
+  },
+  {
+    step: 11,
+    recDay: "Mon Nov 30",
+    subject: "Black Friday pricing ends at midnight",
+    preview: "₦30,000 until 11:59pm tonight.",
+    paras: [
+      "Hi {{first_name}},",
+      "Short one today.",
+      "Black Friday pricing on the Remote SDR course ends <strong>tonight at 11:59pm</strong>. ₦30,000 for the full course: 8 modules, 116 lessons, coach-reviewed assignments, and lifetime access.",
+      "Students who joined during the sale are already inside, working through the lessons.",
+      "If you've been thinking about it all week, today's the day to decide. And if your card gives you trouble, the checkout also takes bank transfer and USSD.",
+      `👉 <a href="${COURSE_LINK}?utm_source=email&utm_medium=email&utm_campaign=blackfriday&utm_content=ext-6">Join before midnight</a>`,
+      "See you inside,",
+      "Levi",
+    ],
+  },
 ];
 
 function getStep(n) {
@@ -105,14 +200,20 @@ function getStep(n) {
 function renderEmail(step, recipient, unsubUrl) {
   const fn = esc(firstName(recipient && recipient.first));
   const subject = step.subject.replace(/\{\{first_name\}\}/g, fn);
-  // Tag every course link so each sale reports back as this email, independent of Meta. Campaign
-  // stays "blackfriday"; utm_content carries the step so you can tell which email closed it.
+  // Auto-tag only a BARE course link (href="…/remote-sdr-training"), so every sale reports back
+  // as this email. A link that already carries its own ?utm_… (pre-tagged copy) passes through
+  // untouched. Campaign stays "blackfriday"; utm_content carries the step.
   const taggedLink = `${COURSE_LINK}?utm_source=email&utm_medium=email&utm_campaign=blackfriday&utm_content=email-${step.step}`;
   const body = step.paras
     .map((p) => `<p style="margin:0 0 16px;">${p.replace(/\{\{first_name\}\}/g, fn)}</p>`)
     .join("")
-    .split(COURSE_LINK).join(taggedLink);
+    .split(`${COURSE_LINK}"`).join(`${taggedLink}"`);
+  // Hidden preheader: the inbox preview line, kept out of the visible body.
+  const preheader = step.preview
+    ? `<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;opacity:0;color:transparent;height:0;width:0;">${esc(step.preview.replace(/\{\{first_name\}\}/g, fn))}</div>`
+    : "";
   const html = `<div style="font-family:-apple-system,Segoe UI,Arial,sans-serif;font-size:16px;line-height:1.6;color:#212c38;max-width:560px;margin:0 auto;">
+  ${preheader}
   ${body}
   <hr style="border:none;border-top:1px solid #e5e1d6;margin:28px 0 12px;">
   <p style="font-size:12px;color:#8a8a84;margin:0;">You are getting this because you signed up for Levi Henry's free SDR training.${

@@ -71,6 +71,14 @@ exports.handler = async (event) => {
   }
   await saveDoc(doc);
 
+  // Exclude anyone who has already bought the course. stop-on-buy marks their training lead
+  // "bought"; a buyer should never get another sale email.
+  const bought = new Set(
+    (leads || [])
+      .filter((l) => l && l.status === "bought" && l.email)
+      .map((l) => normEmail(l.email))
+  );
+
   // Build the eligible pool.
   const wantSource = (src) =>
     audience === "all" ? true : audience === "warm" ? src === "lead" : src === "mailchimp";
@@ -78,6 +86,7 @@ exports.handler = async (event) => {
   for (const [email, rec] of Object.entries(doc.byEmail)) {
     if (rec.status !== "active") continue;
     if (SUPPRESS.has(email)) continue;
+    if (bought.has(email)) continue;
     if (!wantSource(rec.source)) continue;
     if (Array.isArray(rec.bfSent) && rec.bfSent.includes(step.step)) continue;
     pool.push({ email, rec });

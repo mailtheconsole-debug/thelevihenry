@@ -6,6 +6,12 @@
 [functions]
   directory = "netlify/functions"
 
+# Black Friday extension sends: fire the day's BF email at 10:00 WAT (09:00 UTC) on the
+# scheduled dates (Nov 24-27, 29-30; Nov 28 skipped). blackfriday-cron maps the date to a
+# step and triggers the background sender. Safe to leave: it no-ops after Nov 30.
+[functions."blackfriday-cron"]
+  schedule = "0 9 * * *"
+
 # The daily follow-up email send runs in followup-send-background.cjs, a BACKGROUND
 # function (15-minute budget, returns 202 at once) so a big batch can never hit the
 # 10-second synchronous timeout. An external scheduler (cron-job.org) calls it once a
