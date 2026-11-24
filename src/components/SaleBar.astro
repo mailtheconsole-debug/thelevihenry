@@ -10,7 +10,7 @@ const skip = ['/remote-sdr-training', '/welcome'].includes(path);
 // The current sale, known at build time so the bar can render on first paint. The live Academy offer
 // (fetched in the script below) overrides these values or hides the bar, and the baked end time also
 // lets the client hide the bar on its own once the sale is over, even without a rebuild.
-const SALE = { label: 'Early Black Friday Sale', priceNgn: 30000, wasNgn: 60000, endsAt: '2026-11-23T22:59:59Z' };
+const SALE = { label: 'Black Friday Sale', priceNgn: 30000, wasNgn: 60000, endsAt: '2026-11-30T22:59:59Z' };
 const pct = Math.round((1 - SALE.priceNgn / SALE.wasNgn) * 100);
 const naira = (n: number) => '₦' + n.toLocaleString('en-NG');
 const saleOn = Date.now() < new Date(SALE.endsAt).getTime();
