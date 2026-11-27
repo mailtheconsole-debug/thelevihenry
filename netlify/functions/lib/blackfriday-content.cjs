@@ -191,6 +191,21 @@ const STEPS = [
       "Levi",
     ],
   },
+  {
+    step: 12,
+    recDay: "Sat Nov 28 (warm only: free-training leads; fills the broadcast-free day)",
+    subject: "2 days left, then it goes back to ₦60,000",
+    preview: "Black Friday pricing ends Monday night.",
+    paras: [
+      "Hi {{first_name}},",
+      "You signed up for the free SDR training, so you already know these remote roles are real and what it takes to land one.",
+      "The full Remote SDR course is where you build the skill for it: the outreach, the calls, the tools these companies use, and a coach reviewing every assignment so you are not left guessing.",
+      "For Black Friday it is <strong>₦30,000 instead of ₦60,000</strong>. That ends <strong>Monday, Nov 30 at 11:59pm</strong>, then it goes back to ₦60,000.",
+      "It is the weekend, so this is the time to settle it. Two days left. If it is a yes, do it now while it is half price.",
+      `👉 <a href="${COURSE_LINK}?utm_source=email&utm_medium=email&utm_campaign=blackfriday&utm_content=ext-warm-28">Join the Remote SDR course</a>`,
+      "Levi",
+    ],
+  },
 ];
 
 function getStep(n) {

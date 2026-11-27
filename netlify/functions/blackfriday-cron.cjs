@@ -9,23 +9,27 @@
 
 const SITE = "https://thelevihenry.com";
 
-// UTC date (YYYY-MM-DD) -> BF step. 10am WAT is 09:00 UTC, same calendar day.
+// UTC date (YYYY-MM-DD) -> { step, audience }. 10am WAT is 09:00 UTC, same calendar day.
+// Nov 28 is the one broadcast-free day in the window: it sends step 12 to WARM only (the
+// free-training leads) so they get a sale email instead of the paused full-price nurture,
+// with no collision against the all-audience broadcast on the other days.
 const SCHEDULE = {
-  "2026-11-24": 6,
-  "2026-11-25": 7,
-  "2026-11-26": 8,
-  "2026-11-27": 9,
-  // 2026-11-28 intentionally skipped
-  "2026-11-29": 10,
-  "2026-11-30": 11,
+  "2026-11-24": { step: 6, audience: "all" },
+  "2026-11-25": { step: 7, audience: "all" },
+  "2026-11-26": { step: 8, audience: "all" },
+  "2026-11-27": { step: 9, audience: "all" },
+  "2026-11-28": { step: 12, audience: "warm" },
+  "2026-11-29": { step: 10, audience: "all" },
+  "2026-11-30": { step: 11, audience: "all" },
 };
 
 exports.handler = async () => {
   const today = new Date().toISOString().slice(0, 10);
-  const step = SCHEDULE[today];
-  if (!step) {
+  const entry = SCHEDULE[today];
+  if (!entry) {
     return { statusCode: 200, body: `blackfriday-cron: no send scheduled for ${today}` };
   }
+  const { step, audience } = entry;
 
   const key = process.env.FOLLOWUP_KEY;
   if (!key) {
@@ -35,12 +39,15 @@ exports.handler = async () => {
 
   try {
     await fetch(
-      `${SITE}/.netlify/functions/blackfriday-send-background?step=${step}&audience=all`,
+      `${SITE}/.netlify/functions/blackfriday-send-background?step=${step}&audience=${audience}`,
       { method: "POST", headers: { "x-followup-key": key } }
     );
   } catch (e) {
     console.error("blackfriday-cron: trigger failed", e);
   }
 
-  return { statusCode: 200, body: `blackfriday-cron: triggered step ${step} for ${today}` };
+  return {
+    statusCode: 200,
+    body: `blackfriday-cron: triggered step ${step} (${audience}) for ${today}`,
+  };
 };
