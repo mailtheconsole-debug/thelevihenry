@@ -62,13 +62,27 @@ function buildReport(leads) {
 // `cap`, stops sending after that many and reports how many emails are still owed, so a
 // capped caller can loop until `remaining` is 0. Uncapped (the background function) it
 // drains the whole backlog in one run.
+// The SDR nurture is paused for the Black Friday sale window so warm leads get ONLY the sale
+// emails, not the full-price onboarding sequence stacked on top (which confuses and annoys
+// them mid-sale). Self-expiring: email sends resume automatically at this instant, matching
+// the scheduled cleanup that re-enables the daily job on 1 Dec. WhatsApp-due counting and the
+// report are untouched. To lift the pause early, set NURTURE_RESUME_NOW=1 in Netlify.
+const NURTURE_RESUME_AT = Date.parse("2026-12-01T00:00:00Z");
+
 async function sendDue(leads, { cap = Infinity } = {}) {
   let emailsSent = 0;
   let whatsappDue = 0;
   let remaining = 0;
   const emailed = []; // addresses mailed this run, so another sequence can skip them today
 
+  const paused = Date.now() < NURTURE_RESUME_AT && process.env.NURTURE_RESUME_NOW !== "1";
+
   for (const lead of leads) {
+    if (paused) {
+      // Still surface WhatsApp follow-ups to Levi, but send no onboarding emails.
+      if (lead.status === "active" && lead.whatsapp && nextDueWhatsApp(lead)) whatsappDue++;
+      continue;
+    }
     if (lead.status !== "active") continue;
 
     const step = lead.email ? nextDueEmail(lead) : null;
